@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 নং পাঁচলাইশ ওয়ার্ড - PDF সার্চ পোর্টাল</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f7f6; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #2c3e50; }
+        .search-box { display: flex; gap: 10px; margin: 20px 0; }
+        input[type="text"] { flex: 1; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 12px 20px; font-size: 16px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .result-item { border-left: 4px solid #007bff; background: #f9f9f9; padding: 15px; margin-top: 15px; border-radius: 0 4px 4px 0; }
+        .result-item a { font-size: 18px; color: #007bff; text-decoration: none; font-weight: bold; }
+        .status { font-style: italic; color: #666; margin-top: 10px; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2>3 নং পাঁচলাইশ ওয়ার্ড - PDF সার্চ পোর্টাল</h2>
+    
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="ফাইল বা ভেতরের শব্দ/নাম/আইডি লিখুন...">
+        <button onclick="performSearch()">সার্চ করুন</button>
+    </div>
+
+    <div id="status" class="status"></div>
+    <div id="results"></div>
+</div>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+const pdfList = [
+    { title: "151686_com_1443_female.pdf", url: "151686_com_1443_female.pdf" },
+    { title: "151686_com_1526_male.pdf", url: "151686_com_1526_male.pdf" },
+    { title: "151687_com_34_female.pdf", url: "151687_com_34_female.pdf" },
+    { title: "151687_com_57_male.pdf", url: "151687_com_57_male.pdf" },
+    { title: "151688_com_251_female.pdf", url: "151688_com_251_female.pdf" },
+    { title: "151688_com_296_male.pdf", url: "151688_com_296_male.pdf" }
+];
+
+async function performSearch() {
+    const query = document.getElementById("searchInput").value.toLowerCase().trim();
+    const resultsDiv = document.getElementById("results");
+    const statusDiv = document.getElementById("status");
+    
+    resultsDiv.innerHTML = "";
+    if (!query) return;
+
+    statusDiv.innerText = "সার্চ করা হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...";
+    let foundCount = 0;
+
+    for (const pdfInfo of pdfList) {
+        let titleMatch = pdfInfo.title.toLowerCase().includes(query);
+        
+        try {
+            const loadingTask = pdfjsLib.getDocument(pdfInfo.url);
+            const pdf = await loadingTask.promise;
+            let textMatches = [];
+
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                const page = await pdf.getPage(pageNum);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map(item => item.str).join(" ");
+
+                if (pageText.toLowerCase().includes(query)) {
+                    textMatches.push(pageNum);
+                }
+            }
+
+            if (titleMatch || textMatches.length > 0) {
+                foundCount++;
+                let matchText = textMatches.length > 0 
+                    ? `পৃষ্ঠা নম্বর: ${textMatches.join(", ")}` 
+                    : "ফাইলের নামে পাওয়া গেছে";
+
+                resultsDiv.innerHTML += `
+                    <div class="result-item">
+                        <a href="${pdfInfo.url}" target="_blank">${pdfInfo.title}</a>
+                        <p style="margin: 5px 0 0 0;"><strong>ফলাফল:</strong> ${matchText}</p>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error("PDF লোড হতে সমস্যা হয়েছে:", pdfInfo.url, error);
+        }
+    }
+
+    statusDiv.innerText = foundCount > 0 
+        ? `মোট ${foundCount} টি ফাইলে মিল পাওয়া গেছে।` 
+        : "কোনো তথ্য পাওয়া যায়নি।";
+}
+</script>
+</body>
+</html>
