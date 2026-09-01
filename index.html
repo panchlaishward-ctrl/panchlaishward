@@ -17,8 +17,8 @@
             position: relative;
             max-width: 550px;
             margin: 20px auto;
-            background-color: #b3cbcf;
-            padding: 25px 35px;
+            background-color: #b3cbcf; /* ছবির ব্যাকগ্রাউন্ড কালার */
+            padding: 30px 35px;
             border-radius: 6px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             overflow: hidden;
@@ -53,8 +53,8 @@
 <div class="search-wrapper">
     <h2>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</h2>
     <div class="input-group">
-        <input type="text" id="nameInput" placeholder="১. নাম লিখুন (যেমন: রুবিনা আক্তার)">
-        <input type="text" id="dobInput" placeholder="২. জন্ম তারিখ লিখুন (যেমন: ১৩/১০/১৯৮৪)">
+        <input type="text" id="nameInput" placeholder="১. নাম লিখুন">
+        <input type="text" id="dobInput" placeholder="২. জন্ম তারিখ লিখুন (যেমন: ০৩/০২/১৯৪০)">
         <button onclick="performSearch()">সার্চ করুন</button>
     </div>
     <div id="status" class="status"></div>
@@ -74,9 +74,21 @@ const pdfList = [
     { title: "151688_com_296_male.pdf", url: "151688_com_296_male.pdf" }
 ];
 
-function extractField(text, regex, defaultValue = "N/A") {
-    const match = text.match(regex);
-    return match ? match[1].trim() : defaultValue;
+// নির্দিষ্ট কি-ওয়ার্ড থেকে মান আলাদা করার ফাংশন
+function getValueAfter(text, keyword) {
+    const reg = new RegExp(keyword + "[:\\s\\-]*([^\\n\\r]+)", "i");
+    const match = text.match(reg);
+    if (!match) return "N/A";
+    
+    let val = match[1].trim();
+    // পরবর্তী লেবেলের লেখা কেটে বাদ দেওয়া
+    const stopWords = ["ভোটার নং", "স্বামী", "পিতা", "মাতা", "পেশা", "জন্ম তারিখ", "ঠিকানা", "নাম"];
+    for (let sw of stopWords) {
+        if (sw !== keyword && val.includes(sw)) {
+            val = val.split(sw)[0].trim();
+        }
+    }
+    return val;
 }
 
 async function performSearch() {
@@ -103,53 +115,65 @@ async function performSearch() {
             const pdf = await loadingTask.promise;
 
             for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                if (found) break;
+
                 const page = await pdf.getPage(pageNum);
                 const textContent = await page.getTextContent();
                 const pageText = textContent.items.map(item => item.str).join(" ");
-                const lowerText = pageText.toLowerCase();
 
-                // ২টি অপশন মিলানোর কন্ডিশন
-                let isMatch = false;
-                if (nameQuery && dobQuery) {
-                    isMatch = lowerText.includes(nameQuery) && lowerText.includes(dobQuery);
-                } else if (nameQuery) {
-                    isMatch = lowerText.includes(nameQuery);
-                } else if (dobQuery) {
-                    isMatch = lowerText.includes(dobQuery);
-                }
+                // পিডিএফ-এর একটানা লেখাগুলোকে "নাম:" দিয়ে আলাদা আলাদা ব্যক্তির ব্লকে ভাগ করা
+                const personBlocks = pageText.split(/(?=নাম[:\s])/i);
 
-                if (isMatch) {
-                    found = true;
+                for (let block of personBlocks) {
+                    const lowerBlock = block.toLowerCase();
 
-                    const name = extractField(pageText, /নাম[:\s\-]+([^\n\r\d]+)/i, nameQuery ? nameQuery.toUpperCase() : "N/A");
-                    const voterNo = extractField(pageText, /ভোটার\s*নং[:\s\-]*([\d০-৯]+)/i, "১৯১৭৮২******");
-                    const dob = extractField(pageText, /जन्म\s*তারিখ[:\s\-]*([\d\/০-৯]+)/i, dobQuery || "১৩/১০/১৯৮৪");
-                    const fatherOrHusband = extractField(pageText, /(?:পিতা|স্বামী)[:\s\-]+([^\n\r\d]+)/i, "শামসুল ইসলাম");
-                    const mother = extractField(pageText, /মাতা[:\s\-]+([^\n\r\d]+)/i, "রোকেয়া বেগম");
-                    const area = extractField(pageText, /এলাকা[:\s\-]+([^\n\r\d]+)/i, "মীরপাড়া জালালাবাদ");
+                    let isMatch = false;
+                    if (nameQuery && dobQuery) {
+                        isMatch = lowerBlock.includes(nameQuery) && lowerBlock.includes(dobQuery);
+                    } else if (nameQuery) {
+                        isMatch = lowerBlock.includes(nameQuery);
+                    } else if (dobQuery) {
+                        isMatch = lowerBlock.includes(dobQuery);
+                    }
 
-                    resultsDiv.innerHTML = `
-                        <div class="info-card">
-                            <!-- Background Watermark -->
-                            <div class="watermark">
-                                আলী ইসলাম<br>
-                                উদ্যোক্তা, ০৩ নং পাঁচলাইশ ওয়ার্ড
+                    if (isMatch) {
+                        found = true;
+
+                        // ব্লক থেকে ফিল্ডগুলো এক্সট্রাক্ট করা
+                        const name = getValueAfter(block, "নাম");
+                        const voterNo = getValueAfter(block, "ভোটার নং");
+                        const dob = getValueAfter(block, "জন্ম তারিখ");
+                        const fatherOrHusband = block.includes("স্বামী") 
+                            ? getValueAfter(block, "স্বামী") 
+                            : getValueAfter(block, "পিতা");
+                        const fatherOrHusbandLabel = block.includes("স্বামী") ? "স্বামী" : "পিতা";
+                        const mother = getValueAfter(block, "মাতা");
+                        const area = getValueAfter(block, "ঠিকানা");
+
+                        // সুন্দর কার্ড আউটপুট
+                        resultsDiv.innerHTML = `
+                            <div class="info-card">
+                                <!-- Background Watermark -->
+                                <div class="watermark">
+                                    আলী ইসলাম<br>
+                                    উদ্যোক্তা, ০৩ নং পাঁচলাইশ ওয়ার্ড
+                                </div>
+
+                                <!-- Information Lines -->
+                                <div class="card-row"><strong>নাম:</strong> ${name}</div>
+                                <div class="card-row"><strong>ভোটার নং-</strong> ${voterNo}</div>
+                                <div class="card-row"><strong>জন্ম তারিখ:</strong> ${dob}</div>
+                                <div class="card-row"><strong>${fatherOrHusbandLabel}:</strong> ${fatherOrHusband}</div>
+                                <div class="card-row"><strong>মাতা:</strong> ${mother}</div>
+                                <div class="card-row"><strong>এলাকা:</strong> ${area}</div>
+
+                                <div style="text-align: center;">
+                                    <a href="${pdfInfo.url}#page=${pageNum}" target="_blank" class="pdf-link-btn">মূল পিডিএফ ফাইল দেখুন (পৃষ্ঠা ${pageNum})</a>
+                                </div>
                             </div>
-
-                            <!-- Single Information Card Output -->
-                            <div class="card-row"><strong>নাম:</strong> ${name}</div>
-                            <div class="card-row"><strong>ভোটার নং-</strong> ${voterNo}</div>
-                            <div class="card-row"><strong>জন্ম তারিখ:</strong> ${dob}</div>
-                            <div class="card-row"><strong>পিতা/স্বামী:</strong> ${fatherOrHusband}</div>
-                            <div class="card-row"><strong>মাতা:</strong> ${mother}</div>
-                            <div class="card-row"><strong>এলাকা:</strong> ${area}</div>
-
-                            <div style="text-align: center;">
-                                <a href="${pdfInfo.url}#page=${pageNum}" target="_blank" class="pdf-link-btn">মূল পিডিএফ ফাইল দেখুন (পৃষ্ঠা ${pageNum})</a>
-                            </div>
-                        </div>
-                    `;
-                    break;
+                        `;
+                        break;
+                    }
                 }
             }
         } catch (error) {
