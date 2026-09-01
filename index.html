@@ -40,9 +40,9 @@
             width: 100%;
         }
 
-        .card-row { font-size: 20px; margin-bottom: 12px; font-weight: 500; color: #1a1a1a; line-height: 1.4; text-align: left; }
+        .card-row { font-size: 20px; margin-bottom: 12px; font-weight: 500; color: #1a1a1a; line-height: 1.4; text-align: left; position: relative; z-index: 2; }
         .status { text-align: center; font-style: italic; color: #555; margin-top: 15px; }
-        .pdf-link-btn { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; }
+        .pdf-link-btn { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; position: relative; z-index: 2; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
@@ -51,8 +51,8 @@
 <div class="search-wrapper">
     <h2>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</h2>
     <div class="input-group">
-        <input type="text" id="nameInput" placeholder="১. নাম লিখুন (যেমন: মেনোয়ারা বেগম)">
-        <input type="text" id="dobInput" placeholder="২. জন্ম তারিখ লিখুন (যেমন: ০৩/০২/১৯৪০)">
+        <input type="text" id="nameInput" placeholder="১. নাম লিখুন (যেমন: রিনা আক্তার)">
+        <input type="text" id="dobInput" placeholder="২. জন্ম তারিখ লিখুন (যেমন: ২২/০৮/১৯৭৯ বা 22/08/1979)">
         <button onclick="performSearch()">সার্চ করুন</button>
     </div>
     <div id="status" class="status"></div>
@@ -79,27 +79,40 @@ function convertDigits(str, toBangla = true) {
     return str.replace(/[0-9০-৯]/g, w => toBangla ? banglaDigits[englishDigits.indexOf(w)] || w : englishDigits[banglaDigits.indexOf(w)] || w);
 }
 
-// প্রতিটি তথ্য নিখুঁতভাবে কেটে বের করার উন্নত লজিক
-function parsePersonData(text) {
-    const extractPattern = (pattern) => {
-        const m = text.match(pattern);
-        return m ? m[1].trim() : "N/A";
-    };
+// একদম নিখুঁতভাবে পার্স করার ফাংশন
+function parsePersonData(block) {
+    let name = "N/A", voterNo = "N/A", dob = "N/A", guardianLabel = "পিতা", guardianValue = "N/A", mother = "N/A", area = "N/A";
 
-    const name = extractPattern(/নাম[:\s]*([^ভোটার|পিতা|স্বামী|মাতা|পেশা|জন্ম|ঠিকানা]+)/i);
-    const voterNo = extractPattern(/ভোটার\s*নং[:\s]*([০-৯0-9]+)/i);
-    const dob = extractPattern(/জন্ম\s*তারিখ[:\s]*([০-৯0-9\/\-\.]+)/i);
-    const father = extractPattern(/পিতা[:\s]*([^ভোটার|নাম|মাতা|পেশা|জন্ম|ঠিকানা]+)/i);
-    const husband = extractPattern(/স্বামী[:\s]*([^ভোটার|নাম|মাতা|পেশা|জন্ম|ঠিকানা]+)/i);
-    const mother = extractPattern(/মাতা[:\s]*([^ভোটার|নাম|পিতা|স্বামী|পেশা|জন্ম|ঠিকানা]+)/i);
-    const area = extractPattern(/ঠিকানা[:\s]*([^ভোটার|নাম|পিতা|স্বামী|মাতা|পেশা|জন্ম]+)/i);
+    // নাম এক্সট্রাক্ট
+    const nameMatch = block.match(/নাম[:\s]*([^\n\rভোটার]+)/i);
+    if (nameMatch) name = nameMatch[1].trim();
 
-    let guardianLabel = "পিতা";
-    let guardianValue = father;
-    if (husband !== "N/A") {
+    // ভোটার নং এক্সট্রাক্ট
+    const voterMatch = block.match(/ভোটার\s*নং[:\s]*([০-৯0-9]+)/i);
+    if (voterMatch) voterNo = voterMatch[1].trim();
+
+    // স্বামী বা পিতা এক্সট্রাক্ট
+    const husbandMatch = block.match(/স্বামী[:\s]*([^\n\rমাতা]+)/i);
+    const fatherMatch = block.match(/পিতা[:\s]*([^\n\rমাতা]+)/i);
+    if (husbandMatch) {
         guardianLabel = "স্বামী";
-        guardianValue = husband;
+        guardianValue = husbandMatch[1].trim();
+    } else if (fatherMatch) {
+        guardianLabel = "পিতা";
+        guardianValue = fatherMatch[1].trim();
     }
+
+    // মাতা এক্সট্রাক্ট
+    const motherMatch = block.match(/মাতা[:\s]*([^\n\rপেশা]+)/i);
+    if (motherMatch) mother = motherMatch[1].trim();
+
+    // জন্ম তারিখ এক্সট্রাক্ট
+    const dobMatch = block.match(/জন্ম\s*তারিখ[:\s]*([০-৯0-9\/\-\.]+)/i);
+    if (dobMatch) dob = dobMatch[1].trim();
+
+    // ঠিকানা/এলাকা এক্সট্রাক্ট
+    const areaMatch = block.match(/ঠিকানা[:\s]*([^\n\r$]+)/i);
+    if (areaMatch) area = areaMatch[1].trim();
 
     return { name, voterNo, dob, guardianLabel, guardianValue, mother, area };
 }
@@ -137,7 +150,8 @@ async function performSearch() {
                 const textContent = await page.getTextContent();
                 const pageText = textContent.items.map(item => item.str).join(" ");
 
-                const personBlocks = pageText.split(/(?=নাম[:\s])/i);
+                // সিরিয়াল নম্বর ও নাম দিয়ে প্রতি ব্যক্তির ব্লক আলাদা করা
+                const personBlocks = pageText.split(/(?=[০-৯0-9]{4}\.\s*নাম[:\s])/i);
 
                 for (let block of personBlocks) {
                     const lowerBlock = block.toLowerCase();
@@ -149,7 +163,7 @@ async function performSearch() {
                     else if (nameQuery) isMatch = matchesName;
                     else if (dobQuery) isMatch = matchesDob;
 
-                    if (isMatch) {
+                    if (isMatch && lowerBlock.includes("নাম")) {
                         found = true;
                         const data = parsePersonData(block);
 
