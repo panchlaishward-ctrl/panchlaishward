@@ -51,7 +51,7 @@
 <div class="search-wrapper">
     <h2>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</h2>
     <div class="input-group">
-        <input type="text" id="nameInput" placeholder="১. নাম লিখুন (যেমন: রিনা আক্তার)">
+        <input type="text" id="nameInput" placeholder="১. নাম লিখুন (যেমন: রিনা আক্তার বা মেনোয়ারা)">
         <input type="text" id="dobInput" placeholder="২. জন্ম তারিখ লিখুন (যেমন: ২২/০৮/১৯৭৯ বা 22/08/1979)">
         <button onclick="performSearch()">সার্চ করুন</button>
     </div>
@@ -63,13 +63,64 @@
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
+// আপনার ফোল্ডারের সবগুলো পিডিএফ ফাইলের সম্পূর্ণ তালিকা
 const pdfList = [
     { title: "151686_com_1443_female.pdf", url: "151686_com_1443_female.pdf" },
     { title: "151686_com_1526_male.pdf", url: "151686_com_1526_male.pdf" },
     { title: "151687_com_34_female.pdf", url: "151687_com_34_female.pdf" },
     { title: "151687_com_57_male.pdf", url: "151687_com_57_male.pdf" },
     { title: "151688_com_251_female.pdf", url: "151688_com_251_female.pdf" },
-    { title: "151688_com_296_male.pdf", url: "151688_com_296_male.pdf" }
+    { title: "151688_com_296_male.pdf", url: "151688_com_296_male.pdf" },
+    { title: "151690_com_1217_female.pdf", url: "151690_com_1217_female.pdf" },
+    { title: "151690_com_1305_male.pdf", url: "151690_com_1305_male.pdf" },
+    { title: "151691_com_436_male.pdf", url: "151691_com_436_male.pdf" },
+    { title: "151691_com_443_female.pdf", url: "151691_com_443_female.pdf" },
+    { title: "151692_com_237_female.pdf", url: "151692_com_237_female.pdf" },
+    { title: "151692_com_269_male.pdf", url: "151692_com_269_male.pdf" },
+    { title: "151693_com_1888_male.pdf", url: "151693_com_1888_male.pdf" },
+    { title: "151693_com_1926_female.pdf", url: "151693_com_1926_female.pdf" },
+    { title: "151694_com_3519_male.pdf", url: "151694_com_3519_male.pdf" },
+    { title: "151694_com_3839_female.pdf", url: "151694_com_3839_female.pdf" },
+    { title: "151695_com_87_female.pdf", url: "151695_com_87_female.pdf" },
+    { title: "151695_com_117_male.pdf", url: "151695_com_117_male.pdf" },
+    { title: "151696_com_380_female.pdf", url: "151696_com_380_female.pdf" },
+    { title: "151696_com_444_male.pdf", url: "151696_com_444_male.pdf" },
+    { title: "151697_com_623_female.pdf", url: "151697_com_623_female.pdf" },
+    { title: "151697_com_643_male.pdf", url: "151697_com_643_male.pdf" },
+    { title: "151698_com_397_female.pdf", url: "151698_com_397_female.pdf" },
+    { title: "151698_com_432_male.pdf", url: "151698_com_432_male.pdf" },
+    { title: "151699_com_366_female.pdf", url: "151699_com_366_female.pdf" },
+    { title: "151699_com_398_male.pdf", url: "151699_com_398_male.pdf" },
+    { title: "151700_com_2199_female.pdf", url: "151700_com_2199_female.pdf" },
+    { title: "151700_com_2199_male.pdf", url: "151700_com_2199_male.pdf" },
+    { title: "151701_com_1606_female.pdf", url: "151701_com_1606_female.pdf" },
+    { title: "151701_com_1675_male.pdf", url: "151701_com_1675_male.pdf" },
+    { title: "151702_com_466_female.pdf", url: "151702_com_466_female.pdf" },
+    { title: "151702_com_865_male.pdf", url: "151702_com_865_male.pdf" },
+    { title: "151703_com_1591_male.pdf", url: "151703_com_1591_male.pdf" },
+    { title: "151703_com_1816_female.pdf", url: "151703_com_1816_female.pdf" },
+    { title: "151704_com_335_male.pdf", url: "151704_com_335_male.pdf" },
+    { title: "151704_com_415_female.pdf", url: "151704_com_415_female.pdf" },
+    { title: "151705_com_1370_male.pdf", url: "151705_com_1370_male.pdf" },
+    { title: "151705_com_1427_female.pdf", url: "151705_com_1427_female.pdf" },
+    { title: "151706_com_582_female.pdf", url: "151706_com_582_female.pdf" },
+    { title: "151706_com_654_male.pdf", url: "151706_com_654_male.pdf" },
+    { title: "151707_com_262_female.pdf", url: "151707_com_262_female.pdf" },
+    { title: "151707_com_286_male.pdf", url: "151707_com_286_male.pdf" },
+    { title: "151708_com_373_female.pdf", url: "151708_com_373_female.pdf" },
+    { title: "151708_com_426_male.pdf", url: "151708_com_426_male.pdf" },
+    { title: "151709_com_384_female.pdf", url: "151709_com_384_female.pdf" },
+    { title: "151709_com_414_male.pdf", url: "151709_com_414_male.pdf" },
+    { title: "151710_com_255_female.pdf", url: "151710_com_255_female.pdf" },
+    { title: "151710_com_296_male.pdf", url: "151710_com_296_male.pdf" },
+    { title: "151711_com_984_male.pdf", url: "151711_com_984_male.pdf" },
+    { title: "151711_com_1188_female.pdf", url: "151711_com_1188_female.pdf" },
+    { title: "151712_com_1123_female.pdf", url: "151712_com_1123_female.pdf" },
+    { title: "151712_com_1160_male.pdf", url: "151712_com_1160_male.pdf" },
+    { title: "151713_com_345_female.pdf", url: "151713_com_345_female.pdf" },
+    { title: "151713_com_385_male.pdf", url: "151713_com_385_male.pdf" },
+    { title: "151714_com_441_male.pdf", url: "151714_com_441_male.pdf" },
+    { title: "151714_com_562_female.pdf", url: "151714_com_562_female.pdf" }
 ];
 
 function convertDigits(str, toBangla = true) {
@@ -79,21 +130,23 @@ function convertDigits(str, toBangla = true) {
     return str.replace(/[0-9০-৯]/g, w => toBangla ? banglaDigits[englishDigits.indexOf(w)] || w : englishDigits[banglaDigits.indexOf(w)] || w);
 }
 
-// একদম নিখুঁতভাবে পার্স করার ফাংশন
+function cleanText(text) {
+    return text.replace(/\s+/g, ' ').trim();
+}
+
 function parsePersonData(block) {
+    const text = cleanText(block);
+    
     let name = "N/A", voterNo = "N/A", dob = "N/A", guardianLabel = "পিতা", guardianValue = "N/A", mother = "N/A", area = "N/A";
 
-    // নাম এক্সট্রাক্ট
-    const nameMatch = block.match(/নাম[:\s]*([^\n\rভোটার]+)/i);
+    const nameMatch = text.match(/নাম[:\s]*([^ভোটার|পিতা|স্বামী|মাতা|পেশা|জন্ম|ঠিকানা]+)/i);
     if (nameMatch) name = nameMatch[1].trim();
 
-    // ভোটার নং এক্সট্রাক্ট
-    const voterMatch = block.match(/ভোটার\s*নং[:\s]*([০-৯0-9]+)/i);
+    const voterMatch = text.match(/ভোটার\s*নং[:\s]*([০-৯0-9]+)/i);
     if (voterMatch) voterNo = voterMatch[1].trim();
 
-    // স্বামী বা পিতা এক্সট্রাক্ট
-    const husbandMatch = block.match(/স্বামী[:\s]*([^\n\rমাতা]+)/i);
-    const fatherMatch = block.match(/পিতা[:\s]*([^\n\rমাতা]+)/i);
+    const husbandMatch = text.match(/স্বামী[:\s]*([^মাতা|পেশা|জন্ম|ঠিকানা]+)/i);
+    const fatherMatch = text.match(/পিতা[:\s]*([^মাতা|পেশা|জন্ম|ঠিকানা]+)/i);
     if (husbandMatch) {
         guardianLabel = "স্বামী";
         guardianValue = husbandMatch[1].trim();
@@ -102,16 +155,13 @@ function parsePersonData(block) {
         guardianValue = fatherMatch[1].trim();
     }
 
-    // মাতা এক্সট্রাক্ট
-    const motherMatch = block.match(/মাতা[:\s]*([^\n\rপেশা]+)/i);
+    const motherMatch = text.match(/মাতা[:\s]*([^পেশা|জন্ম|ঠিকানা]+)/i);
     if (motherMatch) mother = motherMatch[1].trim();
 
-    // জন্ম তারিখ এক্সট্রাক্ট
-    const dobMatch = block.match(/জন্ম\s*তারিখ[:\s]*([০-৯0-9\/\-\.]+)/i);
+    const dobMatch = text.match(/জন্ম\s*তারিখ[:\s]*([০-৯0-9\/\-\.]+)/i);
     if (dobMatch) dob = dobMatch[1].trim();
 
-    // ঠিকানা/এলাকা এক্সট্রাক্ট
-    const areaMatch = block.match(/ঠিকানা[:\s]*([^\n\r$]+)/i);
+    const areaMatch = text.match(/ঠিকানা[:\s]*(.+)$/i);
     if (areaMatch) area = areaMatch[1].trim();
 
     return { name, voterNo, dob, guardianLabel, guardianValue, mother, area };
@@ -130,7 +180,7 @@ async function performSearch() {
         return;
     }
 
-    statusDiv.innerText = "পিডিএফ ফাইলসমূহে খোঁজা হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...";
+    statusDiv.innerText = "সকল পিডিএফ ফাইলে অনুসন্ধান করা হচ্ছে, দয়া করে অপেক্ষা করুন...";
     let found = false;
 
     const dobEn = convertDigits(dobQuery, false).toLowerCase();
@@ -150,8 +200,7 @@ async function performSearch() {
                 const textContent = await page.getTextContent();
                 const pageText = textContent.items.map(item => item.str).join(" ");
 
-                // সিরিয়াল নম্বর ও নাম দিয়ে প্রতি ব্যক্তির ব্লক আলাদা করা
-                const personBlocks = pageText.split(/(?=[০-৯0-9]{4}\.\s*নাম[:\s])/i);
+                const personBlocks = pageText.split(/(?=[০-৯0-9]{4}\.\s*নাম[:\s]|নাম[:\s])/i);
 
                 for (let block of personBlocks) {
                     const lowerBlock = block.toLowerCase();
