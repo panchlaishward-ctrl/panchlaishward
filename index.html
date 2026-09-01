@@ -14,10 +14,10 @@
 
         .info-card {
             position: relative;
-            max-width: 550px;
+            max-width: 580px;
             margin: 20px auto;
             background-color: #b3cbcf;
-            padding: 30px 35px;
+            padding: 30px;
             border-radius: 6px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             overflow: hidden;
@@ -40,7 +40,17 @@
             width: 100%;
         }
 
-        .card-row { font-size: 20px; margin-bottom: 12px; font-weight: 500; color: #1a1a1a; line-height: 1.4; text-align: left; position: relative; z-index: 2; }
+        .card-details {
+            font-size: 19px;
+            line-height: 1.8;
+            color: #1a1a1a;
+            text-align: left;
+            position: relative;
+            z-index: 2;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
         .status { text-align: center; font-style: italic; color: #555; margin-top: 15px; }
         .pdf-link-btn { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; position: relative; z-index: 2; }
     </style>
@@ -51,8 +61,8 @@
 <div class="search-wrapper">
     <h2>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</h2>
     <div class="input-group">
-        <input type="text" id="nameInput" placeholder="১. নাম লিখুন (যেমন: রিনা আক্তার বা মেনোয়ারা)">
-        <input type="text" id="dobInput" placeholder="২. জন্ম তারিখ লিখুন (যেমন: ২২/০৮/১৯৭৯ বা 22/08/1979)">
+        <input type="text" id="nameInput" placeholder="১. নাম লিখুন (যেমন: রিনা আক্তার)">
+        <input type="text" id="dobInput" placeholder="২. জন্ম তারিখ লিখুন (যেমন: ০৭/১১/১৯৯৮)">
         <button onclick="performSearch()">সার্চ করুন</button>
     </div>
     <div id="status" class="status"></div>
@@ -63,7 +73,6 @@
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-// আপনার ফোল্ডারের সবগুলো পিডিএফ ফাইলের সম্পূর্ণ তালিকা
 const pdfList = [
     { title: "151686_com_1443_female.pdf", url: "151686_com_1443_female.pdf" },
     { title: "151686_com_1526_male.pdf", url: "151686_com_1526_male.pdf" },
@@ -130,43 +139,6 @@ function convertDigits(str, toBangla = true) {
     return str.replace(/[0-9০-৯]/g, w => toBangla ? banglaDigits[englishDigits.indexOf(w)] || w : englishDigits[banglaDigits.indexOf(w)] || w);
 }
 
-function cleanText(text) {
-    return text.replace(/\s+/g, ' ').trim();
-}
-
-function parsePersonData(block) {
-    const text = cleanText(block);
-    
-    let name = "N/A", voterNo = "N/A", dob = "N/A", guardianLabel = "পিতা", guardianValue = "N/A", mother = "N/A", area = "N/A";
-
-    const nameMatch = text.match(/নাম[:\s]*([^ভোটার|পিতা|স্বামী|মাতা|পেশা|জন্ম|ঠিকানা]+)/i);
-    if (nameMatch) name = nameMatch[1].trim();
-
-    const voterMatch = text.match(/ভোটার\s*নং[:\s]*([০-৯0-9]+)/i);
-    if (voterMatch) voterNo = voterMatch[1].trim();
-
-    const husbandMatch = text.match(/স্বামী[:\s]*([^মাতা|পেশা|জন্ম|ঠিকানা]+)/i);
-    const fatherMatch = text.match(/পিতা[:\s]*([^মাতা|পেশা|জন্ম|ঠিকানা]+)/i);
-    if (husbandMatch) {
-        guardianLabel = "স্বামী";
-        guardianValue = husbandMatch[1].trim();
-    } else if (fatherMatch) {
-        guardianLabel = "পিতা";
-        guardianValue = fatherMatch[1].trim();
-    }
-
-    const motherMatch = text.match(/মাতা[:\s]*([^পেশা|জন্ম|ঠিকানা]+)/i);
-    if (motherMatch) mother = motherMatch[1].trim();
-
-    const dobMatch = text.match(/জন্ম\s*তারিখ[:\s]*([০-৯0-9\/\-\.]+)/i);
-    if (dobMatch) dob = dobMatch[1].trim();
-
-    const areaMatch = text.match(/ঠিকানা[:\s]*(.+)$/i);
-    if (areaMatch) area = areaMatch[1].trim();
-
-    return { name, voterNo, dob, guardianLabel, guardianValue, mother, area };
-}
-
 async function performSearch() {
     const nameQuery = document.getElementById("nameInput").value.toLowerCase().trim();
     const dobQuery = document.getElementById("dobInput").value.trim();
@@ -180,7 +152,7 @@ async function performSearch() {
         return;
     }
 
-    statusDiv.innerText = "সকল পিডিএফ ফাইলে অনুসন্ধান করা হচ্ছে, দয়া করে অপেক্ষা করুন...";
+    statusDiv.innerText = "পিডিএফ ফাইলসমূহে খোঁজ করা হচ্ছে, দয়া করে অপেক্ষা করুন...";
     let found = false;
 
     const dobEn = convertDigits(dobQuery, false).toLowerCase();
@@ -214,8 +186,8 @@ async function performSearch() {
 
                     if (isMatch && lowerBlock.includes("নাম")) {
                         found = true;
-                        const data = parsePersonData(block);
 
+                        // কোনো কাস্টম পার্সিং না করে সরাসরি মূল পিডিএফে যেভাবে লেখা আছে তা সুন্দরভাবে প্রদর্শন
                         resultsDiv.innerHTML = `
                             <div class="info-card">
                                 <div class="watermark">
@@ -223,14 +195,11 @@ async function performSearch() {
                                     উদ্যোক্তা, ০৩ নং পাঁচলাইশ ওয়ার্ড
                                 </div>
 
-                                <div class="card-row"><strong>নাম:</strong> ${data.name}</div>
-                                <div class="card-row"><strong>ভোটার নং-</strong> ${data.voterNo}</div>
-                                <div class="card-row"><strong>জন্ম তারিখ:</strong> ${data.dob}</div>
-                                <div class="card-row"><strong>${data.guardianLabel}:</strong> ${data.guardianValue}</div>
-                                <div class="card-row"><strong>মাতা:</strong> ${data.mother}</div>
-                                <div class="card-row"><strong>এলাকা:</strong> ${data.area}</div>
+                                <div class="card-details">
+                                    ${block.trim()}
+                                </div>
 
-                                <div style="text-align: center;">
+                                <div style="text-align: center; margin-top: 15px;">
                                     <a href="${pdfInfo.url}#page=${pageNum}" target="_blank" class="pdf-link-btn">মূল পিডিএফ ফাইল দেখুন (পৃষ্ঠা ${pageNum})</a>
                                 </div>
                             </div>
