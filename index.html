@@ -5,49 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</title>
     <style>
-        body { font-family: 'SolaimanLipi', Arial, sans-serif; background-color: #eef2f5; margin: 0; padding: 20px; color: #111; }
-        .search-wrapper { max-width: 650px; margin: 0 auto 20px auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
-        .input-group { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
-        input[type="text"] { padding: 12px; font-size: 16px; border: 1px solid #bbb; border-radius: 5px; outline: none; }
-        button { padding: 12px 25px; font-size: 16px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; }
+        @import url('https://fonts.googleapis.com/css2?family=SolaimanLipi&display=swap');
+
+        body { 
+            font-family: 'SolaimanLipi', 'Kalpurush', Arial, sans-serif; 
+            background-color: #eef2f5; 
+            margin: 0; 
+            padding: 20px; 
+            color: #111; 
+        }
+        .search-wrapper { 
+            max-width: 650px; 
+            margin: 0 auto 20px auto; 
+            background: #fff; 
+            padding: 25px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+            text-align: center; 
+        }
+        .input-group { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            margin-top: 15px; 
+        }
+        input[type="text"] { 
+            padding: 12px; 
+            font-size: 16px; 
+            border: 1px solid #bbb; 
+            border-radius: 5px; 
+            outline: none; 
+        }
+        button { 
+            padding: 12px 25px; 
+            font-size: 16px; 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            margin-top: 5px; 
+        }
         button:hover { background-color: #0056b3; }
 
         .info-card {
             position: relative;
-            max-width: 600px;
+            max-width: 580px;
             margin: 20px auto;
-            background-color: #ffffff;
-            padding: 20px;
+            background-color: #b3cbcf;
+            padding: 25px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            border: 1px solid #ccc;
-            text-align: center;
+            overflow: hidden;
+            border: 1px solid #9bb5b9;
         }
 
         .result-badge {
             display: inline-block;
             background-color: #007bff;
             color: #fff;
-            padding: 5px 15px;
+            padding: 4px 14px;
             border-radius: 20px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             margin-bottom: 15px;
-        }
-
-        .canvas-container {
             position: relative;
-            display: inline-block;
-            max-width: 100%;
-            overflow: hidden;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        canvas {
-            max-width: 100%;
-            height: auto;
-            display: block;
+            z-index: 2;
         }
 
         .watermark {
@@ -57,18 +81,41 @@
             transform: translate(-50%, -50%) rotate(-25deg);
             font-size: 26px;
             font-weight: bold;
-            color: rgba(0, 0, 0, 0.15);
+            color: rgba(0, 0, 0, 0.12);
             white-space: nowrap;
             pointer-events: none;
             text-align: center;
             line-height: 1.5;
             user-select: none;
             width: 100%;
-            z-index: 10;
+        }
+
+        .card-details {
+            font-size: 18px;
+            line-height: 1.9;
+            color: #1a1a1a;
+            text-align: left;
+            position: relative;
+            z-index: 2;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            letter-spacing: normal;
+            word-spacing: normal;
         }
 
         .status { text-align: center; font-style: italic; color: #555; margin-top: 15px; font-weight: bold; }
-        .pdf-link-btn { display: inline-block; margin-top: 15px; padding: 10px 18px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .pdf-link-btn { 
+            display: inline-block; 
+            margin-top: 15px; 
+            padding: 10px 16px; 
+            background: #28a745; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            position: relative; 
+            z-index: 2; 
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
@@ -155,6 +202,16 @@ function convertDigits(str, toBangla = true) {
     return str.replace(/[0-9০-৯]/g, w => toBangla ? banglaDigits[englishDigits.indexOf(w)] || w : englishDigits[banglaDigits.indexOf(w)] || w);
 }
 
+// স্পেস ঠিক করে বাংলা টেক্সট সুসংগঠিত করার ফাংশন
+function cleanText(text) {
+    if (!text) return "";
+    return text
+        .replace(/\s+/g, ' ')
+        .replace(/\s([ািীুূৃেৈোৌ্ংঃঁ])/g, '$1')
+        .replace(/([্])\s/g, '$1')
+        .trim();
+}
+
 async function performSearch() {
     const nameQuery = document.getElementById("nameInput").value.toLowerCase().trim();
     const dobQuery = document.getElementById("dobInput").value.trim();
@@ -168,7 +225,7 @@ async function performSearch() {
         return;
     }
 
-    statusDiv.innerText = "সবগুলো পিডিএফ ফাইলে খোঁজ করা হচ্ছে, দয়া করে অপেক্ষা করুন...";
+    statusDiv.innerText = "পিডিএফ ফাইলসমূহে খোঁজ করা হচ্ছে, দয়া করে অপেক্ষা করুন...";
     let matchCount = 0;
 
     const dobEn = convertDigits(dobQuery, false).toLowerCase();
@@ -198,28 +255,25 @@ async function performSearch() {
 
                     if (isMatch && lowerBlock.includes("নাম")) {
                         matchCount++;
-                        const canvasId = `pdf-canvas-${matchCount}`;
                         const banglaCount = convertDigits(matchCount.toString(), true);
+                        const cleanedBlock = cleanText(block);
 
                         const cardHtml = `
                             <div class="info-card">
                                 <div class="result-badge">ফলাফল নং: ${banglaCount}</div>
-                                <div class="canvas-container">
-                                    <div class="watermark">
-                                        আলী ইসলাম<br>
-                                        উদ্যোক্তা, ০৩ নং পাঁচলাইশ ওয়ার্ড
-                                    </div>
-                                    <canvas id="${canvasId}"></canvas>
+                                <div class="watermark">
+                                    আলী ইসলাম<br>
+                                    উদ্যোক্তা, ০৩ নং পাঁচলাইশ ওয়ার্ড
                                 </div>
-                                <div>
+
+                                <div class="card-details">${cleanedBlock}</div>
+
+                                <div style="text-align: center; margin-top: 15px;">
                                     <a href="${pdfInfo.url}#page=${pageNum}" target="_blank" class="pdf-link-btn">মূল পিডিএফ ফাইল দেখুন (পৃষ্ঠা ${pageNum})</a>
                                 </div>
                             </div>
                         `;
                         resultsDiv.innerHTML += cardHtml;
-
-                        // নির্দিষ্ট পৃষ্ঠার রেন্ডারিং (Canvas Rendering)
-                        renderPageCanvas(page, canvasId);
                     }
                 }
             }
@@ -234,25 +288,6 @@ async function performSearch() {
     } else {
         statusDiv.innerText = "কোনো তথ্য পাওয়া যায়নি।";
     }
-}
-
-async function renderPageCanvas(page, canvasId) {
-    setTimeout(async () => {
-        const canvas = document.getElementById(canvasId);
-        if (!canvas) return;
-        
-        const context = canvas.getContext('2d');
-        const viewport = page.getViewport({ scale: 1.5 });
-
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-
-        const renderContext = {
-            canvasContext: context,
-            viewport: viewport
-        };
-        await page.render(renderContext).promise;
-    }, 100);
 }
 </script>
 
