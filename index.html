@@ -1,99 +1,6 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</title>
-    <style>
-        body { font-family: 'SolaimanLipi', Arial, sans-serif; background-color: #eef2f5; margin: 0; padding: 20px; color: #111; }
-        .search-wrapper { max-width: 650px; margin: 0 auto 20px auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
-        .input-group { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
-        input[type="text"] { padding: 12px; font-size: 16px; border: 1px solid #bbb; border-radius: 5px; outline: none; }
-        button { padding: 12px 25px; font-size: 16px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; }
-        button:hover { background-color: #0056b3; }
-
-        /* আপনার ছবি অনুযায়ী কার্ড ডিজাইন */
-        .info-card {
-            position: relative;
-            max-width: 550px;
-            margin: 20px auto;
-            background-color: #b3cbcf; /* ছবির ব্যাকগ্রাউন্ড কালার */
-            padding: 30px 35px;
-            border-radius: 6px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            overflow: hidden;
-            border: 1px solid #9bb5b9;
-        }
-
-        /* ওয়াটারমার্ক ডিজাইন */
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-25deg);
-            font-size: 26px;
-            font-weight: bold;
-            color: rgba(0, 0, 0, 0.12);
-            white-space: nowrap;
-            pointer-events: none;
-            text-align: center;
-            line-height: 1.5;
-            user-select: none;
-            width: 100%;
-        }
-
-        .card-row { font-size: 20px; margin-bottom: 12px; font-weight: 500; color: #1a1a1a; line-height: 1.4; text-align: left; }
-        .status { text-align: center; font-style: italic; color: #555; margin-top: 15px; }
-        .pdf-link-btn { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; }
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-</head>
-<body>
-
-<div class="search-wrapper">
-    <h2>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</h2>
-    <div class="input-group">
-        <input type="text" id="nameInput" placeholder="১. নাম লিখুন">
-        <input type="text" id="dobInput" placeholder="২. জন্ম তারিখ লিখুন (যেমন: ০৩/০২/১৯৪০)">
-        <button onclick="performSearch()">সার্চ করুন</button>
-    </div>
-    <div id="status" class="status"></div>
-</div>
-
-<div id="results"></div>
-
-<script>
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-
-const pdfList = [
-    { title: "151686_com_1443_female.pdf", url: "151686_com_1443_female.pdf" },
-    { title: "151686_com_1526_male.pdf", url: "151686_com_1526_male.pdf" },
-    { title: "151687_com_34_female.pdf", url: "151687_com_34_female.pdf" },
-    { title: "151687_com_57_male.pdf", url: "151687_com_57_male.pdf" },
-    { title: "151688_com_251_female.pdf", url: "151688_com_251_female.pdf" },
-    { title: "151688_com_296_male.pdf", url: "151688_com_296_male.pdf" }
-];
-
-// নির্দিষ্ট কি-ওয়ার্ড থেকে মান আলাদা করার ফাংশন
-function getValueAfter(text, keyword) {
-    const reg = new RegExp(keyword + "[:\\s\\-]*([^\\n\\r]+)", "i");
-    const match = text.match(reg);
-    if (!match) return "N/A";
-    
-    let val = match[1].trim();
-    // পরবর্তী লেবেলের লেখা কেটে বাদ দেওয়া
-    const stopWords = ["ভোটার নং", "স্বামী", "পিতা", "মাতা", "পেশা", "জন্ম তারিখ", "ঠিকানা", "নাম"];
-    for (let sw of stopWords) {
-        if (sw !== keyword && val.includes(sw)) {
-            val = val.split(sw)[0].trim();
-        }
-    }
-    return val;
-}
-
 async function performSearch() {
     const nameQuery = document.getElementById("nameInput").value.toLowerCase().trim();
-    const dobQuery = document.getElementById("dobInput").value.toLowerCase().trim();
+    const dobQuery = document.getElementById("dobInput").value.trim();
     const resultsDiv = document.getElementById("results");
     const statusDiv = document.getElementById("status");
     
@@ -106,6 +13,9 @@ async function performSearch() {
 
     statusDiv.innerText = "পিডিএফ ফাইলসমূহে খোঁজা হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...";
     let found = false;
+
+    const dobEn = convertDigits(dobQuery, false).toLowerCase();
+    const dobBn = convertDigits(dobQuery, true).toLowerCase();
 
     for (const pdfInfo of pdfList) {
         if (found) break;
@@ -121,59 +31,52 @@ async function performSearch() {
                 const textContent = await page.getTextContent();
                 const pageText = textContent.items.map(item => item.str).join(" ");
 
-                // পিডিএফ-এর একটানা লেখাগুলোকে "নাম:" দিয়ে আলাদা আলাদা ব্যক্তির ব্লকে ভাগ করা
                 const personBlocks = pageText.split(/(?=নাম[:\s])/i);
 
-                for (let block of personBlocks) {
+                // ঠিক ১টি নির্দিষ্ট ব্লকের সাথে মিল খোজা
+                const matchedBlock = personBlocks.find(block => {
                     const lowerBlock = block.toLowerCase();
+                    const matchesName = nameQuery ? lowerBlock.includes(nameQuery) : true;
+                    const matchesDob = dobQuery ? (lowerBlock.includes(dobEn) || lowerBlock.includes(dobBn)) : true;
 
-                    let isMatch = false;
-                    if (nameQuery && dobQuery) {
-                        isMatch = lowerBlock.includes(nameQuery) && lowerBlock.includes(dobQuery);
-                    } else if (nameQuery) {
-                        isMatch = lowerBlock.includes(nameQuery);
-                    } else if (dobQuery) {
-                        isMatch = lowerBlock.includes(dobQuery);
-                    }
+                    if (nameQuery && dobQuery) return matchesName && matchesDob;
+                    if (nameQuery) return matchesName;
+                    if (dobQuery) return matchesDob;
+                    return false;
+                });
 
-                    if (isMatch) {
-                        found = true;
+                if (matchedBlock) {
+                    found = true; // ১টি পাওয়ার সাথে সাথেই পুরো লুপ থামিয়ে দেওয়া
 
-                        // ব্লক থেকে ফিল্ডগুলো এক্সট্রাক্ট করা
-                        const name = getValueAfter(block, "নাম");
-                        const voterNo = getValueAfter(block, "ভোটার নং");
-                        const dob = getValueAfter(block, "জন্ম তারিখ");
-                        const fatherOrHusband = block.includes("স্বামী") 
-                            ? getValueAfter(block, "স্বামী") 
-                            : getValueAfter(block, "পিতা");
-                        const fatherOrHusbandLabel = block.includes("স্বামী") ? "স্বামী" : "পিতা";
-                        const mother = getValueAfter(block, "মাতা");
-                        const area = getValueAfter(block, "ঠিকানা");
+                    const name = getValueAfter(matchedBlock, "নাম");
+                    const voterNo = getValueAfter(matchedBlock, "ভোটার নং");
+                    const dob = getValueAfter(matchedBlock, "জন্ম তারিখ");
+                    const fatherOrHusband = matchedBlock.includes("স্বামী") 
+                        ? getValueAfter(matchedBlock, "স্বামী") 
+                        : getValueAfter(matchedBlock, "পিতা");
+                    const fatherOrHusbandLabel = matchedBlock.includes("স্বামী") ? "স্বামী" : "পিতা";
+                    const mother = getValueAfter(matchedBlock, "মাতা");
+                    const area = getValueAfter(matchedBlock, "ঠিকানা");
 
-                        // সুন্দর কার্ড আউটপুট
-                        resultsDiv.innerHTML = `
-                            <div class="info-card">
-                                <!-- Background Watermark -->
-                                <div class="watermark">
-                                    আলী ইসলাম<br>
-                                    উদ্যোক্তা, ০৩ নং পাঁচলাইশ ওয়ার্ড
-                                </div>
-
-                                <!-- Information Lines -->
-                                <div class="card-row"><strong>নাম:</strong> ${name}</div>
-                                <div class="card-row"><strong>ভোটার নং-</strong> ${voterNo}</div>
-                                <div class="card-row"><strong>জন্ম তারিখ:</strong> ${dob}</div>
-                                <div class="card-row"><strong>${fatherOrHusbandLabel}:</strong> ${fatherOrHusband}</div>
-                                <div class="card-row"><strong>মাতা:</strong> ${mother}</div>
-                                <div class="card-row"><strong>এলাকা:</strong> ${area}</div>
-
-                                <div style="text-align: center;">
-                                    <a href="${pdfInfo.url}#page=${pageNum}" target="_blank" class="pdf-link-btn">মূল পিডিএফ ফাইল দেখুন (পৃষ্ঠা ${pageNum})</a>
-                                </div>
+                    resultsDiv.innerHTML = `
+                        <div class="info-card">
+                            <div class="watermark">
+                                আলী ইসলাম<br>
+                                উদ্যোক্তা, ০৩ নং পাঁচলাইশ ওয়ার্ড
                             </div>
-                        `;
-                        break;
-                    }
+
+                            <div class="card-row"><strong>নাম:</strong> ${name}</div>
+                            <div class="card-row"><strong>ভোটার নং-</strong> ${voterNo}</div>
+                            <div class="card-row"><strong>জন্ম তারিখ:</strong> ${dob}</div>
+                            <div class="card-row"><strong>${fatherOrHusbandLabel}:</strong> ${fatherOrHusband}</div>
+                            <div class="card-row"><strong>মাতা:</strong> ${mother}</div>
+                            <div class="card-row"><strong>এলাকা:</strong> ${area}</div>
+
+                            <div style="text-align: center;">
+                                <a href="${pdfInfo.url}#page=${pageNum}" target="_blank" class="pdf-link-btn">মূল পিডিএফ ফাইল দেখুন (পৃষ্ঠা ${pageNum})</a>
+                            </div>
+                        </div>
+                    `;
                 }
             }
         } catch (error) {
@@ -183,7 +86,3 @@ async function performSearch() {
 
     statusDiv.innerText = found ? "১টি নির্দিষ্ট তথ্য পাওয়া গেছে:" : "কোনো তথ্য পাওয়া যায়নি।";
 }
-</script>
-
-</body>
-</html>
