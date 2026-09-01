@@ -14,14 +14,40 @@
 
         .info-card {
             position: relative;
-            max-width: 580px;
+            max-width: 600px;
             margin: 20px auto;
-            background-color: #b3cbcf;
-            padding: 30px;
-            border-radius: 6px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        .result-badge {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .canvas-container {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
             overflow: hidden;
-            border: 1px solid #9bb5b9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
 
         .watermark {
@@ -31,28 +57,18 @@
             transform: translate(-50%, -50%) rotate(-25deg);
             font-size: 26px;
             font-weight: bold;
-            color: rgba(0, 0, 0, 0.12);
+            color: rgba(0, 0, 0, 0.15);
             white-space: nowrap;
             pointer-events: none;
             text-align: center;
             line-height: 1.5;
             user-select: none;
             width: 100%;
+            z-index: 10;
         }
 
-        .card-details {
-            font-size: 19px;
-            line-height: 1.8;
-            color: #1a1a1a;
-            text-align: left;
-            position: relative;
-            z-index: 2;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .status { text-align: center; font-style: italic; color: #555; margin-top: 15px; }
-        .pdf-link-btn { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; position: relative; z-index: 2; }
+        .status { text-align: center; font-style: italic; color: #555; margin-top: 15px; font-weight: bold; }
+        .pdf-link-btn { display: inline-block; margin-top: 15px; padding: 10px 18px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
@@ -95,7 +111,7 @@ const pdfList = [
     { title: "151696_com_380_female.pdf", url: "151696_com_380_female.pdf" },
     { title: "151696_com_444_male.pdf", url: "151696_com_444_male.pdf" },
     { title: "151697_com_623_female.pdf", url: "151697_com_623_female.pdf" },
-    { title: "151697_com_643_male.pdf", url: "151697_com_643_male.pdf" },
+    { title: "151697_com_643_male.pdf", url: "151707_com_643_male.pdf" },
     { title: "151698_com_397_female.pdf", url: "151698_com_397_female.pdf" },
     { title: "151698_com_432_male.pdf", url: "151698_com_432_male.pdf" },
     { title: "151699_com_366_female.pdf", url: "151699_com_366_female.pdf" },
@@ -152,22 +168,18 @@ async function performSearch() {
         return;
     }
 
-    statusDiv.innerText = "পিডিএফ ফাইলসমূহে খোঁজ করা হচ্ছে, দয়া করে অপেক্ষা করুন...";
-    let found = false;
+    statusDiv.innerText = "সবগুলো পিডিএফ ফাইলে খোঁজ করা হচ্ছে, দয়া করে অপেক্ষা করুন...";
+    let matchCount = 0;
 
     const dobEn = convertDigits(dobQuery, false).toLowerCase();
     const dobBn = convertDigits(dobQuery, true).toLowerCase();
 
     for (const pdfInfo of pdfList) {
-        if (found) break;
-
         try {
             const loadingTask = pdfjsLib.getDocument(pdfInfo.url);
             const pdf = await loadingTask.promise;
 
             for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-                if (found) break;
-
                 const page = await pdf.getPage(pageNum);
                 const textContent = await page.getTextContent();
                 const pageText = textContent.items.map(item => item.str).join(" ");
@@ -185,26 +197,29 @@ async function performSearch() {
                     else if (dobQuery) isMatch = matchesDob;
 
                     if (isMatch && lowerBlock.includes("নাম")) {
-                        found = true;
+                        matchCount++;
+                        const canvasId = `pdf-canvas-${matchCount}`;
+                        const banglaCount = convertDigits(matchCount.toString(), true);
 
-                        // কোনো কাস্টম পার্সিং না করে সরাসরি মূল পিডিএফে যেভাবে লেখা আছে তা সুন্দরভাবে প্রদর্শন
-                        resultsDiv.innerHTML = `
+                        const cardHtml = `
                             <div class="info-card">
-                                <div class="watermark">
-                                    আলী ইসলাম<br>
-                                    উদ্যোক্তা, ০৩ নং পাঁচলাইশ ওয়ার্ড
+                                <div class="result-badge">ফলাফল নং: ${banglaCount}</div>
+                                <div class="canvas-container">
+                                    <div class="watermark">
+                                        আলী ইসলাম<br>
+                                        উদ্যোক্তা, ০৩ নং পাঁচলাইশ ওয়ার্ড
+                                    </div>
+                                    <canvas id="${canvasId}"></canvas>
                                 </div>
-
-                                <div class="card-details">
-                                    ${block.trim()}
-                                </div>
-
-                                <div style="text-align: center; margin-top: 15px;">
+                                <div>
                                     <a href="${pdfInfo.url}#page=${pageNum}" target="_blank" class="pdf-link-btn">মূল পিডিএফ ফাইল দেখুন (পৃষ্ঠা ${pageNum})</a>
                                 </div>
                             </div>
                         `;
-                        break;
+                        resultsDiv.innerHTML += cardHtml;
+
+                        // নির্দিষ্ট পৃষ্ঠার রেন্ডারিং (Canvas Rendering)
+                        renderPageCanvas(page, canvasId);
                     }
                 }
             }
@@ -213,7 +228,31 @@ async function performSearch() {
         }
     }
 
-    statusDiv.innerText = found ? "১টি নির্দিষ্ট তথ্য পাওয়া গেছে:" : "কোনো তথ্য পাওয়া যায়নি।";
+    if (matchCount > 0) {
+        const totalBangla = convertDigits(matchCount.toString(), true);
+        statusDiv.innerText = `সর্বমোট ${totalBangla}টি নির্দিষ্ট তথ্য পাওয়া গেছে:`;
+    } else {
+        statusDiv.innerText = "কোনো তথ্য পাওয়া যায়নি।";
+    }
+}
+
+async function renderPageCanvas(page, canvasId) {
+    setTimeout(async () => {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        
+        const context = canvas.getContext('2d');
+        const viewport = page.getViewport({ scale: 1.5 });
+
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+            canvasContext: context,
+            viewport: viewport
+        };
+        await page.render(renderContext).promise;
+    }, 100);
 }
 </script>
 
