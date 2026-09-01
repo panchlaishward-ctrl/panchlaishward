@@ -5,57 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=SolaimanLipi&display=swap');
-
-        body { 
-            font-family: 'SolaimanLipi', 'Kalpurush', Arial, sans-serif; 
-            background-color: #eef2f5; 
-            margin: 0; 
-            padding: 20px; 
-            color: #111; 
-        }
-        .search-wrapper { 
-            max-width: 650px; 
-            margin: 0 auto 20px auto; 
-            background: #fff; 
-            padding: 25px; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-            text-align: center; 
-        }
-        .input-group { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-            margin-top: 15px; 
-        }
-        input[type="text"] { 
-            padding: 12px; 
-            font-size: 16px; 
-            border: 1px solid #bbb; 
-            border-radius: 5px; 
-            outline: none; 
-        }
-        button { 
-            padding: 12px 25px; 
-            font-size: 16px; 
-            background-color: #007bff; 
-            color: white; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            margin-top: 5px; 
-        }
+        body { font-family: 'SolaimanLipi', Arial, sans-serif; background-color: #eef2f5; margin: 0; padding: 20px; color: #111; }
+        .search-wrapper { max-width: 650px; margin: 0 auto 20px auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
+        .input-group { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        input[type="text"] { padding: 12px; font-size: 16px; border: 1px solid #bbb; border-radius: 5px; outline: none; }
+        button { padding: 12px 25px; font-size: 16px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; }
         button:hover { background-color: #0056b3; }
 
         .info-card {
             position: relative;
-            max-width: 580px;
+            max-width: 500px;
             margin: 20px auto;
             background-color: #b3cbcf;
-            padding: 25px;
-            border-radius: 8px;
+            padding: 30px;
+            border-radius: 6px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             overflow: hidden;
             border: 1px solid #9bb5b9;
@@ -67,7 +30,7 @@
             color: #fff;
             padding: 4px 14px;
             border-radius: 20px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             margin-bottom: 15px;
             position: relative;
@@ -91,31 +54,21 @@
         }
 
         .card-details {
-            font-size: 18px;
-            line-height: 1.9;
+            font-size: 20px;
+            line-height: 2.2;
             color: #1a1a1a;
             text-align: left;
             position: relative;
             z-index: 2;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            letter-spacing: normal;
-            word-spacing: normal;
+        }
+
+        .field-row {
+            margin-bottom: 4px;
+            font-weight: 500;
         }
 
         .status { text-align: center; font-style: italic; color: #555; margin-top: 15px; font-weight: bold; }
-        .pdf-link-btn { 
-            display: inline-block; 
-            margin-top: 15px; 
-            padding: 10px 16px; 
-            background: #28a745; 
-            color: white; 
-            text-decoration: none; 
-            border-radius: 5px; 
-            font-weight: bold; 
-            position: relative; 
-            z-index: 2; 
-        }
+        .pdf-link-btn { display: inline-block; margin-top: 15px; padding: 10px 16px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; position: relative; z-index: 2; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
@@ -202,14 +155,33 @@ function convertDigits(str, toBangla = true) {
     return str.replace(/[0-9০-৯]/g, w => toBangla ? banglaDigits[englishDigits.indexOf(w)] || w : englishDigits[banglaDigits.indexOf(w)] || w);
 }
 
-// স্পেস ঠিক করে বাংলা টেক্সট সুসংগঠিত করার ফাংশন
-function cleanText(text) {
+function cleanStr(text) {
     if (!text) return "";
-    return text
-        .replace(/\s+/g, ' ')
-        .replace(/\s([ািীুূৃেৈোৌ্ংঃঁ])/g, '$1')
-        .replace(/([্])\s/g, '$1')
-        .trim();
+    return text.replace(/\s+/g, ' ').replace(/\s([ািীুূৃেৈোৌ্ংঃঁ])/g, '$1').replace(/([্])\s/g, '$1').trim();
+}
+
+function parseVoterData(block) {
+    const cleaned = cleanStr(block);
+
+    const serialMatch = cleaned.match(/^([০-৯0-9]{1,4})\./);
+    const serial = serialMatch ? serialMatch[1] : "";
+
+    const nameMatch = cleaned.match(/নাম[:\s]+([^ভ পিতা মাতা জন্ম ঠিকানা পেশা]+?)(?=\s*ভোটার|\s*পিতা|\s*পেশা|\s*জন্ম|$)/i);
+    const voterNoMatch = cleaned.match(/ভোটার\s*নং[:\s-]*([০-৯0-9]+)/i);
+    const fatherMatch = cleaned.match(/(?:পিতা|স্বামী)[:\s]+([^মাতা জন্ম ঠিকানা পেশা]+?)(?=\s*মাতা|\s*পেশা|\s*জন্ম|$)/i);
+    const motherMatch = cleaned.match(/মাতা[:\s]+([^জন্ম ঠিকানা পেশা]+?)(?=\s*পেশা|\s*জন্ম|\s*ঠিকানা|$)/i);
+    const dobMatch = cleaned.match(/জন্ম\s*তারিখ[:\s]*([০-৯0-9]{2}[\/\.-][০-৯0-9]{2}[\/\.-][০-৯0-9]{4})/i);
+    const addressMatch = cleaned.match(/ঠিকানা[:\s]+(.+)/i);
+
+    return {
+        name: nameMatch ? nameMatch[1].trim() : "—",
+        serial: serial ? convertDigits(serial, true) : "—",
+        voterNo: voterNoMatch ? convertDigits(voterNoMatch[1], true) : "—",
+        dob: dobMatch ? convertDigits(dobMatch[1], true) : "—",
+        father: fatherMatch ? fatherMatch[1].trim() : "—",
+        mother: motherMatch ? motherMatch[1].trim() : "—",
+        address: addressMatch ? addressMatch[1].trim() : "—"
+    };
 }
 
 async function performSearch() {
@@ -241,7 +213,7 @@ async function performSearch() {
                 const textContent = await page.getTextContent();
                 const pageText = textContent.items.map(item => item.str).join(" ");
 
-                const personBlocks = pageText.split(/(?=[০-৯0-9]{4}\.\s*নাম[:\s]|নাম[:\s])/i);
+                const personBlocks = pageText.split(/(?=[০-৯0-9]{1,4}\.\s*নাম[:\s]|নাম[:\s])/i);
 
                 for (let block of personBlocks) {
                     const lowerBlock = block.toLowerCase();
@@ -256,7 +228,7 @@ async function performSearch() {
                     if (isMatch && lowerBlock.includes("নাম")) {
                         matchCount++;
                         const banglaCount = convertDigits(matchCount.toString(), true);
-                        const cleanedBlock = cleanText(block);
+                        const data = parseVoterData(block);
 
                         const cardHtml = `
                             <div class="info-card">
@@ -266,7 +238,16 @@ async function performSearch() {
                                     উদ্যোক্তা, ০৩ নং পাঁচলাইশ ওয়ার্ড
                                 </div>
 
-                                <div class="card-details">${cleanedBlock}</div>
+                                <div class="card-details">
+                                    <div class="field-row"><strong>নাম:</strong> ${data.name}</div>
+                                    <div class="field-row"><strong>সিরিয়াল নাম্বার:</strong> ${data.serial}</div>
+                                    <div class="field-row"><strong>ভোটার নং-</strong> ${data.voterNo}</div>
+                                    <div class="field-row"><strong>জন্ম তারিখ:</strong> ${data.dob}</div>
+                                    <div class="field-row"><strong>পিতা/স্বামী:</strong> ${data.father}</div>
+                                    <div class="field-row"><strong>মাতা:</strong> ${data.mother}</div>
+                                    <div class="field-row"><strong>এলাকা:</strong> ${data.address}</div>
+                                    <div class="field-row"><strong>ওয়ার্ড:</strong> ওয়ার্ড নং-০৩</div>
+                                </div>
 
                                 <div style="text-align: center; margin-top: 15px;">
                                     <a href="${pdfInfo.url}#page=${pageNum}" target="_blank" class="pdf-link-btn">মূল পিডিএফ ফাইল দেখুন (পৃষ্ঠা ${pageNum})</a>
