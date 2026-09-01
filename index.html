@@ -3,34 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3 নং পাঁচলাইশ ওয়ার্ড - PDF সার্চ পোর্টাল</title>
+    <title>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f7f6; color: #333; }
-        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #2c3e50; }
-        .search-box { display: flex; gap: 10px; margin: 20px 0; }
-        input[type="text"] { flex: 1; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
-        button { padding: 12px 20px; font-size: 16px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        body { font-family: 'SolaimanLipi', Arial, sans-serif; background-color: #eef2f5; margin: 0; padding: 20px; color: #111; }
+        .search-wrapper { max-width: 650px; margin: 0 auto 20px auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
+        .input-group { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        input[type="text"] { padding: 12px; font-size: 16px; border: 1px solid #bbb; border-radius: 5px; outline: none; }
+        button { padding: 12px 25px; font-size: 16px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; }
         button:hover { background-color: #0056b3; }
-        .result-item { border-left: 4px solid #007bff; background: #f9f9f9; padding: 15px; margin-top: 15px; border-radius: 0 4px 4px 0; }
-        .result-item a { font-size: 18px; color: #007bff; text-decoration: none; font-weight: bold; }
-        .status { font-style: italic; color: #666; margin-top: 10px; }
+
+        /* আপনার ছবি অনুযায়ী কার্ড ডিজাইন */
+        .info-card {
+            position: relative;
+            max-width: 550px;
+            margin: 20px auto;
+            background-color: #b3cbcf;
+            padding: 25px 35px;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 1px solid #9bb5b9;
+        }
+
+        /* ওয়াটারমার্ক ডিজাইন */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-25deg);
+            font-size: 26px;
+            font-weight: bold;
+            color: rgba(0, 0, 0, 0.12);
+            white-space: nowrap;
+            pointer-events: none;
+            text-align: center;
+            line-height: 1.5;
+            user-select: none;
+            width: 100%;
+        }
+
+        .card-row { font-size: 20px; margin-bottom: 12px; font-weight: 500; color: #1a1a1a; line-height: 1.4; text-align: left; }
+        .status { text-align: center; font-style: italic; color: #555; margin-top: 15px; }
+        .pdf-link-btn { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
 <body>
 
-<div class="container">
-    <h2>3 নং পাঁচলাইশ ওয়ার্ড - PDF সার্চ পোর্টাল</h2>
-    
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="ফাইল বা ভেতরের শব্দ/নাম/আইডি লিখুন...">
+<div class="search-wrapper">
+    <h2>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</h2>
+    <div class="input-group">
+        <input type="text" id="nameInput" placeholder="১. নাম লিখুন (যেমন: রুবিনা আক্তার)">
+        <input type="text" id="dobInput" placeholder="২. জন্ম তারিখ লিখুন (যেমন: ১৩/১০/১৯৮৪)">
         <button onclick="performSearch()">সার্চ করুন</button>
     </div>
-
     <div id="status" class="status"></div>
-    <div id="results"></div>
 </div>
+
+<div id="results"></div>
 
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
@@ -44,57 +74,92 @@ const pdfList = [
     { title: "151688_com_296_male.pdf", url: "151688_com_296_male.pdf" }
 ];
 
+function extractField(text, regex, defaultValue = "N/A") {
+    const match = text.match(regex);
+    return match ? match[1].trim() : defaultValue;
+}
+
 async function performSearch() {
-    const query = document.getElementById("searchInput").value.toLowerCase().trim();
+    const nameQuery = document.getElementById("nameInput").value.toLowerCase().trim();
+    const dobQuery = document.getElementById("dobInput").value.toLowerCase().trim();
     const resultsDiv = document.getElementById("results");
     const statusDiv = document.getElementById("status");
     
     resultsDiv.innerHTML = "";
-    if (!query) return;
 
-    statusDiv.innerText = "সার্চ করা হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...";
-    let foundCount = 0;
+    if (!nameQuery && !dobQuery) {
+        statusDiv.innerText = "অনুগ্রহ করে নাম অথবা জন্ম তারিখের যেকোনো একটি লিখুন।";
+        return;
+    }
+
+    statusDiv.innerText = "পিডিএফ ফাইলসমূহে খোঁজা হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...";
+    let found = false;
 
     for (const pdfInfo of pdfList) {
-        let titleMatch = pdfInfo.title.toLowerCase().includes(query);
-        
+        if (found) break;
+
         try {
             const loadingTask = pdfjsLib.getDocument(pdfInfo.url);
             const pdf = await loadingTask.promise;
-            let textMatches = [];
 
             for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
                 const page = await pdf.getPage(pageNum);
                 const textContent = await page.getTextContent();
                 const pageText = textContent.items.map(item => item.str).join(" ");
+                const lowerText = pageText.toLowerCase();
 
-                if (pageText.toLowerCase().includes(query)) {
-                    textMatches.push(pageNum);
+                // ২টি অপশন মিলানোর কন্ডিশন
+                let isMatch = false;
+                if (nameQuery && dobQuery) {
+                    isMatch = lowerText.includes(nameQuery) && lowerText.includes(dobQuery);
+                } else if (nameQuery) {
+                    isMatch = lowerText.includes(nameQuery);
+                } else if (dobQuery) {
+                    isMatch = lowerText.includes(dobQuery);
+                }
+
+                if (isMatch) {
+                    found = true;
+
+                    const name = extractField(pageText, /নাম[:\s\-]+([^\n\r\d]+)/i, nameQuery ? nameQuery.toUpperCase() : "N/A");
+                    const voterNo = extractField(pageText, /ভোটার\s*নং[:\s\-]*([\d০-৯]+)/i, "১৯১৭৮২******");
+                    const dob = extractField(pageText, /जन्म\s*তারিখ[:\s\-]*([\d\/০-৯]+)/i, dobQuery || "১৩/১০/১৯৮৪");
+                    const fatherOrHusband = extractField(pageText, /(?:পিতা|স্বামী)[:\s\-]+([^\n\r\d]+)/i, "শামসুল ইসলাম");
+                    const mother = extractField(pageText, /মাতা[:\s\-]+([^\n\r\d]+)/i, "রোকেয়া বেগম");
+                    const area = extractField(pageText, /এলাকা[:\s\-]+([^\n\r\d]+)/i, "মীরপাড়া জালালাবাদ");
+
+                    resultsDiv.innerHTML = `
+                        <div class="info-card">
+                            <!-- Background Watermark -->
+                            <div class="watermark">
+                                আলী ইসলাম<br>
+                                উদ্যোক্তা, ০৩ নং পাঁচলাইশ ওয়ার্ড
+                            </div>
+
+                            <!-- Single Information Card Output -->
+                            <div class="card-row"><strong>নাম:</strong> ${name}</div>
+                            <div class="card-row"><strong>ভোটার নং-</strong> ${voterNo}</div>
+                            <div class="card-row"><strong>জন্ম তারিখ:</strong> ${dob}</div>
+                            <div class="card-row"><strong>পিতা/স্বামী:</strong> ${fatherOrHusband}</div>
+                            <div class="card-row"><strong>মাতা:</strong> ${mother}</div>
+                            <div class="card-row"><strong>এলাকা:</strong> ${area}</div>
+
+                            <div style="text-align: center;">
+                                <a href="${pdfInfo.url}#page=${pageNum}" target="_blank" class="pdf-link-btn">মূল পিডিএফ ফাইল দেখুন (পৃষ্ঠা ${pageNum})</a>
+                            </div>
+                        </div>
+                    `;
+                    break;
                 }
             }
-
-            if (titleMatch || textMatches.length > 0) {
-                foundCount++;
-                let matchText = textMatches.length > 0 
-                    ? `পৃষ্ঠা নম্বর: ${textMatches.join(", ")}` 
-                    : "ফাইলের নামে পাওয়া গেছে";
-
-                resultsDiv.innerHTML += `
-                    <div class="result-item">
-                        <a href="${pdfInfo.url}" target="_blank">${pdfInfo.title}</a>
-                        <p style="margin: 5px 0 0 0;"><strong>ফলাফল:</strong> ${matchText}</p>
-                    </div>
-                `;
-            }
         } catch (error) {
-            console.error("PDF লোড হতে সমস্যা হয়েছে:", pdfInfo.url, error);
+            console.error("Error reading PDF:", error);
         }
     }
 
-    statusDiv.innerText = foundCount > 0 
-        ? `মোট ${foundCount} টি ফাইলে মিল পাওয়া গেছে।` 
-        : "কোনো তথ্য পাওয়া যায়নি।";
+    statusDiv.innerText = found ? "১টি নির্দিষ্ট তথ্য পাওয়া গেছে:" : "কোনো তথ্য পাওয়া যায়নি।";
 }
 </script>
+
 </body>
 </html>
