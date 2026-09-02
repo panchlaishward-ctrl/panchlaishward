@@ -15,449 +15,443 @@
 
 body{
     margin:0;
-    font-family:"Noto Sans Bengali","SolaimanLipi","Siyam Rupali",Arial,sans-serif;
-    background:#f3f6f9;
-    color:#17202a;
+    font-family:"Noto Sans Bengali","SolaimanLipi",Arial,sans-serif;
+    background:#f1f5f9;
+    color:#172033;
 }
 
-body.dark{
-    background:#121820;
-    color:#eee;
+/* ================= LOGIN ================= */
+
+#loginScreen{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#0f766e,#0f172a);
+    padding:20px;
 }
 
-/* HEADER */
-.header{
-    background:linear-gradient(135deg,#0d6efd,#084298);
-    color:#fff;
+.login-box{
+    width:100%;
+    max-width:420px;
+    background:white;
+    border-radius:20px;
+    padding:30px 25px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+
+.login-logo{
+    width:75px;
+    height:75px;
+    margin:0 auto 15px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#0f766e;
+    color:white;
+    font-size:32px;
+    font-weight:bold;
+}
+
+.login-box h2{
     text-align:center;
-    padding:24px 15px;
+    margin:0 0 5px;
+    color:#0f766e;
 }
 
-.header h1{
+.login-subtitle{
+    text-align:center;
+    color:#64748b;
+    margin-bottom:25px;
+}
+
+.login-box label{
+    display:block;
+    font-weight:bold;
+    margin:12px 0 6px;
+}
+
+.login-box input{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+}
+
+.login-box input:focus{
+    border-color:#0f766e;
+    box-shadow:0 0 0 3px rgba(15,118,110,.12);
+}
+
+.login-btn{
+    width:100%;
+    margin-top:20px;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#0f766e;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.login-btn:hover{
+    background:#115e59;
+}
+
+.login-error{
+    color:#dc2626;
+    background:#fee2e2;
+    padding:10px;
+    border-radius:8px;
+    margin-top:15px;
+    display:none;
+    font-size:14px;
+}
+
+/* ================= APP ================= */
+
+#app{
+    display:none;
+}
+
+header{
+    background:linear-gradient(135deg,#0f766e,#115e59);
+    color:white;
+    padding:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+
+.header-content{
+    max-width:1100px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.header-title h1{
     margin:0;
-    font-size:26px;
+    font-size:27px;
 }
 
-.header p{
-    margin:6px 0 0;
+.header-title p{
+    margin:5px 0 0;
+    opacity:.9;
 }
 
-/* CONTAINER */
+.user-area{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+}
+
+.user-info{
+    background:rgba(255,255,255,.15);
+    padding:8px 12px;
+    border-radius:8px;
+    font-size:14px;
+}
+
+.role-badge{
+    background:#facc15;
+    color:#422006;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.logout-btn{
+    border:none;
+    background:#dc2626;
+    color:white;
+    padding:9px 13px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.logout-btn:hover{
+    background:#b91c1c;
+}
+
 .container{
-    max-width:1050px;
-    margin:22px auto;
+    width:100%;
+    max-width:1100px;
+    margin:25px auto;
     padding:0 15px;
 }
 
-/* TOP BAR */
-.topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    margin-bottom:15px;
+/* ================= SEARCH ================= */
+
+.search-card{
+    background:white;
+    padding:22px;
+    border-radius:15px;
+    box-shadow:0 4px 18px rgba(15,23,42,.08);
 }
 
-.mode-btn{
-    border:0;
-    border-radius:8px;
-    padding:9px 13px;
-    cursor:pointer;
-    background:#fff;
-    color:#222;
+.search-card h2{
+    margin-top:0;
+    color:#0f766e;
 }
 
-.dark .mode-btn{
-    background:#252d36;
-    color:#fff;
-}
-
-/* DASHBOARD */
-.dashboard{
+.search-grid{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-    margin-bottom:15px;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
 }
 
-.stat{
-    background:#fff;
-    border-radius:10px;
-    padding:14px;
-    text-align:center;
-    box-shadow:0 3px 12px #00000012;
-}
-
-.dark .stat,
-.dark .search-box,
-.dark .info-card{
-    background:#1d2630;
-    color:#eee;
-}
-
-.stat b{
+.form-group label{
     display:block;
-    font-size:21px;
-    margin-top:4px;
+    font-weight:bold;
+    margin-bottom:7px;
 }
 
-/* SEARCH BOX */
-.search-box{
-    background:#fff;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 3px 15px #00000012;
-}
-
-.search-wrapper{
-    display:grid;
-    grid-template-columns:1fr 1fr auto;
-    gap:10px;
-}
-
-input{
+.form-group input{
     width:100%;
-    padding:12px;
-    border:1px solid #ccd2d8;
-    border-radius:7px;
+    padding:13px;
+    border:1px solid #cbd5e1;
+    border-radius:9px;
     font-size:16px;
-    background:inherit;
-    color:inherit;
+}
+
+.form-group input:focus{
+    outline:none;
+    border-color:#0f766e;
+}
+
+.search-actions{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+    flex-wrap:wrap;
 }
 
 .search-btn,
-.clear-btn{
-    border:0;
-    border-radius:7px;
+.clear-btn,
+.rebuild-btn{
+    border:none;
     padding:12px 20px;
+    border-radius:9px;
+    cursor:pointer;
     font-size:15px;
     font-weight:bold;
-    cursor:pointer;
 }
 
 .search-btn{
-    background:#0d6efd;
-    color:#fff;
+    background:#0f766e;
+    color:white;
 }
 
-.search-btn:disabled{
-    background:#999;
+.search-btn:hover{
+    background:#115e59;
 }
 
 .clear-btn{
-    background:#6c757d;
-    color:#fff;
+    background:#e2e8f0;
+    color:#1e293b;
 }
 
-.actions{
-    display:flex;
-    gap:8px;
-    margin-top:10px;
+.clear-btn:hover{
+    background:#cbd5e1;
 }
+
+.rebuild-btn{
+    background:#7c3aed;
+    color:white;
+}
+
+.rebuild-btn:hover{
+    background:#6d28d9;
+}
+
+/* ================= STATUS ================= */
 
 #status{
+    margin-top:18px;
+    padding:12px;
+    border-radius:9px;
+    background:#e0f2fe;
+    color:#075985;
+    display:none;
+}
+
+.loading{
     text-align:center;
-    margin-top:12px;
-    font-weight:bold;
+    padding:25px;
+    font-size:16px;
 }
 
-/* PROGRESS */
-.progress{
-    height:7px;
-    background:#e5e7eb;
-    border-radius:5px;
-    overflow:hidden;
-    margin-top:8px;
+.spinner{
+    width:35px;
+    height:35px;
+    border:4px solid #cbd5e1;
+    border-top-color:#0f766e;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:0 auto 10px;
 }
 
-.progress i{
-    display:block;
-    height:100%;
-    width:0;
-    background:#0d6efd;
-    transition:.2s;
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
 }
 
-/* RESULTS */
-.results-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin:20px 0 10px;
+/* ================= RESULTS ================= */
+
+#results{
+    margin-top:20px;
 }
 
-.info-card{
+.result-card{
+    background:white;
+    border-radius:15px;
+    margin-bottom:18px;
+    padding:20px;
+    box-shadow:0 4px 18px rgba(15,23,42,.08);
+    border-left:5px solid #0f766e;
     position:relative;
     overflow:hidden;
-    background:#fff;
-    border-radius:12px;
-    padding:20px;
-    margin-bottom:16px;
-    box-shadow:0 3px 15px #00000012;
-    border-left:5px solid #0d6efd;
 }
 
-.info-card h3{
-    margin:0 0 14px;
-    color:#0d6efd;
-    border-bottom:1px solid #ddd;
-    padding-bottom:9px;
+.result-card::after{
+    content:"আলী ইসলাম • উদ্যোক্তা • ০৩ নং পাঁচলাইশ ওয়ার্ড";
+    position:absolute;
+    right:-25px;
+    bottom:45px;
+    transform:rotate(-25deg);
+    color:rgba(15,118,110,.08);
+    font-size:18px;
+    font-weight:bold;
+    pointer-events:none;
 }
 
-.info-row{
+.result-title{
+    font-size:20px;
+    font-weight:bold;
+    color:#0f766e;
+    margin-bottom:15px;
+}
+
+.info-grid{
     display:grid;
-    grid-template-columns:150px 1fr;
+    grid-template-columns:1fr 1fr;
     gap:10px;
-    padding:6px 0;
-    border-bottom:1px dashed #ddd;
+}
+
+.info-item{
+    padding:10px;
+    background:#f8fafc;
+    border-radius:8px;
+    border:1px solid #e2e8f0;
 }
 
 .info-label{
-    font-weight:bold;
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:3px;
 }
 
 .info-value{
+    font-weight:bold;
     word-break:break-word;
 }
 
-/* BUTTONS */
-.button-area{
+.result-actions{
     display:flex;
-    justify-content:flex-end;
-    gap:8px;
-    margin-top:16px;
+    gap:10px;
+    margin-top:15px;
+    flex-wrap:wrap;
 }
 
-.print-btn,
-.copy-btn,
 .pdf-btn{
-    border:0;
-    color:#fff;
-    padding:9px 15px;
-    border-radius:7px;
-    cursor:pointer;
-    font-size:14px;
-    font-weight:bold;
+    display:inline-block;
     text-decoration:none;
+    background:#dc2626;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    font-weight:bold;
 }
 
-.print-btn{
-    background:#198754;
+.pdf-btn:hover{
+    background:#b91c1c;
 }
 
 .copy-btn{
-    background:#6f42c1;
+    border:none;
+    background:#2563eb;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
 }
 
-.pdf-btn{
-    background:#dc3545;
+.copy-btn:hover{
+    background:#1d4ed8;
 }
 
-.watermark{
+.no-result{
+    background:white;
+    padding:30px;
     text-align:center;
-    color:#777;
-    font-size:11px;
-    margin-top:14px;
+    border-radius:15px;
+    color:#64748b;
 }
 
-/* PRINT WATERMARK */
-.print-watermark{
-    display:none;
+.admin-panel{
+    margin-top:15px;
+    padding:12px;
+    background:#f3e8ff;
+    border:1px solid #ddd6fe;
+    border-radius:10px;
+    color:#5b21b6;
 }
 
-.empty{
-    background:#fff;
-    border-radius:12px;
-    padding:25px;
+footer{
+    margin-top:40px;
+    padding:20px;
     text-align:center;
+    color:#64748b;
+    font-size:14px;
 }
 
-.dark .empty{
-    background:#1d2630;
-}
+/* ================= RESPONSIVE ================= */
 
-/* PRINT */
-.print-header,
-.print-footer,
-.signature{
-    display:none;
-}
-
-@page{
-    size:A5 portrait;
-    margin:10mm;
-}
-
-@media print{
-
-    body{
-        background:#fff!important;
-    }
-
-    body *{
-        visibility:hidden!important;
-    }
-
-    .print-area,
-    .print-area *{
-        visibility:visible!important;
-    }
-
-    .print-area{
-        position:absolute;
-        left:0;
-        top:0;
-        width:100%;
-        min-height:178mm;
-        background:#fff!important;
-        color:#000!important;
-        border:1px solid #222!important;
-        border-radius:0!important;
-        box-shadow:none!important;
-        padding:10mm!important;
-        margin:0!important;
-    }
-
-    .button-area,
-    .watermark{
-        display:none!important;
-    }
-
-    /* BEAUTIFUL WATERMARK */
-
-    .print-watermark{
-        display:block!important;
-        position:absolute;
-
-        left:50%;
-        top:50%;
-
-        transform:
-            translate(-50%,-50%)
-            rotate(-28deg);
-
-        width:92%;
-
-        text-align:center;
-
-        z-index:0;
-        pointer-events:none;
-
-        color:#555;
-
-        opacity:.10;
-
-        font-weight:800;
-
-        line-height:1.45;
-
-        letter-spacing:1px;
-
-        white-space:nowrap;
-    }
-
-    .print-watermark .wm-name{
-        font-size:27px;
-    }
-
-    .print-watermark .wm-role{
-        font-size:19px;
-    }
-
-    .print-watermark .wm-ward{
-        font-size:17px;
-    }
-
-    .print-header{
-        display:block!important;
-        text-align:center;
-
-        border-bottom:2px solid #000;
-
-        padding-bottom:7px;
-
-        margin-bottom:10px;
-    }
-
-    .print-header h2,
-    .print-header h3,
-    .print-header p{
-        margin:2px 0;
-        color:#000;
-    }
-
-    .print-header h2{
-        font-size:19px;
-    }
-
-    .print-header h3{
-        font-size:15px;
-    }
-
-    .print-header p{
-        font-size:10px;
-    }
-
-    .print-area h3:not(.print-header h3){
-        font-size:15px;
-        color:#000;
-    }
-
-    .print-area .info-row{
-        grid-template-columns:34mm 1fr;
-        padding:4px 0;
-        font-size:12px;
-        color:#000;
-    }
-
-    .print-footer{
-        display:block!important;
-        margin-top:12mm;
-        text-align:center;
-        font-size:9px;
-    }
-
-    .signature{
-        display:flex!important;
-        justify-content:space-between;
-        margin-top:13mm;
-        font-size:10px;
-    }
-}
-
-/* MOBILE */
 @media(max-width:700px){
 
-    .dashboard{
-        grid-template-columns:1fr 1fr;
+    .header-content{
+        flex-direction:column;
+        align-items:flex-start;
     }
 
-    .search-wrapper{
+    .user-area{
+        justify-content:flex-start;
+    }
+
+    .header-title h1{
+        font-size:22px;
+    }
+
+    .search-grid{
         grid-template-columns:1fr;
     }
 
-    .actions{
-        flex-direction:column;
-    }
-
-    .actions button{
-        width:100%;
-    }
-
-    .info-row{
+    .info-grid{
         grid-template-columns:1fr;
-        gap:2px;
-    }
-
-    .button-area{
-        flex-direction:column;
-    }
-
-    .print-btn,
-    .copy-btn,
-    .pdf-btn{
-        width:100%;
-        text-align:center;
     }
 }
 </style>
@@ -465,195 +459,270 @@ input{
 
 <body>
 
-<!-- HEADER -->
+<!-- ================= LOGIN SCREEN ================= -->
 
-<div class="header">
+<div id="loginScreen">
 
-    <h1>৩ নং পাঁচলাইশ ওয়ার্ড</h1>
+    <div class="login-box">
 
-    <p>
-        ভোটার তথ্য অনুসন্ধান সিস্টেম
-    </p>
+        <div class="login-logo">৩</div>
+
+        <h2>ভোটার তথ্য অনুসন্ধান</h2>
+
+        <div class="login-subtitle">
+            ৩ নং পাঁচলাইশ ওয়ার্ড
+        </div>
+
+        <label for="userId">User ID</label>
+        <input
+            type="text"
+            id="userId"
+            placeholder="User ID লিখুন"
+            autocomplete="username"
+        >
+
+        <label for="password">Password</label>
+        <input
+            type="password"
+            id="password"
+            placeholder="Password লিখুন"
+            autocomplete="current-password"
+        >
+
+        <button class="login-btn" id="loginBtn">
+            🔐 Login
+        </button>
+
+        <div id="loginError" class="login-error"></div>
+
+    </div>
 
 </div>
 
 
+<!-- ================= MAIN APP ================= -->
+
+<div id="app">
+
+<header>
+
+    <div class="header-content">
+
+        <div class="header-title">
+            <h1>৩ নং পাঁচলাইশ ওয়ার্ড</h1>
+            <p>ভোটার তথ্য অনুসন্ধান</p>
+        </div>
+
+        <div class="user-area">
+
+            <div class="user-info">
+                👤 <span id="loggedUser">-</span>
+            </div>
+
+            <div class="role-badge" id="roleBadge">
+                -
+            </div>
+
+            <button class="logout-btn" id="logoutBtn">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
 <div class="container">
-
-    <!-- TOP BAR -->
-
-    <div class="topbar">
-
-        <strong>
-            দ্রুত ভোটার অনুসন্ধান
-        </strong>
-
-        <button
-            class="mode-btn"
-            onclick="toggleDark()">
-
-            🌙 Dark Mode
-
-        </button>
-
-    </div>
-
-
-    <!-- DASHBOARD -->
-
-    <div class="dashboard">
-
-        <div class="stat">
-
-            📄 PDF ফাইল
-
-            <b id="pdfCount">
-                ০
-            </b>
-
-        </div>
-
-
-        <div class="stat">
-
-            👥 Index রেকর্ড
-
-            <b id="recordCount">
-                ০
-            </b>
-
-        </div>
-
-
-        <div class="stat">
-
-            🔎 ফলাফল
-
-            <b id="resultCount">
-                ০
-            </b>
-
-        </div>
-
-
-        <div class="stat">
-
-            ⚡ অবস্থা
-
-            <b id="indexStatus">
-                প্রস্তুত
-            </b>
-
-        </div>
-
-    </div>
-
 
     <!-- SEARCH -->
 
-    <div class="search-box">
+    <div class="search-card">
 
-        <div class="search-wrapper">
+        <h2>🔎 ভোটার তথ্য অনুসন্ধান</h2>
 
-            <input
-                id="nameInput"
-                type="text"
-                placeholder="ভোটারের নাম লিখুন">
+        <div class="search-grid">
+
+            <div class="form-group">
+                <label for="nameInput">
+                    ভোটারের নাম
+                </label>
+
+                <input
+                    type="text"
+                    id="nameInput"
+                    placeholder="নাম লিখুন"
+                >
+            </div>
 
 
-            <input
-                id="dobInput"
-                type="text"
-                placeholder="জন্ম তারিখ: ২২/০৮/১৯৭৯">
+            <div class="form-group">
+                <label for="dobInput">
+                    জন্ম তারিখ
+                </label>
 
+                <input
+                    type="text"
+                    id="dobInput"
+                    placeholder="দিন/মাস/বছর যেমন: 15/08/1995"
+                >
+            </div>
+
+        </div>
+
+
+        <div class="search-actions">
 
             <button
-                id="searchBtn"
                 class="search-btn"
-                onclick="performSearch()">
-
+                id="searchBtn"
+            >
                 🔍 অনুসন্ধান
-
             </button>
-
-        </div>
-
-
-        <div class="actions">
 
             <button
                 class="clear-btn"
-                onclick="clearSearch()">
-
-                ✕ পরিষ্কার
-
+                id="clearBtn"
+            >
+                ✖ পরিষ্কার
             </button>
 
+        </div>
+
+
+        <div
+            id="adminPanel"
+            class="admin-panel admin-only"
+            style="display:none;"
+        >
+
+            <strong>Admin Panel</strong><br>
+
+            <small>
+                প্রশাসক হিসেবে লগইন করেছেন।
+            </small>
+
+            <br><br>
 
             <button
-                class="clear-btn"
-                onclick="buildIndex(true)">
-
-                🔄 Index পুনরায় তৈরি
-
+                class="rebuild-btn"
+                id="rebuildBtn"
+            >
+                🔄 PDF Index পুনরায় প্রস্তুত
             </button>
 
         </div>
 
 
-        <div class="progress">
-
-            <i id="progressBar"></i>
-
-        </div>
-
-
-        <div id="status">
-
-            প্রথমবার Index তৈরি হলে
-            পরের সার্চ অনেক দ্রুত হবে।
-
-        </div>
+        <div id="status"></div>
 
     </div>
 
 
     <!-- RESULTS -->
 
-    <div class="results-head">
-
-        <h3>
-            অনুসন্ধানের ফলাফল
-        </h3>
-
-        <span id="resultSummary"></span>
-
-    </div>
-
-
     <div id="results"></div>
 
 </div>
 
 
-<!-- FOOTER -->
+<footer>
 
-<div
-    class="header"
-    style="padding:14px;font-size:12px">
+    <div>
+        আলী ইসলাম
+    </div>
 
-    ৩ নং পাঁচলাইশ ওয়ার্ড —
-    ভোটার তথ্য অনুসন্ধান
+    <div>
+        উদ্যোক্তা
+    </div>
+
+    <div>
+        ০৩ নং পাঁচলাইশ ওয়ার্ড
+    </div>
+
+</footer>
 
 </div>
 
 
-<script>
+<!-- ================= FIREBASE ================= -->
 
-/* PDF.JS */
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
+/* =========================================================
+   FIREBASE CONFIG
+   এখানে আপনার Firebase Console থেকে পাওয়া তথ্য বসাবেন
+========================================================= */
+
+const firebaseConfig = {
+
+    apiKey: "YOUR_API_KEY",
+
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+
+    projectId: "YOUR_PROJECT_ID",
+
+    storageBucket: "YOUR_PROJECT.firebasestorage.app",
+
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+
+    appId: "YOUR_APP_ID"
+
+};
+
+
+/* Firebase শুরু */
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+
+/* =========================================================
+   USER ID → FIREBASE EMAIL
+========================================================= */
+
+const AUTH_EMAIL_DOMAIN =
+    "@panchlaish-voter.firebaseapp.com";
+
+
+function userIdToEmail(userId){
+
+    return String(userId || "")
+        .trim()
+        .toLowerCase()
+        + AUTH_EMAIL_DOMAIN;
+
+}
+
+
+/* =========================================================
+   PDF.JS
+========================================================= */
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
-"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
 
 
 /* =========================================================
@@ -662,153 +731,133 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 const pdfList = [
 
-["151686_com_1443_female.pdf","151686_com_1443_female.pdf"],
-["151686_com_1526_male.pdf","151686_com_1526_male.pdf"],
+    "151686_com_1443_female.pdf",
+    "151686_com_1526_male.pdf",
 
-["151687_com_34_female.pdf","151687_com_34_female.pdf"],
-["151687_com_57_male.pdf","151687_com_57_male.pdf"],
+    "151687_com_34_female.pdf",
+    "151687_com_57_male.pdf",
 
-["151688_com_251_female.pdf","151688_com_251_female.pdf"],
-["151688_com_296_male.pdf","151688_com_296_male.pdf"],
+    "151688_com_251_female.pdf",
+    "151688_com_296_male.pdf",
 
-["151690_com_1217_female.pdf","151690_com_1217_female.pdf"],
-["151690_com_1305_male.pdf","151690_com_1305_male.pdf"],
+    "151690_com_1217_female.pdf",
+    "151690_com_1305_male.pdf",
 
-["151691_com_436_male.pdf","151691_com_436_male.pdf"],
-["151691_com_443_female.pdf","151691_com_443_female.pdf"],
+    "151691_com_436_male.pdf",
+    "151691_com_443_female.pdf",
 
-["151692_com_237_female.pdf","151692_com_237_female.pdf"],
-["151692_com_269_male.pdf","151692_com_269_male.pdf"],
+    "151692_com_237_female.pdf",
+    "151692_com_269_male.pdf",
 
-["151693_com_1888_male.pdf","151693_com_1888_male.pdf"],
-["151693_com_1926_female.pdf","151693_com_1926_female.pdf"],
+    "151693_com_1888_male.pdf",
+    "151693_com_1926_female.pdf",
 
-["151694_com_3519_male.pdf","151694_com_3519_male.pdf"],
-["151694_com_3839_female.pdf","151694_com_3839_female.pdf"],
+    "151694_com_3519_male.pdf",
+    "151694_com_3839_female.pdf",
 
-["151695_com_87_female.pdf","151695_com_87_female.pdf"],
-["151695_com_117_male.pdf","151695_com_117_male.pdf"],
+    "151695_com_87_female.pdf",
+    "151695_com_117_male.pdf",
 
-["151696_com_380_female.pdf","151696_com_380_female.pdf"],
-["151696_com_444_male.pdf","151696_com_444_male.pdf"],
+    "151696_com_380_female.pdf",
+    "151696_com_444_male.pdf",
 
-["151697_com_623_female.pdf","151697_com_623_female.pdf"],
-["151697_com_643_male.pdf","151697_com_643_male.pdf"],
+    "151697_com_623_female.pdf",
+    "151697_com_643_male.pdf",
 
-["151698_com_397_female.pdf","151698_com_397_female.pdf"],
-["151698_com_432_male.pdf","151698_com_432_male.pdf"],
+    "151698_com_397_female.pdf",
+    "151698_com_432_male.pdf",
 
-["151699_com_366_female.pdf","151699_com_366_female.pdf"],
-["151699_com_398_male.pdf","151699_com_398_male.pdf"],
+    "151699_com_366_female.pdf",
+    "151699_com_398_male.pdf",
 
-["151700_com_2199_female.pdf","151700_com_2199_female.pdf"],
-["151700_com_2199_male.pdf","151700_com_2199_male.pdf"],
+    "151700_com_2199_female.pdf",
+    "151700_com_2199_male.pdf",
 
-["151701_com_1606_female.pdf","151701_com_1606_female.pdf"],
-["151701_com_1675_male.pdf","151701_com_1675_male.pdf"],
+    "151701_com_1606_female.pdf",
+    "151701_com_1675_male.pdf",
 
-["151702_com_466_female.pdf","151702_com_466_female.pdf"],
-["151702_com_865_male.pdf","151702_com_865_male.pdf"],
+    "151702_com_466_female.pdf",
+    "151702_com_865_male.pdf",
 
-["151703_com_1591_male.pdf","151703_com_1591_male.pdf"],
-["151703_com_1816_female.pdf","151703_com_1816_female.pdf"],
+    "151703_com_1591_male.pdf",
+    "151703_com_1816_female.pdf",
 
-["151704_com_335_male.pdf","151704_com_335_male.pdf"],
-["151704_com_415_female.pdf","151704_com_415_female.pdf"],
+    "151704_com_335_male.pdf",
+    "151704_com_415_female.pdf",
 
-["151705_com_1370_male.pdf","151705_com_1370_male.pdf"],
-["151705_com_1427_female.pdf","151705_com_1427_female.pdf"],
+    "151705_com_1370_male.pdf",
+    "151705_com_1427_female.pdf",
 
-["151706_com_582_female.pdf","151706_com_582_female.pdf"],
-["151706_com_654_male.pdf","151706_com_654_male.pdf"],
+    "151706_com_582_female.pdf",
+    "151706_com_654_male.pdf",
 
-["151707_com_262_female.pdf","151707_com_262_female.pdf"],
-["151707_com_286_male.pdf","151707_com_286_male.pdf"],
+    "151707_com_262_female.pdf",
+    "151707_com_286_male.pdf",
 
-["151708_com_373_female.pdf","151708_com_373_female.pdf"],
-["151708_com_426_male.pdf","151708_com_426_male.pdf"],
+    "151708_com_373_female.pdf",
+    "151708_com_426_male.pdf",
 
-["151709_com_384_female.pdf","151709_com_384_female.pdf"],
-["151709_com_414_male.pdf","151709_com_414_male.pdf"],
+    "151709_com_384_female.pdf",
+    "151709_com_414_male.pdf",
 
-["151710_com_255_female.pdf","151710_com_255_female.pdf"],
-["151710_com_296_male.pdf","151710_com_296_male.pdf"],
+    "151710_com_255_female.pdf",
+    "151710_com_296_male.pdf",
 
-["151711_com_984_male.pdf","151711_com_984_male.pdf"],
-["151711_com_1188_female.pdf","151711_com_1188_female.pdf"],
+    "151711_com_984_male.pdf",
+    "151711_com_1188_female.pdf",
 
-["151712_com_1123_female.pdf","151712_com_1123_female.pdf"],
-["151712_com_1160_male.pdf","151712_com_1160_male.pdf"],
+    "151712_com_1123_female.pdf",
+    "151712_com_1160_male.pdf",
 
-["151713_com_345_female.pdf","151713_com_345_female.pdf"],
-["151713_com_385_male.pdf","151713_com_385_male.pdf"],
+    "151713_com_345_female.pdf",
+    "151713_com_385_male.pdf",
 
-["151714_com_441_male.pdf","151714_com_441_male.pdf"],
-["151714_com_562_female.pdf","151714_com_562_female.pdf"]
+    "151714_com_441_male.pdf",
+    "151714_com_562_female.pdf"
 
 ];
 
 
 /* =========================================================
-   INDEX
+   GLOBAL
 ========================================================= */
 
-const INDEX_KEY =
-"panchlaish_voter_index_v3_coordinate";
+let currentUser = null;
 
-let voterIndex = [];
-
-let indexReady = false;
+let currentRole = null;
 
 
 /* =========================================================
-   BANGLA DIGITS
+   DIGIT CONVERSION
 ========================================================= */
 
-const en = "0123456789";
+function convertDigits(value){
 
-const bn = "০১২৩৪৫৬৭৮৯";
+    if(value === null || value === undefined){
+        return "";
+    }
 
+    return String(value)
+        .replace(/[০-৯]/g, function(d){
 
-function convertDigits(s,toBangla=true){
+            return "০১২৩৪৫৬৭৮৯".indexOf(d);
 
-    if(!s) return "";
+        });
 
-    return String(s)
-
-        .replace(
-            /[0-9]/g,
-            d => toBangla
-                ? bn[en.indexOf(d)]
-                : d
-        )
-
-        .replace(
-            /[০-৯]/g,
-            d => toBangla
-                ? d
-                : d
-        );
 }
 
 
 /* =========================================================
-   CLEAN TEXT
+   TEXT CLEAN
 ========================================================= */
 
-function cleanText(t){
+function cleanText(text){
 
-    return String(t || "")
-
-        .replace(/\u200c/g,"")
-
-        .replace(/\u200d/g,"")
-
+    return String(text || "")
         .replace(/\u00a0/g," ")
-
         .replace(/\s+/g," ")
-
         .trim();
+
 }
 
 
@@ -816,37 +865,10 @@ function cleanText(t){
    PDF BANGLA FIX
 ========================================================= */
 
-function fixPdfBangla(t){
+function fixPdfBangla(text){
 
-    let r = String(t || "");
+    return cleanText(text);
 
-    const map = {
-
-        "োভাটার":"ভোটার",
-
-        "সামী":"স্বামী",
-
-        "িপতা":"পিতা",
-
-        "িঠকানা":"ঠিকানা",
-
-        "োপশা":"পেশা",
-
-        "জন তািরখ":"জন্ম তারিখ",
-
-        "জন্ম তািরখ":"জন্ম তারিখ",
-
-        "গৃিহনী":"গৃহিণী"
-
-    };
-
-    for(const k in map){
-
-        r = r.split(k).join(map[k]);
-
-    }
-
-    return r;
 }
 
 
@@ -854,46 +876,69 @@ function fixPdfBangla(t){
    SEARCH NORMALIZATION
 ========================================================= */
 
-function normalizeSearch(t){
+function normalizeSearch(text){
 
-    return cleanText(
-        fixPdfBangla(t)
-    )
+    return convertDigits(text)
+        .toLowerCase()
+        .replace(/[ঃ:]/g,"")
+        .replace(/[.,]/g,"")
+        .replace(/\s+/g," ")
+        .trim();
 
-    .toLowerCase()
-
-    .replace(
-        /[।,:;'"“”‘’\-_/\\()[\]{}]/g,
-        " "
-    )
-
-    .replace(/\s+/g," ")
-
-    .trim();
 }
 
 
 /* =========================================================
-   DATE
+   ⭐ জন্ম তারিখ NORMALIZATION
+   বাংলা + ইংরেজি সংখ্যা
+   / - . সব format support
 ========================================================= */
 
-function digitsOnlyDate(t){
+function normalizeDate(date){
 
-    return String(t || "")
+    if(!date){
+        return "";
+    }
 
-        .replace(/\s/g,"")
+    let d = convertDigits(String(date).trim());
 
-        .replace(
-            /[০-৯]/g,
-            d => en[bn.indexOf(d)]
-        )
+    /* separator এক করা */
 
-        .replace(/[^0-9]/g,"");
+    d = d.replace(/[.\-]/g,"/");
+
+    /* separator-এর আশেপাশের space বাদ */
+
+    d = d.replace(/\s*\/\s*/g,"/");
+
+    /* অতিরিক্ত space বাদ */
+
+    d = d.replace(/\s+/g,"");
+
+    const match =
+        d.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+
+    if(!match){
+
+        return d;
+
+    }
+
+    const day =
+        match[1].padStart(2,"0");
+
+    const month =
+        match[2].padStart(2,"0");
+
+    const year =
+        match[3];
+
+    return `${day}/${month}/${year}`;
+
 }
 
 
 /* =========================================================
-   SIMILARITY
+   NAME SIMILARITY
 ========================================================= */
 
 function similarity(a,b){
@@ -902,50 +947,42 @@ function similarity(a,b){
 
     b = normalizeSearch(b);
 
-    if(!a || !b) return 0;
+    if(!a || !b){
+        return 0;
+    }
 
-    const m = a.length;
+    if(a === b){
+        return 1;
+    }
 
-    const n = b.length;
+    if(a.includes(b) || b.includes(a)){
+        return 0.9;
+    }
 
-    const dp =
-        Array.from(
-            {length:m+1},
-            () => Array(n+1).fill(0)
-        );
+    const aWords = a.split(" ");
 
+    const bWords = b.split(" ");
 
-    for(let i=0;i<=m;i++)
-        dp[i][0]=i;
+    let matched = 0;
 
+    aWords.forEach(function(word){
 
-    for(let j=0;j<=n;j++)
-        dp[0][j]=j;
+        if(
+            word &&
+            bWords.some(function(x){
+                return x.includes(word) || word.includes(x);
+            })
+        ){
 
-
-    for(let i=1;i<=m;i++){
-
-        for(let j=1;j<=n;j++){
-
-            dp[i][j] = Math.min(
-
-                dp[i-1][j]+1,
-
-                dp[i][j-1]+1,
-
-                dp[i-1][j-1] +
-                (a[i-1] === b[j-1] ? 0 : 1)
-
-            );
+            matched++;
 
         }
 
-    }
+    });
 
+    return matched /
+        Math.max(aWords.length,bWords.length);
 
-    return 1 -
-        dp[m][n] /
-        Math.max(m,n);
 }
 
 
@@ -953,530 +990,180 @@ function similarity(a,b){
    NAME MATCH
 ========================================================= */
 
-function nameMatches(q,n){
+function nameMatches(actual, searched){
 
-    q = normalizeSearch(q);
+    const a = normalizeSearch(actual);
 
-    n = normalizeSearch(n);
+    const b = normalizeSearch(searched);
 
-    if(!q || !n)
+    if(!a || !b){
         return false;
+    }
 
-
-    if(q === n)
+    if(a === b){
         return true;
+    }
 
-
-    if(n.includes(q))
+    if(a.includes(b)){
         return true;
+    }
 
-
-    if(q.includes(n))
+    if(b.includes(a)){
         return true;
-
-
-    const qw = q.split(" ");
-
-    const nw = n.split(" ");
-
-
-    return qw.some(
-
-        x => x.length >= 2 &&
-        nw.some(
-            y =>
-                y === x ||
-                similarity(x,y) >= .72
-        )
-
-    )
-
-    ||
-
-    similarity(q,n) >= .72;
-}
-
-
-/* =========================================================
-   BANGLA UNICODE ORDER
-========================================================= */
-
-function normalizeBengaliOrder(text){
-
-    text = String(text || "");
-
-
-    const leftMarks =
-        "\u09BF\u09C7\u09C8\u09CB\u09CC";
-
-
-    text = text.replace(
-
-        new RegExp(
-            "^(["+
-            leftMarks+
-            "])([\\u0980-\\u09FF])",
-            "g"
-        ),
-
-        "$2$1"
-
-    );
-
-
-    text = text.replace(
-
-        new RegExp(
-            "([\\s:;,.])(["+
-            leftMarks+
-            "])([\\u0980-\\u09FF])",
-            "g"
-        ),
-
-        "$1$3$2"
-
-    );
-
-
-    const fixes = [
-
-        [/োভাটার/g,"ভোটার"],
-
-        [/িপতা/g,"পিতা"],
-
-        [/সামী/g,"স্বামী"],
-
-        [/িঠকানা/g,"ঠিকানা"],
-
-        [/োপশা/g,"পেশা"],
-
-        [/জন তািরখ/g,"জন্ম তারিখ"],
-
-        [/জন্ম তািরখ/g,"জন্ম তারিখ"],
-
-        [/িববাহ/g,"বিবাহ"],
-
-        [/গৃিহনী/g,"গৃহিনী"],
-
-        [/ছাত\/ছাতী/g,"ছাত্র/ছাত্রী"],
-
-        [/োমাঃ/g,"মোঃ"],
-
-        [/োমাহামদ/g,"মোহাম্মদ"],
-
-        [/িদলুআরা/g,"দিলুআরা"],
-
-        [/োখারেশদ/g,"খোরশেদ"],
-
-        [/সােহদা/g,"সাহেদা"],
-
-        [/রিশদ/g,"রশিদ"],
-
-        [/হািস/g,"হাসি"],
-
-        [/নর আয়শা/g,"নুর আয়শা"],
-
-        [/োরহানা/g,"রোহানা"],
-
-        [/িফেরাজা/g,"ফিরোজা"],
-
-        [/িনাত/g,"মিনাত"],
-
-        [/াজার/g,"বাজার"]
-
-    ];
-
-
-    for(
-        const [a,b]
-        of fixes
-    ){
-
-        text =
-            text.replace(a,b);
-
     }
 
-
-    return text
-        .replace(/\s+/g," ")
-        .trim();
-}
-
-
-/* =========================================================
-   COORDINATE TEXT
-========================================================= */
-
-function makeCoordinateText(items){
-
-    const arr = items
-
-        .filter(
-            i =>
-                i.str &&
-                i.str.trim()
-        )
-
-        .map(i => ({
-
-            str:i.str.trim(),
-
-            x:Number(
-                i.transform?.[4] || 0
-            ),
-
-            y:Number(
-                i.transform?.[5] || 0
-            ),
-
-            w:Number(
-                i.width || 0
-            ),
-
-            h:Number(
-                i.height || 0
-            )
-
-        }));
-
-
-    if(!arr.length)
-        return "";
-
-
-    const xs =
-        arr
-        .map(o=>o.x)
-        .sort((a,b)=>a-b);
-
-
-    const gaps =
-        xs.map(
-            (x,i)=>
-                i
-                ? x-xs[i-1]
-                : 0
-        );
-
-
-    const candidates =
-        gaps
-
-        .map(
-            (g,i)=>({
-                g,
-                i
-            })
-        )
-
-        .filter(
-            o=>o.g>18
-        )
-
-        .sort(
-            (a,b)=>b.g-a.g
-        )
-
-        .slice(0,2)
-
-        .sort(
-            (a,b)=>a.i-b.i
-        );
-
-
-    let cuts =
-        candidates
-
-        .map(
-            o =>
-                (xs[o.i]+
-                 xs[o.i-1])/2
-        )
-
-        .sort(
-            (a,b)=>a-b
-        );
-
-
-    if(cuts.length < 2){
-
-        const min = xs[0];
-
-        const max = xs[xs.length-1];
-
-        const step =
-            (max-min)/3;
-
-        cuts = [
-
-            min+step,
-
-            min+step*2
-
-        ];
-
-    }
-
-
-    const cols=[
-        [],
-        [],
-        []
-    ];
-
-
-    for(const o of arr){
-
-        const c =
-            o.x < cuts[0]
-                ? 0
-                : o.x < cuts[1]
-                    ? 1
-                    : 2;
-
-        cols[c].push(o);
-
-    }
-
-
-    function colText(col){
-
-        col.sort(
-            (a,b)=>
-                b.y-a.y ||
-                a.x-b.x
-        );
-
-
-        const lines=[];
-
-
-        for(const o of col){
-
-            let line =
-                lines.find(
-                    l =>
-                        Math.abs(l.y-o.y)
-                        <= Math.max(
-                            3,
-                            o.h*.55
-                        )
-                );
-
-
-            if(!line){
-
-                line={
-                    y:o.y,
-                    items:[]
-                };
-
-                lines.push(line);
-
-            }
-
-
-            line.items.push(o);
-
-        }
-
-
-        lines.sort(
-            (a,b)=>b.y-a.y
-        );
-
-
-        return lines
-
-            .map(
-
-                l =>
-                    l.items
-
-                    .sort(
-                        (a,b)=>
-                            a.x-b.x
-                    )
-
-                    .map(
-                        o=>o.str
-                    )
-
-                    .join(" ")
-
-            )
-
-            .join(" ");
-
-    }
-
-
-    return cols
-
-        .map(colText)
-
-        .filter(Boolean)
-
-        .join(" ");
+    return similarity(a,b) >= 0.55;
 
 }
 
 
 /* =========================================================
-   PERSON BLOCKS
+   PERSON BLOCK EXTRACTION
 ========================================================= */
 
 function extractPersonBlocks(text){
 
-    text =
-        normalizeBengaliOrder(
-            fixPdfBangla(text)
-        );
+    const lines =
+        String(text || "")
+        .split(/\n/)
+        .map(function(x){
+            return cleanText(x);
+        })
+        .filter(Boolean);
 
 
-    text =
-        text.replace(
-            /([০-৯0-9]{1,6})\s*\.\s*/g,
-            "\n$1. "
-        );
+    const blocks = [];
+
+    let current = [];
+
+    const serialRegex =
+        /^\s*[০-৯0-9]{1,6}\s*[\.\-ঃ:)]/;
 
 
-    return text
+    lines.forEach(function(line){
 
-        .split(
-            /\n(?=[০-৯0-9]{1,6}\.)/
-        )
+        if(serialRegex.test(line)){
 
-        .map(cleanText)
+            if(current.length){
 
-        .filter(
-            x =>
-                /^[০-৯0-9]{1,6}\./
-                .test(x)
-        );
-}
+                blocks.push(current.join(" "));
 
+            }
 
-/* =========================================================
-   PARSE VOTER
-========================================================= */
+            current = [line];
 
-function parseVoterData(block){
+        }else{
 
-    block =
-        normalizeBengaliOrder(
-            fixPdfBangla(
-                cleanText(block)
-            )
-        );
+            current.push(line);
+
+        }
+
+    });
 
 
-    const sm =
-        block.match(
-            /^([০-৯0-9]{1,6})\./
-        );
+    if(current.length){
 
-
-    const stop =
-        "(?=ভোটার|ো?ভোটার|পিতা|ি?পিতা|স্বামী|সামী|মাতা|পেশা|ো?পেশা|জন্ম|ঠিকানা|ি?ঠিকানা|$)";
-
-
-    let name =
-        (
-            block.match(
-                new RegExp(
-                    "নাম\\s*[:：]?\\s*(.*?)\\s*"+
-                    stop,
-                    "i"
-                )
-            ) || []
-        )[1] || "";
-
-
-    if(!name){
-
-        let x =
-            block.replace(
-                /^[০-৯0-9]{1,6}\.\s*/,
-                ""
-            );
-
-
-        let p =
-            x.search(
-                /ভোটার|ো?ভোটার|পিতা|ি?পিতা|স্বামী|সামী|মাতা|পেশা|ো?পেশা|জন্ম|ঠিকানা|ি?ঠিকানা/
-            );
-
-
-        name =
-            p>0
-                ? x.slice(0,p)
-                : x
-                    .split(" ")
-                    .slice(0,5)
-                    .join(" ");
+        blocks.push(current.join(" "));
 
     }
 
 
-    const get =
-        re =>
-            (
-                block.match(re)||[]
-            )[1] || "";
+    /* যদি serial দিয়ে block না পাওয়া যায় */
+
+    if(blocks.length === 0){
+
+        return [cleanText(text)];
+
+    }
+
+
+    return blocks;
+
+}
+
+
+/* =========================================================
+   VOTER DATA PARSER
+========================================================= */
+
+function parseVoterData(block){
+
+    const text =
+        fixPdfBangla(block);
+
+
+    let name = "";
+
+    let dob = "";
+
+
+    /* ================= NAME ================= */
+
+    let nameMatch =
+        text.match(
+            /নাম\s*[:：]?\s*([^|]+?)(?=\s+(?:পিতা|মাতা|স্বামী|জন্ম|জন্ম\s*তারিখ|পেশা|ঠিকানা|ভোটার|জাতীয়|NID|$))/i
+        );
+
+
+    if(nameMatch){
+
+        name = cleanText(nameMatch[1]);
+
+    }else{
+
+        const fallback =
+            text.match(
+                /নাম\s*[:：]?\s*(.{2,80})/i
+            );
+
+        if(fallback){
+
+            name =
+                cleanText(
+                    fallback[1]
+                )
+                .split(/পিতা|মাতা|স্বামী|জন্ম|ঠিকানা|ভোটার/i)[0]
+                .trim();
+
+        }
+
+    }
+
+
+    /* ================= DOB ================= */
+
+    /*
+       গুরুত্বপূর্ণ:
+       PDF-এ কখনো কখনো "জন্ম তারিখ"
+       এবং date-এর মাঝে space থাকে।
+    */
+
+    const dobMatch =
+        text.match(
+            /জন্ম\s*তারিখ\s*[:：]?\s*([০-৯0-9]{1,2}\s*[\/.\-]\s*[০-৯0-9]{1,2}\s*[\/.\-]\s*[০-৯0-9]{4})/i
+        );
+
+
+    if(dobMatch){
+
+        dob =
+            normalizeDate(
+                dobMatch[1]
+            );
+
+    }
 
 
     return {
 
-        serial:
-            sm
-                ? sm[1]
-                : "",
+        name:name,
 
+        dob:dob,
 
-        name:
-            normalizeBengaliOrder(
-                cleanText(name)
-            ),
-
-
-        voterNo:
-            get(
-                /(?:ভোটার|োভাটার)\s*নং\s*[:：-]?\s*([০-৯0-9]+)/i
-            ),
-
-
-        dob:
-            get(
-                /(?:জন্ম\s*তারিখ|জন\s*তািরখ|জন্ম\s*তািরখ)\s*[:：]?\s*([০-৯0-9]{1,2}[\/\-.][০-৯0-9]{1,2}[\/\-.][০-৯0-9]{2,4})/i
-            ),
-
-
-        parent:
-            get(
-                /(?:পিতা|ি?পিতা|স্বামী|সামী)\s*[:：]?\s*(.*?)\s*(?=মাতা|পেশা|জন্ম|ঠিকানা|$)/i
-            ),
-
-
-        mother:
-            get(
-                /মাতা\s*[:：]?\s*(.*?)\s*(?=পেশা|জন্ম|ঠিকানা|$)/i
-            ),
-
-
-        occupation:
-            get(
-                /(?:পেশা|ো?পেশা)\s*[:：]?\s*(.*?)\s*(?=জন্ম|ঠিকানা|$)/i
-            ),
-
-
-        address:
-            get(
-                /(?:ঠিকানা|ি?ঠিকানা)\s*[:：]?\s*(.*)$/i
-            )
+        raw:text
 
     };
+
 }
 
 
@@ -1484,115 +1171,117 @@ function parseVoterData(block){
    ESCAPE HTML
 ========================================================= */
 
-function escapeHtml(v){
+function escapeHTML(value){
 
-    return String(v ?? "")
-
+    return String(value || "")
         .replace(/&/g,"&amp;")
-
         .replace(/</g,"&lt;")
-
         .replace(/>/g,"&gt;")
-
         .replace(/"/g,"&quot;")
-
         .replace(/'/g,"&#039;");
+
 }
 
 
 /* =========================================================
-   BUILD INDEX
+   GET PDF PAGE TEXT
 ========================================================= */
 
-async function buildIndex(force=false){
+async function getPageText(pdf,pageNumber){
 
-    if(!force){
+    const page =
+        await pdf.getPage(pageNumber);
 
-        try{
-
-            const saved =
-                JSON.parse(
-                    localStorage.getItem(
-                        INDEX_KEY
-                    ) || "null"
-                );
+    const content =
+        await page.getTextContent();
 
 
-            if(saved?.length){
+    return content.items
+        .map(function(item){
 
-                voterIndex = saved;
+            return item.str || "";
 
-                indexReady = true;
+        })
+        .join(" ");
 
-                updateStats();
+}
 
-                return;
 
-            }
+/* =========================================================
+   SEARCH
+========================================================= */
 
-        }catch(e){}
+async function performSearch(){
+
+    const nameQuery =
+        document.getElementById("nameInput").value.trim();
+
+    const dobQuery =
+        document.getElementById("dobInput").value.trim();
+
+
+    const searchName =
+        normalizeSearch(nameQuery);
+
+
+    /* ⭐ এখানে নতুন DOB normalization */
+
+    const searchDob =
+        normalizeDate(dobQuery);
+
+
+    if(!searchName && !searchDob){
+
+        alert(
+            "নাম অথবা জন্ম তারিখ লিখুন।"
+        );
+
+        return;
 
     }
 
 
+    const results =
+        document.getElementById("results");
+
     const status =
-        document.getElementById(
-            "status"
-        );
+        document.getElementById("status");
 
 
-    const bar =
-        document.getElementById(
-            "progressBar"
-        );
+    results.innerHTML = "";
+
+    status.style.display = "block";
+
+    status.innerHTML =
+        "🔎 অনুসন্ধান শুরু হচ্ছে...";
 
 
-    const btn =
-        document.getElementById(
-            "searchBtn"
-        );
+    let found = [];
+
+    let processed = 0;
 
 
-    btn.disabled = true;
+    try{
+
+        for(
+            let i=0;
+            i<pdfList.length;
+            i++
+        ){
+
+            const file =
+                pdfList[i];
 
 
-    voterIndex = [];
+            status.innerHTML =
+                `🔎 PDF অনুসন্ধান চলছে...<br>
+                 ${i+1} / ${pdfList.length}
+                 <br>
+                 ${escapeHTML(file)}`;
 
-
-    document.getElementById(
-        "indexStatus"
-    ).textContent =
-        "তৈরি হচ্ছে";
-
-
-    for(
-        let i=0;
-        i<pdfList.length;
-        i++
-    ){
-
-        const [file,url] =
-            pdfList[i];
-
-
-        status.textContent =
-            `📖 Index তৈরি হচ্ছে: ${file} — ${i+1}/${pdfList.length}`;
-
-
-        bar.style.width =
-            (
-                (i+1) /
-                pdfList.length *
-                100
-            ) + "%";
-
-
-        try{
 
             const pdf =
-                await pdfjsLib
-                    .getDocument(url)
-                    .promise;
+                await pdfjsLib.getDocument(file).promise;
 
 
             for(
@@ -1601,520 +1290,360 @@ async function buildIndex(force=false){
                 pageNo++
             ){
 
-                try{
+                const text =
+                    await getPageText(
+                        pdf,
+                        pageNo
+                    );
 
-                    const page =
-                        await pdf.getPage(
-                            pageNo
+
+                const fixedText =
+                    fixPdfBangla(text);
+
+
+                const blocks =
+                    extractPersonBlocks(
+                        fixedText
+                    );
+
+
+                for(
+                    let b=0;
+                    b<blocks.length;
+                    b++
+                ){
+
+                    const data =
+                        parseVoterData(
+                            blocks[b]
                         );
 
 
-                    const tc =
-                        await page
-                            .getTextContent();
-
-
-                    const text =
-                        makeCoordinateText(
-                            tc.items
-                        );
-
-
-                    const blocks =
-                        extractPersonBlocks(
-                            text
-                        );
-
-
-                    for(
-                        const block
-                        of blocks
+                    if(
+                        !data.name &&
+                        !data.dob
                     ){
 
-                        const v =
-                            parseVoterData(
-                                block
-                            );
-
-
-                        if(v.name){
-
-                            v.pdfUrl =
-                                url+
-                                "#page="+
-                                pageNo;
-
-
-                            v.page =
-                                pageNo;
-
-
-                            v.file =
-                                file;
-
-
-                            voterIndex.push(v);
-
-                        }
+                        continue;
 
                     }
 
-                }catch(e){
 
-                    console.warn(
-                        "page error",
-                        file,
-                        pageNo,
-                        e
-                    );
+                    let nameOK = true;
+
+                    let dobOK = true;
+
+
+                    /* ================= NAME ================= */
+
+                    if(searchName){
+
+                        nameOK =
+                            nameMatches(
+                                data.name,
+                                searchName
+                            );
+
+                    }
+
+
+                    /* ================= DOB ================= */
+
+                    if(searchDob){
+
+                        const actualDob =
+                            normalizeDate(
+                                data.dob
+                            );
+
+
+                        /*
+                           আগে ছিল strict mismatch।
+                           এখন দুই পাশই normalize করা হচ্ছে।
+                        */
+
+                        dobOK =
+                            actualDob === searchDob;
+
+                    }
+
+
+                    if(nameOK && dobOK){
+
+                        found.push({
+
+                            name:
+                                data.name,
+
+                            dob:
+                                data.dob,
+
+                            raw:
+                                data.raw,
+
+                            file:
+                                file,
+
+                            page:
+                                pageNo
+
+                        });
+
+                    }
 
                 }
 
             }
 
-        }catch(e){
 
-            console.warn(
-                "PDF error",
-                file,
-                e
-            );
+            processed++;
 
         }
 
-    }
 
+        status.style.display = "none";
 
-    try{
 
-        localStorage.setItem(
-            INDEX_KEY,
-            JSON.stringify(
-                voterIndex
-            )
-        );
+        /* ================= RESULTS ================= */
 
-    }catch(e){}
+        if(found.length === 0){
 
+            results.innerHTML = `
+                <div class="no-result">
 
-    indexReady = true;
+                    <div style="font-size:45px;">
+                        🔍
+                    </div>
 
-    btn.disabled = false;
+                    <h3>
+                        কোনো তথ্য পাওয়া যায়নি
+                    </h3>
 
-    updateStats();
+                    <p>
+                        নাম অথবা জন্ম তারিখের বানান/ফরম্যাট
+                        আবার পরীক্ষা করুন।
+                    </p>
 
+                    <p>
+                        জন্ম তারিখ উদাহরণ:
+                        <strong>15/08/1995</strong>
+                    </p>
 
-    status.textContent =
-        `✅ Index তৈরি শেষ — ${convertDigits(voterIndex.length)} টি রেকর্ড প্রস্তুত।`;
+                </div>
+            `;
 
+            return;
 
-    document.getElementById(
-        "indexStatus"
-    ).textContent =
-        "প্রস্তুত";
+        }
 
 
-    bar.style.width =
-        "100%";
-}
+        results.innerHTML =
+            `<h3 style="color:#0f766e;">
+                মোট ${found.length}টি তথ্য পাওয়া গেছে
+            </h3>`;
 
 
-/* =========================================================
-   UPDATE STATS
-========================================================= */
+        found.forEach(function(item,index){
 
-function updateStats(){
+            const pdfUrl =
+                item.file +
+                "#page=" +
+                item.page;
 
-    document.getElementById(
-        "pdfCount"
-    ).textContent =
-        convertDigits(
-            pdfList.length
-        );
 
+            const safeText =
+                `নাম: ${item.name}
+জন্ম তারিখ: ${item.dob}
+PDF: ${item.file}
+পৃষ্ঠা: ${item.page}`;
 
-    document.getElementById(
-        "recordCount"
-    ).textContent =
-        convertDigits(
-            voterIndex.length
-        );
-}
 
+            results.innerHTML += `
 
-/* =========================================================
-   RENDER RESULT
-========================================================= */
+                <div class="result-card">
 
-function renderResult(v,i){
+                    <div class="result-title">
+                        👤 ভোটার ${index+1}
+                    </div>
 
-    const id =
-        "result-"+i;
 
+                    <div class="info-grid">
 
-    return `
+                        <div class="info-item">
 
-    <div
-        class="info-card"
-        id="${id}">
+                            <div class="info-label">
+                                নাম
+                            </div>
 
+                            <div class="info-value">
+                                ${escapeHTML(item.name)}
+                            </div>
 
-        <!-- PRINT HEADER -->
+                        </div>
 
-        <div class="print-header">
 
-            <h2>
-                ৩ নং পাঁচলাইশ ওয়ার্ড
-            </h2>
+                        <div class="info-item">
 
-            <h3>
-                ভোটার তথ্য
-            </h3>
+                            <div class="info-label">
+                                জন্ম তারিখ
+                            </div>
 
-            <p>
-                ভোটার তথ্য অনুসন্ধান সিস্টেম
-            </p>
+                            <div class="info-value">
+                                ${escapeHTML(item.dob || "পাওয়া যায়নি")}
+                            </div>
 
-        </div>
+                        </div>
 
 
-        <h3>
-            ভোটার তথ্য
-        </h3>
+                        <div class="info-item">
 
+                            <div class="info-label">
+                                PDF ফাইল
+                            </div>
 
-        ${row(
-            "ক্রমিক নং",
-            convertDigits(v.serial)
-        )}
+                            <div class="info-value">
+                                ${escapeHTML(item.file)}
+                            </div>
 
+                        </div>
 
-        ${row(
-            "নাম",
-            v.name
-        )}
 
+                        <div class="info-item">
 
-        ${row(
-            "ভোটার নং",
-            v.voterNo
-        )}
+                            <div class="info-label">
+                                পৃষ্ঠা
+                            </div>
 
+                            <div class="info-value">
+                                ${item.page}
+                            </div>
 
-        ${row(
-            "জন্ম তারিখ",
-            v.dob
-        )}
+                        </div>
 
+                    </div>
 
-        ${row(
-            "পিতা/স্বামী",
-            v.parent
-        )}
 
+                    <div class="result-actions">
 
-        ${row(
-            "মাতা",
-            v.mother
-        )}
+                        <a
+                            class="pdf-btn"
+                            href="${escapeHTML(pdfUrl)}"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            📄 PDF দেখুন
+                        </a>
 
 
-        ${row(
-            "পেশা",
-            v.occupation
-        )}
+                        <button
+                            class="copy-btn"
+                            onclick="copyVoter(${index})"
+                        >
+                            📋 তথ্য কপি
+                        </button>
 
+                    </div>
 
-        ${row(
-            "ঠিকানা",
-            v.address
-        )}
+                </div>
 
-
-        ${row(
-            "ওয়ার্ড",
-            "০৩ নং পাঁচলাইশ"
-        )}
-
-
-        <!-- BUTTONS -->
-
-        <div class="button-area">
-
-
-            <button
-                class="print-btn"
-                onclick="printSingleResult('${id}')">
-
-                🖨️ A5 প্রিন্ট
-
-            </button>
-
-
-            <button
-                class="copy-btn"
-                onclick='copyVoter(${JSON.stringify(v).replace(/</g,"\\u003c")})'>
-
-                📋 তথ্য কপি
-
-            </button>
-
-
-            <a
-                class="pdf-btn"
-                href="${escapeHtml(v.pdfUrl)}"
-                target="_blank">
-
-                📄 PDF দেখুন
-
-            </a>
-
-
-        </div>
-
-
-        <!-- WATERMARK -->
-
-        <div class="print-watermark">
-
-            <div class="wm-name">
-
-                আলী ইসলাম
-
-            </div>
-
-
-            <div class="wm-role">
-
-                উদ্যোক্তা
-
-            </div>
-
-
-            <div class="wm-ward">
-
-                ০৩ নং পাঁচলাইশ ওয়ার্ড
-
-            </div>
-
-        </div>
-
-
-        <!-- FOOTER -->
-
-        <div class="print-footer">
-
-            প্রদত্ত তথ্য সংশ্লিষ্ট
-            ভোটার তালিকা থেকে
-            অনুসন্ধান করা হয়েছে।
-
-        </div>
-
-
-        <!-- SIGNATURE -->
-
-        <div class="signature">
-
-            <span>
-                তারিখ: __________________
-            </span>
-
-            <span>
-                উদ্যোক্তার স্বাক্ষর:
-                __________________
-            </span>
-
-        </div>
-
-
-    </div>
-
-    `;
-}
-
-
-/* =========================================================
-   ROW
-========================================================= */
-
-function row(a,b){
-
-    return `
-
-    <div class="info-row">
-
-        <div class="info-label">
-            ${a}
-        </div>
-
-        <div class="info-value">
-
-            ${escapeHtml(b)}
-
-        </div>
-
-    </div>
-
-    `;
-}
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-function performSearch(){
-
-    if(!indexReady){
-
-        alert(
-            "প্রথমে Index তৈরি হচ্ছে/করতে হবে।"
-        );
-
-        return;
-    }
-
-
-    const nq =
-        normalizeSearch(
-            document.getElementById(
-                "nameInput"
-            ).value
-        );
-
-
-    const dq =
-        digitsOnlyDate(
-            document.getElementById(
-                "dobInput"
-            ).value
-        );
-
-
-    if(!nq && !dq){
-
-        alert(
-            "নাম অথবা জন্ম তারিখ লিখুন।"
-        );
-
-        return;
-    }
-
-
-    let results =
-        voterIndex.filter(v => {
-
-            const okName =
-                !nq ||
-                nameMatches(
-                    nq,
-                    v.name
-                );
-
-
-            const vd =
-                digitsOnlyDate(
-                    v.dob
-                );
-
-
-            const okDob =
-                !dq ||
-                vd === dq ||
-                vd.includes(dq) ||
-                dq.includes(vd);
-
-
-            return okName && okDob;
+            `;
 
         });
 
 
-    /* REMOVE DUPLICATES */
+        /* Copy করার জন্য global variable */
 
-    const seen =
-        new Set();
-
-
-    results =
-        results.filter(v => {
-
-            const k =
-                v.voterNo ||
-                v.name+
-                "|"+
-                v.dob+
-                "|"+
-                v.serial;
+        window.lastSearchResults =
+            found;
 
 
-            if(seen.has(k))
-                return false;
+    }catch(error){
 
+        console.error(error);
 
-            seen.add(k);
+        status.style.display = "none";
 
-            return true;
+        results.innerHTML = `
 
-        });
+            <div class="no-result">
 
+                <div style="font-size:40px;">
+                    ⚠️
+                </div>
 
-    document.getElementById(
-        "resultCount"
-    ).textContent =
-        convertDigits(
-            results.length
-        );
+                <h3>
+                    অনুসন্ধানের সময় সমস্যা হয়েছে
+                </h3>
 
+                <p>
+                    PDF ফাইলের অবস্থান অথবা ফাইলের নাম
+                    পরীক্ষা করুন।
+                </p>
 
-    document.getElementById(
-        "resultSummary"
-    ).textContent =
-        `${convertDigits(results.length)} টি ফলাফল`;
+                <small>
+                    ${escapeHTML(error.message)}
+                </small>
 
-
-    document.getElementById(
-        "status"
-    ).textContent =
-        results.length
-
-        ? `✅ ${convertDigits(results.length)} টি ফলাফল পাওয়া গেছে।`
-
-        : "❌ কোনো ফলাফল পাওয়া যায়নি।";
-
-
-    document.getElementById(
-        "results"
-    ).innerHTML =
-
-        results.length
-
-        ?
-
-        results
-            .map(renderResult)
-            .join("")
-
-        :
-
-        `
-
-        <div class="empty">
-
-            <h3>
-                😔 কোনো ফলাফল পাওয়া যায়নি
-            </h3>
-
-            <p>
-                নামের বানান বা জন্ম তারিখ
-                পরীক্ষা করে আবার চেষ্টা করুন।
-            </p>
-
-        </div>
+            </div>
 
         `;
 
+    }
+
 }
+
+
+/* =========================================================
+   COPY VOTER
+========================================================= */
+
+window.copyVoter = function(index){
+
+    if(
+        !window.lastSearchResults ||
+        !window.lastSearchResults[index]
+    ){
+
+        return;
+
+    }
+
+
+    const item =
+        window.lastSearchResults[index];
+
+
+    const text =
+`ভোটার তথ্য
+
+নাম: ${item.name}
+জন্ম তারিখ: ${item.dob || "পাওয়া যায়নি"}
+PDF: ${item.file}
+পৃষ্ঠা: ${item.page}
+
+আলী ইসলাম
+উদ্যোক্তা
+০৩ নং পাঁচলাইশ ওয়ার্ড`;
+
+
+    navigator.clipboard
+        .writeText(text)
+        .then(function(){
+
+            alert(
+                "ভোটার তথ্য কপি হয়েছে।"
+            );
+
+        })
+        .catch(function(){
+
+            alert(
+                "কপি করা সম্ভব হয়নি।"
+            );
+
+        });
+
+};
 
 
 /* =========================================================
@@ -2123,120 +1652,266 @@ function performSearch(){
 
 function clearSearch(){
 
-    document.getElementById(
-        "nameInput"
-    ).value = "";
+    document.getElementById("nameInput").value = "";
 
+    document.getElementById("dobInput").value = "";
 
-    document.getElementById(
-        "dobInput"
-    ).value = "";
+    document.getElementById("results").innerHTML = "";
 
-
-    document.getElementById(
-        "results"
-    ).innerHTML = "";
-
-
-    document.getElementById(
-        "resultCount"
-    ).textContent = "০";
-
-
-    document.getElementById(
-        "resultSummary"
-    ).textContent = "";
+    document.getElementById("status").style.display = "none";
 
 }
 
 
 /* =========================================================
-   SINGLE A5 PRINT
+   LOGIN
 ========================================================= */
 
-function printSingleResult(id){
+async function login(){
 
-    const card =
-        document.getElementById(id);
+    const userId =
+        document
+        .getElementById("userId")
+        .value
+        .trim();
 
 
-    if(!card)
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+
+    const errorBox =
+        document.getElementById("loginError");
+
+
+    errorBox.style.display = "none";
+
+
+    if(!userId || !password){
+
+        errorBox.innerText =
+            "User ID এবং Password দিন।";
+
+        errorBox.style.display = "block";
+
         return;
 
-
-    document
-        .querySelectorAll(
-            ".print-area"
-        )
-        .forEach(
-            x =>
-                x.classList
-                 .remove(
-                    "print-area"
-                 )
-        );
+    }
 
 
-    card.classList.add(
-        "print-area"
-    );
-
-
-    window.print();
-
-
-    setTimeout(
-        () =>
-            card.classList.remove(
-                "print-area"
-            ),
-        1000
-    );
-}
-
-
-/* =========================================================
-   COPY
-========================================================= */
-
-async function copyVoter(v){
-
-    const text =
-
-`ভোটার তথ্য
-
-নাম: ${v.name}
-
-ভোটার নং: ${v.voterNo}
-
-জন্ম তারিখ: ${v.dob}
-
-পিতা/স্বামী: ${v.parent}
-
-মাতা: ${v.mother}
-
-পেশা: ${v.occupation}
-
-ঠিকানা: ${v.address}
-
-ওয়ার্ড: ০৩ নং পাঁচলাইশ`;
+    const email =
+        userIdToEmail(userId);
 
 
     try{
 
-        await navigator
-            .clipboard
-            .writeText(text);
-
-
-        alert(
-            "✅ তথ্য কপি হয়েছে।"
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
         );
 
-    }catch(e){
+    }catch(error){
+
+        console.error(error);
+
+
+        let message =
+            "Login করা যায়নি। User ID বা Password সঠিক কিনা দেখুন।";
+
+
+        if(
+            error.code ===
+            "auth/invalid-credential"
+        ){
+
+            message =
+                "User ID অথবা Password ভুল।";
+
+        }
+
+
+        if(
+            error.code ===
+            "auth/user-not-found"
+        ){
+
+            message =
+                "এই User ID পাওয়া যায়নি।";
+
+        }
+
+
+        if(
+            error.code ===
+            "auth/too-many-requests"
+        ){
+
+            message =
+                "অনেকবার চেষ্টা করা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।";
+
+        }
+
+
+        errorBox.innerText =
+            message;
+
+        errorBox.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+async function logout(){
+
+    try{
+
+        await signOut(auth);
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD USER ROLE
+========================================================= */
+
+async function loadUserRole(user){
+
+    try{
+
+        const userRef =
+            doc(
+                db,
+                "users",
+                user.uid
+            );
+
+
+        const snap =
+            await getDoc(userRef);
+
+
+        if(!snap.exists()){
+
+            await signOut(auth);
+
+            alert(
+                "আপনার User profile পাওয়া যায়নি।"
+            );
+
+            return;
+
+        }
+
+
+        const data =
+            snap.data();
+
+
+        const role =
+            String(
+                data.role || ""
+            ).toLowerCase();
+
+
+        if(
+            role !== "admin" &&
+            role !== "operator"
+        ){
+
+            await signOut(auth);
+
+            alert(
+                "আপনার অনুমতি নেই।"
+            );
+
+            return;
+
+        }
+
+
+        currentUser =
+            user;
+
+
+        currentRole =
+            role;
+
+
+        /* ================= USER INFO ================= */
+
+        document
+            .getElementById("loggedUser")
+            .innerText =
+                data.name ||
+                data.userId ||
+                user.email;
+
+
+        document
+            .getElementById("roleBadge")
+            .innerText =
+                role === "admin"
+                ? "ADMIN"
+                : "OPERATOR";
+
+
+        /* ================= SHOW APP ================= */
+
+        document
+            .getElementById("loginScreen")
+            .style.display =
+                "none";
+
+
+        document
+            .getElementById("app")
+            .style.display =
+                "block";
+
+
+        /* ================= ADMIN ================= */
+
+        const adminElements =
+            document.querySelectorAll(
+                ".admin-only"
+            );
+
+
+        adminElements.forEach(
+            function(el){
+
+                el.style.display =
+                    role === "admin"
+                    ? "block"
+                    : "none";
+
+            }
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        await signOut(auth);
 
         alert(
-            "কপি করা যায়নি।"
+            "User permission যাচাই করা যায়নি।"
         );
 
     }
@@ -2245,81 +1920,157 @@ async function copyVoter(v){
 
 
 /* =========================================================
-   DARK MODE
+   AUTH STATE
 ========================================================= */
 
-function toggleDark(){
+onAuthStateChanged(
+    auth,
+    function(user){
 
-    document.body
-        .classList
-        .toggle("dark");
+        if(user){
+
+            loadUserRole(user);
+
+        }else{
+
+            currentUser = null;
+
+            currentRole = null;
 
 
-    localStorage.setItem(
+            document
+                .getElementById("loginScreen")
+                .style.display =
+                    "flex";
 
-        "panch_dark",
 
-        document.body.classList.contains(
-            "dark"
-        )
-        ? "1"
-        : "0"
+            document
+                .getElementById("app")
+                .style.display =
+                    "none";
 
-    );
+        }
 
-}
+    }
+);
 
 
 /* =========================================================
-   ENTER KEY SEARCH
+   ADMIN REBUILD BUTTON
 ========================================================= */
 
-["nameInput","dobInput"]
+document
+    .getElementById("rebuildBtn")
+    .addEventListener(
+        "click",
+        function(){
 
-.forEach(id => {
+            if(currentRole !== "admin"){
 
-    document
-        .getElementById(id)
-        .addEventListener(
-            "keydown",
-            e => {
+                alert(
+                    "শুধু Admin এই কাজ করতে পারবেন।"
+                );
 
-                if(e.key === "Enter"){
-
-                    performSearch();
-
-                }
+                return;
 
             }
-        );
-
-});
 
 
-/* =========================================================
-   LOAD DARK MODE
-========================================================= */
+            alert(
+                "PDF Index পুনরায় প্রস্তুতের ফিচারটি Admin-এর জন্য রাখা হয়েছে।\n\nবর্তমান সার্চ সরাসরি PDF থেকে তথ্য অনুসন্ধান করছে।"
+            );
 
-if(
-    localStorage.getItem(
-        "panch_dark"
-    ) === "1"
-){
-
-    document.body
-        .classList
-        .add("dark");
-
-}
+        }
+    );
 
 
 /* =========================================================
-   START
+   EVENT LISTENERS
 ========================================================= */
 
-updateStats();
+document
+    .getElementById("loginBtn")
+    .addEventListener(
+        "click",
+        login
+    );
 
-buildIndex(false);
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener(
+        "click",
+        logout
+    );
+
+
+document
+    .getElementById("searchBtn")
+    .addEventListener(
+        "click",
+        performSearch
+    );
+
+
+document
+    .getElementById("clearBtn")
+    .addEventListener(
+        "click",
+        clearSearch
+    );
+
+
+/* =========================================================
+   ENTER KEY
+========================================================= */
+
+document
+    .getElementById("nameInput")
+    .addEventListener(
+        "keydown",
+        function(event){
+
+            if(event.key === "Enter"){
+
+                performSearch();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("dobInput")
+    .addEventListener(
+        "keydown",
+        function(event){
+
+            if(event.key === "Enter"){
+
+                performSearch();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("password")
+    .addEventListener(
+        "keydown",
+        function(event){
+
+            if(event.key === "Enter"){
+
+                login();
+
+            }
+
+        }
+    );
+
 
 </script>
 
