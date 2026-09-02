@@ -1,275 +1,1227 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</title>
-    <style>
-        body { font-family: 'SolaimanLipi', Arial, sans-serif; background-color: #eef2f5; margin: 0; padding: 20px; color: #111; }
-        .search-wrapper { max-width: 650px; margin: 0 auto 20px auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
-        .input-group { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
-        input[type="text"] { padding: 12px; font-size: 16px; border: 1px solid #bbb; border-radius: 5px; outline: none; }
-        button { padding: 12px 25px; font-size: 16px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; }
-        button:hover { background-color: #0056b3; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .info-card {
-            position: relative;
-            max-width: 500px;
-            margin: 20px auto;
-            background-color: #b3cbcf;
-            padding: 30px;
-            border-radius: 6px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            overflow: hidden;
-            border: 1px solid #9bb5b9;
-        }
+<title>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</title>
 
-        .result-badge {
-            display: inline-block;
-            background-color: #007bff;
-            color: #fff;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 2;
-        }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-25deg);
-            font-size: 26px;
-            font-weight: bold;
-            color: rgba(0, 0, 0, 0.12);
-            white-space: nowrap;
-            pointer-events: none;
-            text-align: center;
-            line-height: 1.5;
-            user-select: none;
-            width: 100%;
-        }
+<style>
 
-        .card-details {
-            font-size: 20px;
-            line-height: 2.2;
-            color: #1a1a1a;
-            text-align: left;
-            position: relative;
-            z-index: 2;
-        }
+*{
+    box-sizing:border-box;
+}
 
-        .field-row {
-            margin-bottom: 4px;
-            font-weight: 500;
-        }
+body{
+    margin:0;
+    padding:20px;
+    background:#eef2f5;
+    font-family:"SolaimanLipi","Noto Sans Bengali",Arial,sans-serif;
+    color:#111;
+}
 
-        .status { text-align: center; font-style: italic; color: #555; margin-top: 15px; font-weight: bold; }
-        .pdf-link-btn { display: inline-block; margin-top: 15px; padding: 10px 16px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; position: relative; z-index: 2; }
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+.search-wrapper{
+    max-width:700px;
+    margin:auto;
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    text-align:center;
+}
+
+h2{
+    margin-top:0;
+    color:#173b57;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top:20px;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    font-size:17px;
+    border:1px solid #bbb;
+    border-radius:7px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#007bff;
+    box-shadow:0 0 0 2px rgba(0,123,255,.1);
+}
+
+button{
+    padding:14px;
+    font-size:17px;
+    background:#007bff;
+    color:white;
+    border:0;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+button:disabled{
+    background:#888;
+    cursor:not-allowed;
+}
+
+.status{
+    margin-top:15px;
+    font-weight:bold;
+    color:#555;
+}
+
+.info-card{
+    position:relative;
+    max-width:600px;
+    margin:20px auto;
+    background:#b3cbcf;
+    padding:25px;
+    border-radius:8px;
+    box-shadow:0 5px 18px rgba(0,0,0,.15);
+    overflow:hidden;
+    border:1px solid #9bb5b9;
+}
+
+.result-badge{
+    display:inline-block;
+    background:#007bff;
+    color:white;
+    padding:6px 15px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.watermark{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) rotate(-25deg);
+    font-size:26px;
+    font-weight:bold;
+    color:rgba(0,0,0,.11);
+    white-space:nowrap;
+    text-align:center;
+    line-height:1.5;
+    pointer-events:none;
+    user-select:none;
+}
+
+.card-details{
+    position:relative;
+    z-index:2;
+    font-size:19px;
+    line-height:1.9;
+}
+
+.field-row{
+    margin-bottom:4px;
+}
+
+.pdf-link-btn{
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 16px;
+    background:#28a745;
+    color:white;
+    text-decoration:none;
+    border-radius:6px;
+    font-weight:bold;
+}
+
+.pdf-link-btn:hover{
+    background:#218838;
+}
+
+.no-result{
+    max-width:600px;
+    margin:25px auto;
+    padding:20px;
+    background:white;
+    border-radius:8px;
+    text-align:center;
+    color:#d00;
+    font-weight:bold;
+}
+
+.loading{
+    text-align:center;
+    padding:20px;
+}
+
+.spinner{
+    width:35px;
+    height:35px;
+    border:4px solid #ddd;
+    border-top-color:#007bff;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:0 auto 10px;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+@media(max-width:600px){
+
+    body{
+        padding:10px;
+    }
+
+    .search-wrapper{
+        padding:18px;
+    }
+
+    h2{
+        font-size:21px;
+    }
+
+    .info-card{
+        padding:18px;
+    }
+
+    .card-details{
+        font-size:17px;
+        line-height:1.8;
+    }
+
+    .watermark{
+        font-size:20px;
+    }
+
+}
+
+</style>
 </head>
+
 <body>
 
 <div class="search-wrapper">
-    <h2>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</h2>
+
+    <h2>৩ নং পাঁচলাইশ ওয়ার্ড</h2>
+
+    <h3>ভোটার তথ্য অনুসন্ধান</h3>
+
     <div class="input-group">
-        <input type="text" id="nameInput" placeholder="১. নাম লিখুন (যেমন: রিনা আক্তার)">
-        <input type="text" id="dobInput" placeholder="২. জন্ম তারিখ লিখুন (যেমন: ০৭/১১/১৯৯৮)">
-        <button onclick="performSearch()">সার্চ করুন</button>
+
+        <input
+            type="text"
+            id="nameInput"
+            placeholder="নাম লিখুন (যেমন: রিনা আক্তার)"
+        >
+
+        <input
+            type="text"
+            id="dobInput"
+            placeholder="জন্ম তারিখ (যেমন: ২২/০৮/১৯৭৯)"
+        >
+
+        <button id="searchBtn" onclick="performSearch()">
+            🔎 সার্চ করুন
+        </button>
+
     </div>
+
     <div id="status" class="status"></div>
+
 </div>
+
 
 <div id="results"></div>
 
+
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+
+// ======================================================
+// PDF LIST
+// ======================================================
 
 const pdfList = [
-    { title: "151686_com_1443_female.pdf", url: "151686_com_1443_female.pdf" },
-    { title: "151686_com_1526_male.pdf", url: "151686_com_1526_male.pdf" },
-    { title: "151687_com_34_female.pdf", url: "151687_com_34_female.pdf" },
-    { title: "151687_com_57_male.pdf", url: "151687_com_57_male.pdf" },
-    { title: "151688_com_251_female.pdf", url: "151688_com_251_female.pdf" },
-    { title: "151688_com_296_male.pdf", url: "151688_com_296_male.pdf" },
-    { title: "151690_com_1217_female.pdf", url: "151690_com_1217_female.pdf" },
-    { title: "151690_com_1305_male.pdf", url: "151690_com_1305_male.pdf" },
-    { title: "151691_com_436_male.pdf", url: "151691_com_436_male.pdf" },
-    { title: "151691_com_443_female.pdf", url: "151691_com_443_female.pdf" },
-    { title: "151692_com_237_female.pdf", url: "151692_com_237_female.pdf" },
-    { title: "151692_com_269_male.pdf", url: "151692_com_269_male.pdf" },
-    { title: "151693_com_1888_male.pdf", url: "151693_com_1888_male.pdf" },
-    { title: "151693_com_1926_female.pdf", url: "151693_com_1926_female.pdf" },
-    { title: "151694_com_3519_male.pdf", url: "151694_com_3519_male.pdf" },
-    { title: "151694_com_3839_female.pdf", url: "151694_com_3839_female.pdf" },
-    { title: "151695_com_87_female.pdf", url: "151695_com_87_female.pdf" },
-    { title: "151695_com_117_male.pdf", url: "151695_com_117_male.pdf" },
-    { title: "151696_com_380_female.pdf", url: "151696_com_380_female.pdf" },
-    { title: "151696_com_444_male.pdf", url: "151696_com_444_male.pdf" },
-    { title: "151697_com_623_female.pdf", url: "151697_com_623_female.pdf" },
-    { title: "151697_com_643_male.pdf", url: "151707_com_643_male.pdf" },
-    { title: "151698_com_397_female.pdf", url: "151698_com_397_female.pdf" },
-    { title: "151698_com_432_male.pdf", url: "151698_com_432_male.pdf" },
-    { title: "151699_com_366_female.pdf", url: "151699_com_366_female.pdf" },
-    { title: "151699_com_398_male.pdf", url: "151699_com_398_male.pdf" },
-    { title: "151700_com_2199_female.pdf", url: "151700_com_2199_female.pdf" },
-    { title: "151700_com_2199_male.pdf", url: "151700_com_2199_male.pdf" },
-    { title: "151701_com_1606_female.pdf", url: "151701_com_1606_female.pdf" },
-    { title: "151701_com_1675_male.pdf", url: "151701_com_1675_male.pdf" },
-    { title: "151702_com_466_female.pdf", url: "151702_com_466_female.pdf" },
-    { title: "151702_com_865_male.pdf", url: "151702_com_865_male.pdf" },
-    { title: "151703_com_1591_male.pdf", url: "151703_com_1591_male.pdf" },
-    { title: "151703_com_1816_female.pdf", url: "151703_com_1816_female.pdf" },
-    { title: "151704_com_335_male.pdf", url: "151704_com_335_male.pdf" },
-    { title: "151704_com_415_female.pdf", url: "151704_com_415_female.pdf" },
-    { title: "151705_com_1370_male.pdf", url: "151705_com_1370_male.pdf" },
-    { title: "151705_com_1427_female.pdf", url: "151705_com_1427_female.pdf" },
-    { title: "151706_com_582_female.pdf", url: "151706_com_582_female.pdf" },
-    { title: "151706_com_654_male.pdf", url: "151706_com_654_male.pdf" },
-    { title: "151707_com_262_female.pdf", url: "151707_com_262_female.pdf" },
-    { title: "151707_com_286_male.pdf", url: "151707_com_286_male.pdf" },
-    { title: "151708_com_373_female.pdf", url: "151708_com_373_female.pdf" },
-    { title: "151708_com_426_male.pdf", url: "151708_com_426_male.pdf" },
-    { title: "151709_com_384_female.pdf", url: "151709_com_384_female.pdf" },
-    { title: "151709_com_414_male.pdf", url: "151709_com_414_male.pdf" },
-    { title: "151710_com_255_female.pdf", url: "151710_com_255_female.pdf" },
-    { title: "151710_com_296_male.pdf", url: "151710_com_296_male.pdf" },
-    { title: "151711_com_984_male.pdf", url: "151711_com_984_male.pdf" },
-    { title: "151711_com_1188_female.pdf", url: "151711_com_1188_female.pdf" },
-    { title: "151712_com_1123_female.pdf", url: "151712_com_1123_female.pdf" },
-    { title: "151712_com_1160_male.pdf", url: "151712_com_1160_male.pdf" },
-    { title: "151713_com_345_female.pdf", url: "151713_com_345_female.pdf" },
-    { title: "151713_com_385_male.pdf", url: "151713_com_385_male.pdf" },
-    { title: "151714_com_441_male.pdf", url: "151714_com_441_male.pdf" },
-    { title: "151714_com_562_female.pdf", url: "151714_com_562_female.pdf" }
+
+    {title:"151686_com_1443_female.pdf",url:"151686_com_1443_female.pdf"},
+    {title:"151686_com_1526_male.pdf",url:"151686_com_1526_male.pdf"},
+
+    {title:"151687_com_34_female.pdf",url:"151687_com_34_female.pdf"},
+    {title:"151687_com_57_male.pdf",url:"151687_com_57_male.pdf"},
+
+    {title:"151688_com_251_female.pdf",url:"151688_com_251_female.pdf"},
+    {title:"151688_com_296_male.pdf",url:"151688_com_296_male.pdf"},
+
+    {title:"151690_com_1217_female.pdf",url:"151690_com_1217_female.pdf"},
+    {title:"151690_com_1305_male.pdf",url:"151690_com_1305_male.pdf"},
+
+    {title:"151691_com_436_male.pdf",url:"151691_com_436_male.pdf"},
+    {title:"151691_com_443_female.pdf",url:"151691_com_443_female.pdf"},
+
+    {title:"151692_com_237_female.pdf",url:"151692_com_237_female.pdf"},
+    {title:"151692_com_269_male.pdf",url:"151692_com_269_male.pdf"},
+
+    {title:"151693_com_1888_male.pdf",url:"151693_com_1888_male.pdf"},
+    {title:"151693_com_1926_female.pdf",url:"151693_com_1926_female.pdf"},
+
+    {title:"151694_com_3519_male.pdf",url:"151694_com_3519_male.pdf"},
+    {title:"151694_com_3839_female.pdf",url:"151694_com_3839_female.pdf"},
+
+    {title:"151695_com_87_female.pdf",url:"151695_com_87_female.pdf"},
+    {title:"151695_com_117_male.pdf",url:"151695_com_117_male.pdf"},
+
+    {title:"151696_com_380_female.pdf",url:"151696_com_380_female.pdf"},
+    {title:"151696_com_444_male.pdf",url:"151696_com_444_male.pdf"},
+
+    {title:"151697_com_623_female.pdf",url:"151697_com_623_female.pdf"},
+    {title:"151697_com_643_male.pdf",url:"151697_com_643_male.pdf"},
+
+    {title:"151698_com_397_female.pdf",url:"151698_com_397_female.pdf"},
+    {title:"151698_com_432_male.pdf",url:"151698_com_432_male.pdf"},
+
+    {title:"151699_com_366_female.pdf",url:"151699_com_366_female.pdf"},
+    {title:"151699_com_398_male.pdf",url:"151699_com_398_male.pdf"},
+
+    {title:"151700_com_2199_female.pdf",url:"151700_com_2199_female.pdf"},
+    {title:"151700_com_2199_male.pdf",url:"151700_com_2199_male.pdf"},
+
+    {title:"151701_com_1606_female.pdf",url:"151701_com_1606_female.pdf"},
+    {title:"151701_com_1675_male.pdf",url:"151701_com_1675_male.pdf"},
+
+    {title:"151702_com_466_female.pdf",url:"151702_com_466_female.pdf"},
+    {title:"151702_com_865_male.pdf",url:"151702_com_865_male.pdf"},
+
+    {title:"151703_com_1591_male.pdf",url:"151703_com_1591_male.pdf"},
+    {title:"151703_com_1816_female.pdf",url:"151703_com_1816_female.pdf"},
+
+    {title:"151704_com_335_male.pdf",url:"151704_com_335_male.pdf"},
+    {title:"151704_com_415_female.pdf",url:"151704_com_415_female.pdf"},
+
+    {title:"151705_com_1370_male.pdf",url:"151705_com_1370_male.pdf"},
+    {title:"151705_com_1427_female.pdf",url:"151705_com_1427_female.pdf"},
+
+    {title:"151706_com_582_female.pdf",url:"151706_com_582_female.pdf"},
+    {title:"151706_com_654_male.pdf",url:"151706_com_654_male.pdf"},
+
+    {title:"151707_com_262_female.pdf",url:"151707_com_262_female.pdf"},
+    {title:"151707_com_286_male.pdf",url:"151707_com_286_male.pdf"},
+
+    {title:"151708_com_373_female.pdf",url:"151708_com_373_female.pdf"},
+    {title:"151708_com_426_male.pdf",url:"151708_com_426_male.pdf"},
+
+    {title:"151709_com_384_female.pdf",url:"151709_com_384_female.pdf"},
+    {title:"151709_com_414_male.pdf",url:"151709_com_414_male.pdf"},
+
+    {title:"151710_com_255_female.pdf",url:"151710_com_255_female.pdf"},
+    {title:"151710_com_296_male.pdf",url:"151710_com_296_male.pdf"},
+
+    {title:"151711_com_984_male.pdf",url:"151711_com_984_male.pdf"},
+    {title:"151711_com_1188_female.pdf",url:"151711_com_1188_female.pdf"},
+
+    {title:"151712_com_1123_female.pdf",url:"151712_com_1123_female.pdf"},
+    {title:"151712_com_1160_male.pdf",url:"151712_com_1160_male.pdf"},
+
+    {title:"151713_com_345_female.pdf",url:"151713_com_345_female.pdf"},
+    {title:"151713_com_385_male.pdf",url:"151713_com_385_male.pdf"},
+
+    {title:"151714_com_441_male.pdf",url:"151714_com_441_male.pdf"},
+    {title:"151714_com_562_female.pdf",url:"151714_com_562_female.pdf"}
+
 ];
 
-function convertDigits(str, toBangla = true) {
-    if (!str) return "";
-    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    return str.replace(/[0-9০-৯]/g, w => toBangla ? banglaDigits[englishDigits.indexOf(w)] || w : englishDigits[banglaDigits.indexOf(w)] || w);
-}
 
-function cleanStr(text) {
-    if (!text) return "";
-    return text.replace(/\s+/g, ' ').replace(/\s([ািীুূৃেৈোৌ্ংঃঁ])/g, '$1').replace(/([্])\s/g, '$1').trim();
-}
+// ======================================================
+// বাংলা / ইংরেজি সংখ্যা
+// ======================================================
 
-function parseVoterData(block) {
-    const cleaned = cleanStr(block);
+function convertDigits(str,toBangla=true){
 
-    const serialMatch = cleaned.match(/^([০-৯0-9]{1,4})\./);
-    const serial = serialMatch ? serialMatch[1] : "";
+    const bn="০১২৩৪৫৬৭৮৯";
+    const en="0123456789";
 
-    const nameMatch = cleaned.match(/নাম[:\s]+([^ভ পিতা মাতা জন্ম ঠিকানা পেশা]+?)(?=\s*ভোটার|\s*পিতা|\s*পেশা|\s*জন্ম|$)/i);
-    const voterNoMatch = cleaned.match(/ভোটার\s*নং[:\s-]*([০-৯0-9]+)/i);
-    const fatherMatch = cleaned.match(/(?:পিতা|স্বামী)[:\s]+([^মাতা জন্ম ঠিকানা পেশা]+?)(?=\s*মাতা|\s*পেশা|\s*জন্ম|$)/i);
-    const motherMatch = cleaned.match(/মাতা[:\s]+([^জন্ম ঠিকানা পেশা]+?)(?=\s*পেশা|\s*জন্ম|\s*ঠিকানা|$)/i);
-    const dobMatch = cleaned.match(/জন্ম\s*তারিখ[:\s]*([০-৯0-9]{2}[\/\.-][০-৯0-9]{2}[\/\.-][০-৯0-9]{4})/i);
-    const addressMatch = cleaned.match(/ঠিকানা[:\s]+(.+)/i);
+    return String(str).replace(/[০-৯0-9]/g,function(ch){
 
-    return {
-        name: nameMatch ? nameMatch[1].trim() : "—",
-        serial: serial ? convertDigits(serial, true) : "—",
-        voterNo: voterNoMatch ? convertDigits(voterNoMatch[1], true) : "—",
-        dob: dobMatch ? convertDigits(dobMatch[1], true) : "—",
-        father: fatherMatch ? fatherMatch[1].trim() : "—",
-        mother: motherMatch ? motherMatch[1].trim() : "—",
-        address: addressMatch ? addressMatch[1].trim() : "—"
-    };
-}
+        if(toBangla){
 
-async function performSearch() {
-    const nameQuery = document.getElementById("nameInput").value.toLowerCase().trim();
-    const dobQuery = document.getElementById("dobInput").value.trim();
-    const resultsDiv = document.getElementById("results");
-    const statusDiv = document.getElementById("status");
-    
-    resultsDiv.innerHTML = "";
+            const index=en.indexOf(ch);
 
-    if (!nameQuery && !dobQuery) {
-        statusDiv.innerText = "অনুগ্রহ করে নাম অথবা জন্ম তারিখের যেকোনো একটি লিখুন।";
-        return;
-    }
+            return index>=0 ? bn[index] : ch;
 
-    statusDiv.innerText = "পিডিএফ ফাইলসমূহে খোঁজ করা হচ্ছে, দয়া করে অপেক্ষা করুন...";
-    let matchCount = 0;
+        }else{
 
-    const dobEn = convertDigits(dobQuery, false).toLowerCase();
-    const dobBn = convertDigits(dobQuery, true).toLowerCase();
+            const index=bn.indexOf(ch);
 
-    for (const pdfInfo of pdfList) {
-        try {
-            const loadingTask = pdfjsLib.getDocument(pdfInfo.url);
-            const pdf = await loadingTask.promise;
+            return index>=0 ? en[index] : ch;
 
-            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-                const page = await pdf.getPage(pageNum);
-                const textContent = await page.getTextContent();
-                const pageText = textContent.items.map(item => item.str).join(" ");
-
-                const personBlocks = pageText.split(/(?=[০-৯0-9]{1,4}\.\s*নাম[:\s]|নাম[:\s])/i);
-
-                for (let block of personBlocks) {
-                    const lowerBlock = block.toLowerCase();
-                    const matchesName = nameQuery ? lowerBlock.includes(nameQuery) : true;
-                    const matchesDob = dobQuery ? (lowerBlock.includes(dobEn) || lowerBlock.includes(dobBn)) : true;
-
-                    let isMatch = false;
-                    if (nameQuery && dobQuery) isMatch = matchesName && matchesDob;
-                    else if (nameQuery) isMatch = matchesName;
-                    else if (dobQuery) isMatch = matchesDob;
-
-                    if (isMatch && lowerBlock.includes("নাম")) {
-                        matchCount++;
-                        const banglaCount = convertDigits(matchCount.toString(), true);
-                        const data = parseVoterData(block);
-
-                        const cardHtml = `
-                            <div class="info-card">
-                                <div class="result-badge">ফলাফল নং: ${banglaCount}</div>
-                                <div class="watermark">
-                                    আলী ইসলাম<br>
-                                    উদ্যোক্তা, ০৩ নং পাঁচলাইশ ওয়ার্ড
-                                </div>
-
-                                <div class="card-details">
-                                    <div class="field-row"><strong>নাম:</strong> ${data.name}</div>
-                                    <div class="field-row"><strong>সিরিয়াল নাম্বার:</strong> ${data.serial}</div>
-                                    <div class="field-row"><strong>ভোটার নং-</strong> ${data.voterNo}</div>
-                                    <div class="field-row"><strong>জন্ম তারিখ:</strong> ${data.dob}</div>
-                                    <div class="field-row"><strong>পিতা/স্বামী:</strong> ${data.father}</div>
-                                    <div class="field-row"><strong>মাতা:</strong> ${data.mother}</div>
-                                    <div class="field-row"><strong>এলাকা:</strong> ${data.address}</div>
-                                    <div class="field-row"><strong>ওয়ার্ড:</strong> ওয়ার্ড নং-০৩</div>
-                                </div>
-
-                                <div style="text-align: center; margin-top: 15px;">
-                                    <a href="${pdfInfo.url}#page=${pageNum}" target="_blank" class="pdf-link-btn">মূল পিডিএফ ফাইল দেখুন (পৃষ্ঠা ${pageNum})</a>
-                                </div>
-                            </div>
-                        `;
-                        resultsDiv.innerHTML += cardHtml;
-                    }
-                }
-            }
-        } catch (error) {
-            console.error("Error reading PDF:", error);
         }
+
+    });
+
+}
+
+
+// ======================================================
+// TEXT CLEAN
+// ======================================================
+
+function cleanText(text){
+
+    return String(text || "")
+        .replace(/\u00A0/g," ")
+        .replace(/\s+/g," ")
+        .trim();
+
+}
+
+
+// ======================================================
+// PDF বাংলা TEXT ঠিক করা
+// ======================================================
+
+function fixPdfBangla(text){
+
+    let s=cleanText(text);
+
+
+    const replacements={
+
+        "োভাটার":"ভোটার",
+
+        "সামী":"স্বামী",
+
+        "িপতা":"পিতা",
+
+        "িঠকানা":"ঠিকানা",
+
+        "োপশা":"পেশা",
+
+        "জন তািরখ":"জন্ম তারিখ",
+
+        "জন্ম তািরখ":"জন্ম তারিখ",
+
+        "জন্ম তারিখ":"জন্ম তারিখ",
+
+        "গৃিহনী":"গৃহিণী",
+
+        "ছাত/ছাতী":"ছাত্র/ছাত্রী",
+
+        "ওয়ােজদিয়া":"ওয়াজেদিয়া",
+
+        "ওয়ােজিদয়া":"ওয়াজেদিয়া",
+
+        "বায়িজদ":"বায়েজিদ",
+
+        "চটগাম":"চট্টগ্রাম",
+
+        "োজলা":"জেলা",
+
+        "উপেজলা":"উপজেলা",
+
+        "ওয়াডর":"ওয়ার্ড"
+
+    };
+
+
+    for(const wrong in replacements){
+
+        s=s.split(wrong).join(
+            replacements[wrong]
+        );
+
     }
 
-    if (matchCount > 0) {
-        const totalBangla = convertDigits(matchCount.toString(), true);
-        statusDiv.innerText = `সর্বমোট ${totalBangla}টি নির্দিষ্ট তথ্য পাওয়া গেছে:`;
-    } else {
-        statusDiv.innerText = "কোনো তথ্য পাওয়া যায়নি।";
-    }
+
+    return s;
+
 }
+
+
+// ======================================================
+// SEARCH NORMALIZE
+// ======================================================
+
+function normalizeSearch(text){
+
+    return fixPdfBangla(text)
+        .toLowerCase()
+        .normalize("NFC")
+        .replace(/[\u200C\u200D]/g,"")
+        .replace(/[.,:;|()[\]{}\-]/g," ")
+        .replace(/\s+/g," ")
+        .trim();
+
+}
+
+
+// ======================================================
+// LEVENSHTEIN
+// ======================================================
+
+function similarity(a,b){
+
+    a=normalizeSearch(a);
+    b=normalizeSearch(b);
+
+    if(!a || !b) return 0;
+
+    if(a===b) return 1;
+
+    if(a.includes(b) || b.includes(a))
+        return .95;
+
+
+    const matrix=[];
+
+
+    for(let i=0;i<=a.length;i++)
+        matrix[i]=[i];
+
+
+    for(let j=0;j<=b.length;j++)
+        matrix[0][j]=j;
+
+
+    for(let i=1;i<=a.length;i++){
+
+        for(let j=1;j<=b.length;j++){
+
+            const cost=
+                a[i-1]===b[j-1]
+                ?0
+                :1;
+
+
+            matrix[i][j]=Math.min(
+
+                matrix[i-1][j]+1,
+
+                matrix[i][j-1]+1,
+
+                matrix[i-1][j-1]+cost
+
+            );
+
+        }
+
+    }
+
+
+    const distance=
+        matrix[a.length][b.length];
+
+
+    return 1 -
+        distance/
+        Math.max(a.length,b.length);
+
+}
+
+
+// ======================================================
+// NAME MATCH
+// ======================================================
+
+function nameMatches(query,name){
+
+    if(!query || !name)
+        return false;
+
+
+    const q=normalizeSearch(query);
+    const n=normalizeSearch(name);
+
+
+    if(n.includes(q) || q.includes(n))
+        return true;
+
+
+    if(similarity(q,n)>=.72)
+        return true;
+
+
+    const qw=q.split(" ");
+    const nw=n.split(" ");
+
+
+    for(const a of qw){
+
+        for(const b of nw){
+
+            if(similarity(a,b)>=.75)
+                return true;
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+// ======================================================
+// PARSE VOTER
+// ======================================================
+
+function parseVoterData(block){
+
+    const text=fixPdfBangla(block);
+
+
+    const serialMatch=
+        text.match(
+            /^([০-৯0-9]{1,6})\s*\./
+        );
+
+
+    const nameMatch=
+        text.match(
+            /নাম\s*[:：]?\s*(.*?)\s*(?=ভোটার\s*নং|পিতা|স্বামী|মাতা|পেশা|জন্ম\s*তারিখ|ঠিকানা|$)/i
+        );
+
+
+    const voterMatch=
+        text.match(
+            /ভোটার\s*নং\s*[:：-]?\s*([০-৯0-9]+)/i
+        );
+
+
+    const fatherMatch=
+        text.match(
+            /(?:পিতা|স্বামী)\s*[:：]?\s*(.*?)\s*(?=মাতা|পেশা|জন্ম\s*তারিখ|ঠিকানা|$)/i
+        );
+
+
+    const motherMatch=
+        text.match(
+            /মাতা\s*[:：]?\s*(.*?)\s*(?=পেশা|জন্ম\s*তারিখ|ঠিকানা|$)/i
+        );
+
+
+    const occupationMatch=
+        text.match(
+            /পেশা\s*[:：]?\s*(.*?)\s*(?=জন্ম\s*তারিখ|ঠিকানা|$)/i
+        );
+
+
+    const dobMatch=
+        text.match(
+            /জন্ম\s*তারিখ\s*[:：]?\s*([০-৯0-9]{1,2}[\/.-][০-৯0-9]{1,2}[\/.-][০-৯0-9]{4})/i
+        );
+
+
+    const addressMatch=
+        text.match(
+            /ঠিকানা\s*[:：]?\s*(.+)$/i
+        );
+
+
+    return{
+
+        name:nameMatch
+            ?nameMatch[1].trim()
+            :"N/A",
+
+        serial:serialMatch
+            ?convertDigits(serialMatch[1],true)
+            :"N/A",
+
+        voterNo:voterMatch
+            ?convertDigits(voterMatch[1],true)
+            :"N/A",
+
+        father:fatherMatch
+            ?fatherMatch[1].trim()
+            :"N/A",
+
+        mother:motherMatch
+            ?motherMatch[1].trim()
+            :"N/A",
+
+        occupation:occupationMatch
+            ?occupationMatch[1].trim()
+            :"N/A",
+
+        dob:dobMatch
+            ?convertDigits(dobMatch[1],true)
+            :"N/A",
+
+        address:addressMatch
+            ?addressMatch[1].trim()
+            :"N/A"
+
+    };
+
+}
+
+
+// ======================================================
+// PERSON BLOCK
+// ======================================================
+
+function extractPersonBlocks(pageText){
+
+    const text=cleanText(pageText);
+
+
+    /*
+    PDF-এ প্রতিটি ভোটার সাধারণত:
+
+    ০০০১. নাম:
+    ০০০২. নাম:
+    ০০০৩. নাম:
+
+    */
+
+    const blocks=
+        text.split(
+            /(?=[০-৯0-9]{1,6}\s*\.\s*নাম\s*[:：]?)/i
+        );
+
+
+    return blocks
+        .map(x=>x.trim())
+        .filter(x=>{
+
+            return (
+                x &&
+                /নাম\s*[:：]?/i.test(
+                    fixPdfBangla(x)
+                )
+            );
+
+        });
+
+}
+
+
+// ======================================================
+// ESCAPE HTML
+// ======================================================
+
+function escapeHTML(value){
+
+    return String(value || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+// ======================================================
+// SEARCH
+// ======================================================
+
+async function performSearch(){
+
+    const nameQuery=
+        document.getElementById(
+            "nameInput"
+        ).value.trim();
+
+
+    const dobQuery=
+        document.getElementById(
+            "dobInput"
+        ).value.trim();
+
+
+    const results=
+        document.getElementById(
+            "results"
+        );
+
+
+    const status=
+        document.getElementById(
+            "status"
+        );
+
+
+    const searchBtn=
+        document.getElementById(
+            "searchBtn"
+        );
+
+
+    results.innerHTML="";
+
+
+    if(!nameQuery && !dobQuery){
+
+        status.innerText=
+            "অনুগ্রহ করে নাম অথবা জন্ম তারিখ লিখুন।";
+
+        return;
+
+    }
+
+
+    searchBtn.disabled=true;
+
+
+    status.innerHTML=`
+
+        <div class="loading">
+
+            <div class="spinner"></div>
+
+            PDF ফাইলসমূহে তথ্য খোঁজা হচ্ছে...
+
+        </div>
+
+    `;
+
+
+    let matchCount=0;
+
+    const found=new Set();
+
+
+    const dobBn=
+        normalizeSearch(
+            convertDigits(dobQuery,true)
+        );
+
+
+    const dobEn=
+        normalizeSearch(
+            convertDigits(dobQuery,false)
+        );
+
+
+    // ==================================================
+    // PDF LOOP
+    // ==================================================
+
+    for(
+        let fileIndex=0;
+        fileIndex<pdfList.length;
+        fileIndex++
+    ){
+
+        const pdfInfo=
+            pdfList[fileIndex];
+
+
+        status.innerHTML=`
+
+            <div class="loading">
+
+                <div class="spinner"></div>
+
+                ফাইল ${convertDigits(fileIndex+1,true)}
+                / ${convertDigits(pdfList.length,true)}
+                পরীক্ষা করা হচ্ছে...
+
+            </div>
+
+        `;
+
+
+        try{
+
+            const loadingTask=
+                pdfjsLib.getDocument({
+                    url:pdfInfo.url
+                });
+
+
+            const pdf=
+                await loadingTask.promise;
+
+
+            // ==========================================
+            // PAGE LOOP
+            // ==========================================
+
+            for(
+                let pageNum=1;
+                pageNum<=pdf.numPages;
+                pageNum++
+            ){
+
+                const page=
+                    await pdf.getPage(pageNum);
+
+
+                const textContent=
+                    await page.getTextContent();
+
+
+                const pageText=
+                    textContent.items
+                        .map(item=>item.str)
+                        .join(" ");
+
+
+                if(!pageText.trim())
+                    continue;
+
+
+                const blocks=
+                    extractPersonBlocks(
+                        pageText
+                    );
+
+
+                // ======================================
+                // PERSON LOOP
+                // ======================================
+
+                for(const block of blocks){
+
+                    const data=
+                        parseVoterData(block);
+
+
+                    if(data.name==="N/A")
+                        continue;
+
+
+                    // NAME
+                    let nameOK=true;
+
+
+                    if(nameQuery){
+
+                        nameOK=
+                            nameMatches(
+                                nameQuery,
+                                data.name
+                            );
+
+                    }
+
+
+                    // DOB
+                    let dobOK=true;
+
+
+                    if(dobQuery){
+
+                        const actualDob=
+                            normalizeSearch(
+                                data.dob
+                            );
+
+
+                        dobOK=
+                            actualDob===dobBn ||
+                            actualDob===dobEn ||
+                            actualDob.includes(dobBn) ||
+                            actualDob.includes(dobEn);
+
+                    }
+
+
+                    if(!nameOK || !dobOK)
+                        continue;
+
+
+                    // DUPLICATE
+                    const key=
+                        data.voterNo!=="N/A"
+                        ?data.voterNo
+                        :data.name+"|"+data.dob;
+
+
+                    if(found.has(key))
+                        continue;
+
+
+                    found.add(key);
+
+                    matchCount++;
+
+
+                    const card=
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className=
+                        "info-card";
+
+
+                    card.innerHTML=`
+
+                        <div class="result-badge">
+
+                            ফলাফল নং:
+                            ${convertDigits(
+                                matchCount,
+                                true
+                            )}
+
+                        </div>
+
+
+                        <div class="watermark">
+
+                            আলী ইসলাম<br>
+
+                            উদ্যোক্তা,
+                            ০৩ নং পাঁচলাইশ ওয়ার্ড
+
+                        </div>
+
+
+                        <div class="card-details">
+
+                            <div class="field-row">
+
+                                <strong>নাম:</strong>
+
+                                ${escapeHTML(
+                                    data.name
+                                )}
+
+                            </div>
+
+
+                            <div class="field-row">
+
+                                <strong>
+                                    সিরিয়াল নাম্বার:
+                                </strong>
+
+                                ${escapeHTML(
+                                    data.serial
+                                )}
+
+                            </div>
+
+
+                            <div class="field-row">
+
+                                <strong>
+                                    ভোটার নং:
+                                </strong>
+
+                                ${escapeHTML(
+                                    data.voterNo
+                                )}
+
+                            </div>
+
+
+                            <div class="field-row">
+
+                                <strong>
+                                    জন্ম তারিখ:
+                                </strong>
+
+                                ${escapeHTML(
+                                    data.dob
+                                )}
+
+                            </div>
+
+
+                            <div class="field-row">
+
+                                <strong>
+                                    পিতা/স্বামী:
+                                </strong>
+
+                                ${escapeHTML(
+                                    data.father
+                                )}
+
+                            </div>
+
+
+                            <div class="field-row">
+
+                                <strong>
+                                    মাতা:
+                                </strong>
+
+                                ${escapeHTML(
+                                    data.mother
+                                )}
+
+                            </div>
+
+
+                            <div class="field-row">
+
+                                <strong>
+                                    পেশা:
+                                </strong>
+
+                                ${escapeHTML(
+                                    data.occupation
+                                )}
+
+                            </div>
+
+
+                            <div class="field-row">
+
+                                <strong>
+                                    এলাকা:
+                                </strong>
+
+                                ${escapeHTML(
+                                    data.address
+                                )}
+
+                            </div>
+
+
+                            <div class="field-row">
+
+                                <strong>
+                                    ওয়ার্ড:
+                                </strong>
+
+                                ওয়ার্ড নং-০৩
+
+                            </div>
+
+                        </div>
+
+
+                        <div style="
+                            text-align:center;
+                            position:relative;
+                            z-index:3;
+                        ">
+
+                            <a
+                                class="pdf-link-btn"
+                                href="${pdfInfo.url}#page=${pageNum}"
+                                target="_blank"
+                            >
+
+                                📄 মূল PDF দেখুন
+                                (পৃষ্ঠা
+                                ${convertDigits(
+                                    pageNum,
+                                    true
+                                )})
+
+                            </a>
+
+                        </div>
+
+                    `;
+
+
+                    results.appendChild(card);
+
+                }
+
+            }
+
+
+        }catch(error){
+
+            console.error(
+                "PDF Error:",
+                pdfInfo.url,
+                error
+            );
+
+        }
+
+    }
+
+
+    // ==================================================
+    // FINAL RESULT
+    // ==================================================
+
+    if(matchCount>0){
+
+        status.innerText=
+            `সর্বমোট ${convertDigits(
+                matchCount,
+                true
+            )}টি তথ্য পাওয়া গেছে।`;
+
+    }else{
+
+        status.innerText=
+            "কোনো তথ্য পাওয়া যায়নি।";
+
+
+        results.innerHTML=`
+
+            <div class="no-result">
+
+                ❌ দুঃখিত!
+
+                <br><br>
+
+                আপনার দেওয়া নাম অথবা জন্ম তারিখের
+                সাথে কোনো তথ্য পাওয়া যায়নি।
+
+            </div>
+
+        `;
+
+    }
+
+
+    searchBtn.disabled=false;
+
+}
+
+
+// ======================================================
+// ENTER KEY
+// ======================================================
+
+document
+.getElementById("nameInput")
+.addEventListener(
+    "keydown",
+    function(e){
+
+        if(e.key==="Enter")
+            performSearch();
+
+    }
+);
+
+
+document
+.getElementById("dobInput")
+.addEventListener(
+    "keydown",
+    function(e){
+
+        if(e.key==="Enter")
+            performSearch();
+
+    }
+);
+
 </script>
 
 </body>
