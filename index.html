@@ -9,7 +9,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
 <style>
-
 *{
     box-sizing:border-box;
 }
@@ -33,15 +32,19 @@ body{
 }
 
 h2{
-    margin-top:0;
+    margin:0 0 8px;
     color:#173b57;
+}
+
+h3{
+    margin:0 0 20px;
+    color:#555;
 }
 
 .input-group{
     display:flex;
     flex-direction:column;
     gap:12px;
-    margin-top:20px;
 }
 
 input{
@@ -55,14 +58,13 @@ input{
 
 input:focus{
     border-color:#007bff;
-    box-shadow:0 0 0 2px rgba(0,123,255,.1);
 }
 
 button{
     padding:14px;
     font-size:17px;
     background:#007bff;
-    color:white;
+    color:#fff;
     border:0;
     border-radius:7px;
     cursor:pointer;
@@ -99,7 +101,7 @@ button:disabled{
 .result-badge{
     display:inline-block;
     background:#007bff;
-    color:white;
+    color:#fff;
     padding:6px 15px;
     border-radius:20px;
     font-size:14px;
@@ -112,7 +114,7 @@ button:disabled{
     top:50%;
     left:50%;
     transform:translate(-50%,-50%) rotate(-25deg);
-    font-size:26px;
+    font-size:25px;
     font-weight:bold;
     color:rgba(0,0,0,.11);
     white-space:nowrap;
@@ -138,7 +140,7 @@ button:disabled{
     margin-top:15px;
     padding:10px 16px;
     background:#28a745;
-    color:white;
+    color:#fff;
     text-decoration:none;
     border-radius:6px;
     font-weight:bold;
@@ -152,7 +154,7 @@ button:disabled{
     max-width:600px;
     margin:25px auto;
     padding:20px;
-    background:white;
+    background:#fff;
     border-radius:8px;
     text-align:center;
     color:#d00;
@@ -161,12 +163,12 @@ button:disabled{
 
 .loading{
     text-align:center;
-    padding:20px;
+    padding:10px;
 }
 
 .spinner{
-    width:35px;
-    height:35px;
+    width:32px;
+    height:32px;
     border:4px solid #ddd;
     border-top-color:#007bff;
     border-radius:50%;
@@ -200,15 +202,12 @@ button:disabled{
 
     .card-details{
         font-size:17px;
-        line-height:1.8;
     }
 
     .watermark{
-        font-size:20px;
+        font-size:19px;
     }
-
 }
-
 </style>
 </head>
 
@@ -244,7 +243,6 @@ button:disabled{
 
 </div>
 
-
 <div id="results"></div>
 
 
@@ -254,9 +252,9 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
 
 
-// ======================================================
-// PDF LIST
-// ======================================================
+// =====================================================
+// PDF FILE LIST
+// =====================================================
 
 const pdfList = [
 
@@ -347,28 +345,28 @@ const pdfList = [
 ];
 
 
-// ======================================================
-// বাংলা / ইংরেজি সংখ্যা
-// ======================================================
+// =====================================================
+// DIGIT CONVERSION
+// =====================================================
 
 function convertDigits(str,toBangla=true){
 
     const bn="০১২৩৪৫৬৭৮৯";
     const en="0123456789";
 
-    return String(str).replace(/[০-৯0-9]/g,function(ch){
+    return String(str || "").replace(/[০-৯0-9]/g,function(ch){
 
         if(toBangla){
 
-            const index=en.indexOf(ch);
+            const i=en.indexOf(ch);
 
-            return index>=0 ? bn[index] : ch;
+            return i>=0 ? bn[i] : ch;
 
         }else{
 
-            const index=bn.indexOf(ch);
+            const i=bn.indexOf(ch);
 
-            return index>=0 ? en[index] : ch;
+            return i>=0 ? en[i] : ch;
 
         }
 
@@ -377,9 +375,9 @@ function convertDigits(str,toBangla=true){
 }
 
 
-// ======================================================
-// TEXT CLEAN
-// ======================================================
+// =====================================================
+// PDF TEXT CLEAN
+// =====================================================
 
 function cleanText(text){
 
@@ -391,9 +389,9 @@ function cleanText(text){
 }
 
 
-// ======================================================
-// PDF বাংলা TEXT ঠিক করা
-// ======================================================
+// =====================================================
+// PDF BANGLA FIX
+// =====================================================
 
 function fixPdfBangla(text){
 
@@ -403,6 +401,7 @@ function fixPdfBangla(text){
     const replacements={
 
         "োভাটার":"ভোটার",
+        "োভাটার নং":"ভোটার নং",
 
         "সামী":"স্বামী",
 
@@ -416,25 +415,13 @@ function fixPdfBangla(text){
 
         "জন্ম তািরখ":"জন্ম তারিখ",
 
-        "জন্ম তারিখ":"জন্ম তারিখ",
-
         "গৃিহনী":"গৃহিণী",
-
-        "ছাত/ছাতী":"ছাত্র/ছাত্রী",
-
-        "ওয়ােজদিয়া":"ওয়াজেদিয়া",
-
-        "ওয়ােজিদয়া":"ওয়াজেদিয়া",
 
         "বায়িজদ":"বায়েজিদ",
 
-        "চটগাম":"চট্টগ্রাম",
+        "ওয়ােজদিয়া":"ওয়াজেদিয়া",
 
-        "োজলা":"জেলা",
-
-        "উপেজলা":"উপজেলা",
-
-        "ওয়াডর":"ওয়ার্ড"
+        "ওয়ােজিদয়া":"ওয়াজেদিয়া"
 
     };
 
@@ -453,16 +440,16 @@ function fixPdfBangla(text){
 }
 
 
-// ======================================================
-// SEARCH NORMALIZE
-// ======================================================
+// =====================================================
+// NORMALIZE
+// =====================================================
 
 function normalizeSearch(text){
 
     return fixPdfBangla(text)
         .toLowerCase()
         .normalize("NFC")
-        .replace(/[\u200C\u200D]/g,"")
+        .replace(/[\u200B\u200C\u200D\uFEFF]/g,"")
         .replace(/[.,:;|()[\]{}\-]/g," ")
         .replace(/\s+/g," ")
         .trim();
@@ -470,18 +457,20 @@ function normalizeSearch(text){
 }
 
 
-// ======================================================
-// LEVENSHTEIN
-// ======================================================
+// =====================================================
+// LEVENSHTEIN SIMILARITY
+// =====================================================
 
 function similarity(a,b){
 
     a=normalizeSearch(a);
     b=normalizeSearch(b);
 
-    if(!a || !b) return 0;
+    if(!a || !b)
+        return 0;
 
-    if(a===b) return 1;
+    if(a===b)
+        return 1;
 
     if(a.includes(b) || b.includes(a))
         return .95;
@@ -490,12 +479,18 @@ function similarity(a,b){
     const matrix=[];
 
 
-    for(let i=0;i<=a.length;i++)
+    for(let i=0;i<=a.length;i++){
+
         matrix[i]=[i];
 
+    }
 
-    for(let j=0;j<=b.length;j++)
+
+    for(let j=0;j<=b.length;j++){
+
         matrix[0][j]=j;
+
+    }
 
 
     for(let i=1;i<=a.length;i++){
@@ -503,9 +498,7 @@ function similarity(a,b){
         for(let j=1;j<=b.length;j++){
 
             const cost=
-                a[i-1]===b[j-1]
-                ?0
-                :1;
+                a[i-1]===b[j-1] ? 0 : 1;
 
 
             matrix[i][j]=Math.min(
@@ -523,20 +516,16 @@ function similarity(a,b){
     }
 
 
-    const distance=
-        matrix[a.length][b.length];
-
-
     return 1 -
-        distance/
+        matrix[a.length][b.length] /
         Math.max(a.length,b.length);
 
 }
 
 
-// ======================================================
+// =====================================================
 // NAME MATCH
-// ======================================================
+// =====================================================
 
 function nameMatches(query,name){
 
@@ -548,26 +537,95 @@ function nameMatches(query,name){
     const n=normalizeSearch(name);
 
 
-    if(n.includes(q) || q.includes(n))
+    // সরাসরি
+    if(q===n)
         return true;
 
 
-    if(similarity(q,n)>=.72)
+    // একটির ভিতরে অন্যটি
+    if(n.includes(q))
+        return true;
+
+    if(q.includes(n))
         return true;
 
 
-    const qw=q.split(" ");
-    const nw=n.split(" ");
+    // শব্দ অনুযায়ী
+    const qWords=
+        q.split(/\s+/).filter(Boolean);
+
+    const nWords=
+        n.split(/\s+/).filter(Boolean);
 
 
-    for(const a of qw){
+    let matched=0;
 
-        for(const b of nw){
 
-            if(similarity(a,b)>=.75)
-                return true;
+    for(const qw of qWords){
+
+        let found=false;
+
+
+        for(const nw of nWords){
+
+            if(
+                nw.includes(qw) ||
+                qw.includes(nw)
+            ){
+
+                found=true;
+                break;
+
+            }
+
+
+            // বাংলা OCR ভুলের জন্য
+            if(
+                similarity(qw,nw)>=0.45
+            ){
+
+                found=true;
+                break;
+
+            }
 
         }
+
+
+        if(found)
+            matched++;
+
+    }
+
+
+    // নামের সবগুলো শব্দ পাওয়া গেলে
+    if(
+        qWords.length>1 &&
+        matched===qWords.length
+    ){
+
+        return true;
+
+    }
+
+
+    // এক শব্দের নাম হলে
+    if(
+        qWords.length===1 &&
+        matched>=1
+    ){
+
+        return true;
+
+    }
+
+
+    // পুরো নামের similarity
+    if(
+        similarity(q,n)>=0.45
+    ){
+
+        return true;
 
     }
 
@@ -577,9 +635,89 @@ function nameMatches(query,name){
 }
 
 
-// ======================================================
-// PARSE VOTER
-// ======================================================
+// =====================================================
+// PERSON BLOCK
+// =====================================================
+
+function extractPersonBlocks(pageText){
+
+    let text=fixPdfBangla(pageText);
+
+
+    /*
+       PDF-এর প্রতিটি ভোটার সাধারণত
+       ০০০১. নাম:
+       ০০০২. নাম:
+       ইত্যাদি।
+    */
+
+
+    text=text.replace(
+        /([০-৯0-9]{1,6})\s*\.\s*/g,
+        "\n$1. "
+    );
+
+
+    const lines=
+        text.split("\n")
+        .map(x=>x.trim())
+        .filter(Boolean);
+
+
+    const blocks=[];
+
+    let current="";
+
+
+    for(const line of lines){
+
+        if(
+            /^[০-৯0-9]{1,6}\s*\./.test(line)
+        ){
+
+            if(current){
+
+                blocks.push(current);
+
+            }
+
+
+            current=line;
+
+        }else{
+
+            if(current){
+
+                current += " " + line;
+
+            }
+
+        }
+
+    }
+
+
+    if(current){
+
+        blocks.push(current);
+
+    }
+
+
+    return blocks.filter(block=>{
+
+        return /নাম/i.test(
+            fixPdfBangla(block)
+        );
+
+    });
+
+}
+
+
+// =====================================================
+// PARSE VOTER DATA
+// =====================================================
 
 function parseVoterData(block){
 
@@ -594,7 +732,7 @@ function parseVoterData(block){
 
     const nameMatch=
         text.match(
-            /নাম\s*[:：]?\s*(.*?)\s*(?=ভোটার\s*নং|পিতা|স্বামী|মাতা|পেশা|জন্ম\s*তারিখ|ঠিকানা|$)/i
+            /নাম\s*[:：]?\s*(.*?)\s*(?=ভোটার|পিতা|স্বামী|মাতা|পেশা|জন্ম|ঠিকানা|$)/i
         );
 
 
@@ -606,19 +744,19 @@ function parseVoterData(block){
 
     const fatherMatch=
         text.match(
-            /(?:পিতা|স্বামী)\s*[:：]?\s*(.*?)\s*(?=মাতা|পেশা|জন্ম\s*তারিখ|ঠিকানা|$)/i
+            /(?:পিতা|স্বামী)\s*[:：]?\s*(.*?)\s*(?=মাতা|পেশা|জন্ম|ঠিকানা|$)/i
         );
 
 
     const motherMatch=
         text.match(
-            /মাতা\s*[:：]?\s*(.*?)\s*(?=পেশা|জন্ম\s*তারিখ|ঠিকানা|$)/i
+            /মাতা\s*[:：]?\s*(.*?)\s*(?=পেশা|জন্ম|ঠিকানা|$)/i
         );
 
 
     const occupationMatch=
         text.match(
-            /পেশা\s*[:：]?\s*(.*?)\s*(?=জন্ম\s*তারিখ|ঠিকানা|$)/i
+            /পেশা\s*[:：]?\s*(.*?)\s*(?=জন্ম|ঠিকানা|$)/i
         );
 
 
@@ -641,11 +779,17 @@ function parseVoterData(block){
             :"N/A",
 
         serial:serialMatch
-            ?convertDigits(serialMatch[1],true)
+            ?convertDigits(
+                serialMatch[1],
+                true
+            )
             :"N/A",
 
         voterNo:voterMatch
-            ?convertDigits(voterMatch[1],true)
+            ?convertDigits(
+                voterMatch[1],
+                true
+            )
             :"N/A",
 
         father:fatherMatch
@@ -661,7 +805,10 @@ function parseVoterData(block){
             :"N/A",
 
         dob:dobMatch
-            ?convertDigits(dobMatch[1],true)
+            ?convertDigits(
+                dobMatch[1],
+                true
+            )
             :"N/A",
 
         address:addressMatch
@@ -673,49 +820,9 @@ function parseVoterData(block){
 }
 
 
-// ======================================================
-// PERSON BLOCK
-// ======================================================
-
-function extractPersonBlocks(pageText){
-
-    const text=cleanText(pageText);
-
-
-    /*
-    PDF-এ প্রতিটি ভোটার সাধারণত:
-
-    ০০০১. নাম:
-    ০০০২. নাম:
-    ০০০৩. নাম:
-
-    */
-
-    const blocks=
-        text.split(
-            /(?=[০-৯0-9]{1,6}\s*\.\s*নাম\s*[:：]?)/i
-        );
-
-
-    return blocks
-        .map(x=>x.trim())
-        .filter(x=>{
-
-            return (
-                x &&
-                /নাম\s*[:：]?/i.test(
-                    fixPdfBangla(x)
-                )
-            );
-
-        });
-
-}
-
-
-// ======================================================
-// ESCAPE HTML
-// ======================================================
+// =====================================================
+// HTML ESCAPE
+// =====================================================
 
 function escapeHTML(value){
 
@@ -729,9 +836,9 @@ function escapeHTML(value){
 }
 
 
-// ======================================================
-// SEARCH
-// ======================================================
+// =====================================================
+// MAIN SEARCH
+// =====================================================
 
 async function performSearch(){
 
@@ -747,13 +854,13 @@ async function performSearch(){
         ).value.trim();
 
 
-    const results=
+    const resultsDiv=
         document.getElementById(
             "results"
         );
 
 
-    const status=
+    const statusDiv=
         document.getElementById(
             "status"
         );
@@ -765,12 +872,12 @@ async function performSearch(){
         );
 
 
-    results.innerHTML="";
+    resultsDiv.innerHTML="";
 
 
     if(!nameQuery && !dobQuery){
 
-        status.innerText=
+        statusDiv.innerText=
             "অনুগ্রহ করে নাম অথবা জন্ম তারিখ লিখুন।";
 
         return;
@@ -781,39 +888,24 @@ async function performSearch(){
     searchBtn.disabled=true;
 
 
-    status.innerHTML=`
-
-        <div class="loading">
-
-            <div class="spinner"></div>
-
-            PDF ফাইলসমূহে তথ্য খোঁজা হচ্ছে...
-
-        </div>
-
-    `;
-
-
     let matchCount=0;
 
-    const found=new Set();
+
+    const used=new Set();
 
 
-    const dobBn=
+    const searchDob=
         normalizeSearch(
-            convertDigits(dobQuery,true)
+            convertDigits(
+                dobQuery,
+                true
+            )
         );
 
 
-    const dobEn=
-        normalizeSearch(
-            convertDigits(dobQuery,false)
-        );
-
-
-    // ==================================================
+    // =================================================
     // PDF LOOP
-    // ==================================================
+    // =================================================
 
     for(
         let fileIndex=0;
@@ -825,14 +917,16 @@ async function performSearch(){
             pdfList[fileIndex];
 
 
-        status.innerHTML=`
+        statusDiv.innerHTML=`
 
             <div class="loading">
 
                 <div class="spinner"></div>
 
-                ফাইল ${convertDigits(fileIndex+1,true)}
-                / ${convertDigits(pdfList.length,true)}
+                ফাইল
+                ${convertDigits(fileIndex+1,true)}
+                /
+                ${convertDigits(pdfList.length,true)}
                 পরীক্ষা করা হচ্ছে...
 
             </div>
@@ -852,9 +946,9 @@ async function performSearch(){
                 await loadingTask.promise;
 
 
-            // ==========================================
+            // =========================================
             // PAGE LOOP
-            // ==========================================
+            // =========================================
 
             for(
                 let pageNum=1;
@@ -872,8 +966,8 @@ async function performSearch(){
 
                 const pageText=
                     textContent.items
-                        .map(item=>item.str)
-                        .join(" ");
+                    .map(item=>item.str)
+                    .join(" ");
 
 
                 if(!pageText.trim())
@@ -886,9 +980,9 @@ async function performSearch(){
                     );
 
 
-                // ======================================
+                // =====================================
                 // PERSON LOOP
-                // ======================================
+                // =====================================
 
                 for(const block of blocks){
 
@@ -900,7 +994,10 @@ async function performSearch(){
                         continue;
 
 
+                    // -------------------------------
                     // NAME
+                    // -------------------------------
+
                     let nameOK=true;
 
 
@@ -915,7 +1012,10 @@ async function performSearch(){
                     }
 
 
+                    // -------------------------------
                     // DOB
+                    // -------------------------------
+
                     let dobOK=true;
 
 
@@ -928,10 +1028,8 @@ async function performSearch(){
 
 
                         dobOK=
-                            actualDob===dobBn ||
-                            actualDob===dobEn ||
-                            actualDob.includes(dobBn) ||
-                            actualDob.includes(dobEn);
+                            actualDob===searchDob ||
+                            actualDob.includes(searchDob);
 
                     }
 
@@ -940,21 +1038,28 @@ async function performSearch(){
                         continue;
 
 
+                    // -------------------------------
                     // DUPLICATE
-                    const key=
+                    // -------------------------------
+
+                    const uniqueKey=
                         data.voterNo!=="N/A"
                         ?data.voterNo
                         :data.name+"|"+data.dob;
 
 
-                    if(found.has(key))
+                    if(used.has(uniqueKey))
                         continue;
 
 
-                    found.add(key);
+                    used.add(uniqueKey);
 
                     matchCount++;
 
+
+                    // =================================
+                    // CARD
+                    // =================================
 
                     const card=
                         document.createElement(
@@ -1005,7 +1110,7 @@ async function performSearch(){
                             <div class="field-row">
 
                                 <strong>
-                                    সিরিয়াল নাম্বার:
+                                    সিরিয়াল নাম্বার:
                                 </strong>
 
                                 ${escapeHTML(
@@ -1113,12 +1218,13 @@ async function performSearch(){
                         ">
 
                             <a
-                                class="pdf-link-btn"
                                 href="${pdfInfo.url}#page=${pageNum}"
                                 target="_blank"
+                                class="pdf-link-btn"
                             >
 
                                 📄 মূল PDF দেখুন
+
                                 (পৃষ্ঠা
                                 ${convertDigits(
                                     pageNum,
@@ -1132,7 +1238,7 @@ async function performSearch(){
                     `;
 
 
-                    results.appendChild(card);
+                    resultsDiv.appendChild(card);
 
                 }
 
@@ -1142,7 +1248,7 @@ async function performSearch(){
         }catch(error){
 
             console.error(
-                "PDF Error:",
+                "PDF পড়তে সমস্যা:",
                 pdfInfo.url,
                 error
             );
@@ -1152,13 +1258,13 @@ async function performSearch(){
     }
 
 
-    // ==================================================
-    // FINAL RESULT
-    // ==================================================
+    // =================================================
+    // RESULT
+    // =================================================
 
     if(matchCount>0){
 
-        status.innerText=
+        statusDiv.innerText=
             `সর্বমোট ${convertDigits(
                 matchCount,
                 true
@@ -1166,20 +1272,20 @@ async function performSearch(){
 
     }else{
 
-        status.innerText=
+        statusDiv.innerText=
             "কোনো তথ্য পাওয়া যায়নি।";
 
 
-        results.innerHTML=`
+        resultsDiv.innerHTML=`
 
             <div class="no-result">
 
-                ❌ দুঃখিত!
+                ❌ কোনো তথ্য পাওয়া যায়নি।
 
                 <br><br>
 
-                আপনার দেওয়া নাম অথবা জন্ম তারিখের
-                সাথে কোনো তথ্য পাওয়া যায়নি।
+                নাম বা জন্ম তারিখ সঠিকভাবে লিখে
+                আবার চেষ্টা করুন।
 
             </div>
 
@@ -1193,9 +1299,9 @@ async function performSearch(){
 }
 
 
-// ======================================================
+// =====================================================
 // ENTER KEY
-// ======================================================
+// =====================================================
 
 document
 .getElementById("nameInput")
@@ -1203,8 +1309,9 @@ document
     "keydown",
     function(e){
 
-        if(e.key==="Enter")
+        if(e.key==="Enter"){
             performSearch();
+        }
 
     }
 );
@@ -1216,8 +1323,9 @@ document
     "keydown",
     function(e){
 
-        if(e.key==="Enter")
+        if(e.key==="Enter"){
             performSearch();
+        }
 
     }
 );
