@@ -6,24 +6,16 @@
 
 <title>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</title>
 
-<!-- PDF.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-
 <style>
 *{
     box-sizing:border-box;
-    margin:0;
-    padding:0;
 }
 
 body{
-    font-family:
-        "Noto Sans Bengali",
-        "Noto Sans",
-        Arial,
-        sans-serif;
-    background:#f1f5f9;
-    color:#172033;
+    margin:0;
+    font-family:"Noto Sans Bengali","SolaimanLipi","Vrinda",Arial,sans-serif;
+    background:#f3f6f9;
+    color:#1f2937;
 }
 
 /* =========================
@@ -33,105 +25,108 @@ body{
 #loginScreen{
     position:fixed;
     inset:0;
-    z-index:99999;
-    background:
-        linear-gradient(135deg,#0f172a,#1e3a8a,#0f766e);
+    background:linear-gradient(135deg,#0f766e,#0e7490,#1d4ed8);
     display:flex;
     align-items:center;
     justify-content:center;
     padding:20px;
+    z-index:9999;
 }
 
-.login-box{
+.loginBox{
     width:100%;
     max-width:430px;
-    background:rgba(255,255,255,.97);
-    border-radius:24px;
+    background:white;
+    border-radius:20px;
     padding:30px;
-    box-shadow:0 25px 70px rgba(0,0,0,.30);
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
 }
 
-.login-logo{
+.loginLogo{
     width:75px;
     height:75px;
-    margin:auto;
+    margin:0 auto 15px;
     border-radius:50%;
-    background:#1d4ed8;
-    color:#fff;
+    background:#0f766e;
+    color:white;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:30px;
-    font-weight:900;
+    font-size:35px;
+    font-weight:bold;
 }
 
-.login-box h1{
+.loginBox h1{
     text-align:center;
-    margin-top:15px;
-    font-size:23px;
+    margin:0;
+    font-size:24px;
+    color:#0f766e;
 }
 
-.login-subtitle{
+.loginBox p{
     text-align:center;
-    color:#64748b;
+    color:#6b7280;
     margin:8px 0 25px;
-    font-size:14px;
 }
 
-.input-group{
+.formGroup{
     margin-bottom:16px;
 }
 
-.input-group label{
+.formGroup label{
     display:block;
     margin-bottom:7px;
-    font-weight:700;
-    font-size:14px;
+    font-weight:bold;
 }
 
-.input-group input{
+.formGroup input{
     width:100%;
     padding:13px 14px;
-    border:1px solid #cbd5e1;
-    border-radius:12px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:16px;
     outline:none;
-    font-size:15px;
 }
 
-.input-group input:focus{
-    border-color:#2563eb;
-    box-shadow:0 0 0 3px rgba(37,99,235,.12);
+.formGroup input:focus{
+    border-color:#0f766e;
+    box-shadow:0 0 0 3px rgba(15,118,110,.12);
 }
 
-.login-btn{
+.loginBtn{
     width:100%;
     padding:14px;
     border:0;
-    border-radius:12px;
-    background:#2563eb;
-    color:#fff;
-    font-size:16px;
-    font-weight:800;
+    border-radius:10px;
+    background:#0f766e;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
     cursor:pointer;
 }
 
-.login-btn:hover{
-    background:#1d4ed8;
+.loginBtn:hover{
+    background:#115e59;
 }
 
-.login-error{
+.loginBtn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.loginError{
     display:none;
+    margin-top:15px;
+    padding:12px;
+    border-radius:9px;
     background:#fee2e2;
-    color:#991b1b;
-    padding:11px;
-    border-radius:10px;
-    margin-bottom:15px;
+    color:#b91c1c;
     font-size:14px;
-    text-align:center;
+    line-height:1.6;
 }
 
 /* =========================
-   APP
+   MAIN
 ========================= */
 
 #app{
@@ -139,65 +134,53 @@ body{
 }
 
 .header{
-    background:
-        linear-gradient(135deg,#0f172a,#1d4ed8);
-    color:#fff;
-    padding:18px 20px;
-    box-shadow:0 4px 20px rgba(0,0,0,.15);
+    background:linear-gradient(135deg,#0f766e,#0e7490);
+    color:white;
+    padding:16px 20px;
+    box-shadow:0 3px 15px rgba(0,0,0,.15);
 }
 
-.header-inner{
+.headerInner{
     max-width:1200px;
     margin:auto;
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
     gap:15px;
 }
 
-.header-title h1{
-    font-size:22px;
+.headerTitle h1{
+    margin:0;
+    font-size:24px;
 }
 
-.header-title p{
-    margin-top:5px;
-    opacity:.85;
-    font-size:13px;
-}
-
-.user-area{
-    display:flex;
-    align-items:center;
-    gap:9px;
-    flex-wrap:wrap;
-    justify-content:flex-end;
-}
-
-.user-name{
+.headerTitle p{
+    margin:4px 0 0;
+    opacity:.9;
     font-size:14px;
 }
 
-.role-badge{
-    padding:5px 10px;
-    border-radius:20px;
-    background:#fff;
-    color:#1d4ed8;
-    font-size:12px;
-    font-weight:800;
+.headerRight{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-.logout-btn{
-    border:1px solid rgba(255,255,255,.4);
-    background:rgba(255,255,255,.12);
-    color:#fff;
+.roleBadge{
+    background:rgba(255,255,255,.18);
+    padding:8px 12px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.logoutBtn{
+    border:1px solid rgba(255,255,255,.5);
+    background:rgba(255,255,255,.1);
+    color:white;
     padding:8px 13px;
-    border-radius:9px;
+    border-radius:8px;
     cursor:pointer;
 }
-
-/* =========================
-   MAIN
-========================= */
 
 .container{
     max-width:1200px;
@@ -205,334 +188,257 @@ body{
     padding:0 15px;
 }
 
-.search-card{
-    background:#fff;
+/* =========================
+   SEARCH CARD
+========================= */
+
+.card{
+    background:white;
+    border-radius:16px;
     padding:22px;
-    border-radius:18px;
-    box-shadow:0 5px 25px rgba(15,23,42,.08);
+    box-shadow:0 5px 20px rgba(0,0,0,.07);
+    margin-bottom:20px;
 }
 
-.search-card h2{
-    font-size:19px;
-    margin-bottom:18px;
+.cardTitle{
+    font-size:20px;
+    font-weight:bold;
+    color:#0f766e;
+    margin-bottom:17px;
 }
 
-.search-grid{
+.searchGrid{
     display:grid;
     grid-template-columns:1fr 1fr auto;
     gap:12px;
 }
 
-.search-input{
+.searchInput{
     width:100%;
-    padding:13px 14px;
-    border:1px solid #cbd5e1;
-    border-radius:11px;
-    font-size:15px;
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.searchInput:focus{
     outline:none;
+    border-color:#0f766e;
 }
 
-.search-input:focus{
-    border-color:#2563eb;
-}
-
-.search-btn{
-    padding:13px 25px;
+.searchBtn{
     border:0;
-    border-radius:11px;
-    background:#2563eb;
-    color:#fff;
-    font-weight:800;
+    border-radius:10px;
+    background:#0f766e;
+    color:white;
+    padding:0 25px;
+    font-size:16px;
+    font-weight:bold;
     cursor:pointer;
 }
 
-.clear-btn{
-    padding:13px 20px;
+.clearBtn{
     border:0;
-    border-radius:11px;
-    background:#e2e8f0;
-    color:#334155;
-    font-weight:700;
+    border-radius:10px;
+    background:#6b7280;
+    color:white;
+    padding:0 20px;
+    font-size:16px;
     cursor:pointer;
-}
-
-.buttons{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
 }
 
 /* =========================
    ADMIN
 ========================= */
 
-.admin-panel{
-    margin-top:18px;
-    background:#fff;
-    border-left:5px solid #7c3aed;
+.adminPanel{
+    display:none;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    border-radius:15px;
     padding:18px;
-    border-radius:14px;
-    box-shadow:0 5px 20px rgba(0,0,0,.06);
+    margin-bottom:20px;
 }
 
-.admin-panel h3{
-    color:#6d28d9;
-    margin-bottom:8px;
+.adminPanel h3{
+    margin-top:0;
+    color:#c2410c;
 }
 
-.admin-panel p{
-    font-size:13px;
-    color:#64748b;
-    margin-bottom:12px;
-}
-
-.admin-btn{
-    padding:10px 16px;
+.adminBtn{
+    background:#ea580c;
+    color:white;
     border:0;
     border-radius:9px;
-    background:#7c3aed;
-    color:#fff;
-    font-weight:700;
+    padding:11px 17px;
     cursor:pointer;
+    font-weight:bold;
 }
 
-/* =========================
-   STATUS
-========================= */
+.adminBtn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
 
-.status{
-    margin-top:18px;
-    padding:12px 15px;
-    border-radius:10px;
+.progressBox{
     display:none;
+    margin-top:15px;
+}
+
+.progressBar{
+    width:100%;
+    height:14px;
+    background:#e5e7eb;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.progressFill{
+    height:100%;
+    width:0%;
+    background:#0f766e;
+    transition:.2s;
+}
+
+.progressText{
+    margin-top:7px;
     font-size:14px;
-}
-
-.status.info{
-    display:block;
-    background:#dbeafe;
-    color:#1e40af;
-}
-
-.status.success{
-    display:block;
-    background:#dcfce7;
-    color:#166534;
-}
-
-.status.error{
-    display:block;
-    background:#fee2e2;
-    color:#991b1b;
 }
 
 /* =========================
    RESULTS
 ========================= */
 
-.results-area{
-    margin-top:20px;
+.resultInfo{
+    margin-bottom:15px;
+    font-weight:bold;
+    color:#374151;
 }
 
-.result-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+.resultCard{
+    background:white;
+    border-radius:13px;
+    border:1px solid #e5e7eb;
+    padding:17px;
     margin-bottom:12px;
-    gap:10px;
+    transition:.2s;
 }
 
-.result-header h2{
+.resultCard:hover{
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+.resultName{
     font-size:18px;
+    font-weight:bold;
+    color:#0f766e;
+    margin-bottom:7px;
 }
 
-.result-count{
-    background:#dbeafe;
-    color:#1d4ed8;
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:800;
-}
-
-.result-card{
-    background:#fff;
-    margin-bottom:14px;
-    border-radius:16px;
-    overflow:hidden;
-    box-shadow:0 5px 20px rgba(0,0,0,.07);
-}
-
-.result-top{
-    padding:16px;
-    background:#f8fafc;
-    border-bottom:1px solid #e2e8f0;
-}
-
-.result-name{
-    font-size:18px;
-    font-weight:900;
-    color:#0f172a;
-}
-
-.result-details{
+.resultDetails{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    padding:15px 16px;
-}
-
-.detail{
-    background:#f8fafc;
-    border-radius:10px;
-    padding:10px;
-}
-
-.detail-label{
-    font-size:11px;
-    color:#64748b;
-    margin-bottom:4px;
-}
-
-.detail-value{
-    font-weight:700;
+    grid-template-columns:repeat(2,1fr);
+    gap:6px;
     font-size:14px;
+    color:#4b5563;
 }
 
-.result-actions{
-    padding:0 16px 16px;
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-}
-
-.action-btn{
+.viewPdfBtn{
+    margin-top:13px;
+    background:#1d4ed8;
+    color:white;
     border:0;
-    border-radius:9px;
-    padding:9px 13px;
-    cursor:pointer;
-    font-weight:700;
-}
-
-.view-btn{
-    background:#2563eb;
-    color:#fff;
-}
-
-.copy-btn{
-    background:#e2e8f0;
-    color:#334155;
-}
-
-/* =========================
-   PDF VIEWER
-========================= */
-
-#pdfViewer{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(15,23,42,.8);
-    z-index:5000;
-    padding:15px;
-}
-
-.pdf-window{
-    background:#fff;
-    width:100%;
-    height:100%;
-    max-width:1100px;
-    margin:auto;
-    border-radius:16px;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-}
-
-.pdf-toolbar{
-    background:#0f172a;
-    color:#fff;
-    padding:10px 14px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-}
-
-.pdf-toolbar button{
-    border:0;
-    padding:8px 12px;
+    padding:9px 15px;
     border-radius:8px;
     cursor:pointer;
 }
 
-.pdf-body{
-    flex:1;
-    overflow:auto;
-    background:#64748b;
-    padding:20px;
-}
-
-.pdf-page{
-    position:relative;
-    width:max-content;
-    margin:0 auto 25px;
-    background:#fff;
-    box-shadow:0 5px 25px rgba(0,0,0,.3);
-}
-
-.pdf-page canvas{
-    display:block;
-}
-
-.watermark{
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transform:rotate(-30deg);
-    opacity:.13;
-    font-size:30px;
-    font-weight:900;
-    color:#1e293b;
+.noResult{
+    padding:30px;
     text-align:center;
-    white-space:nowrap;
-}
-
-.watermark-small{
-    position:absolute;
-    bottom:12px;
-    right:12px;
-    pointer-events:none;
-    opacity:.55;
-    font-size:11px;
-    font-weight:700;
+    color:#6b7280;
 }
 
 /* =========================
-   LOADING
+   PDF MODAL
 ========================= */
 
-.loading{
+#pdfModal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.82);
+    z-index:5000;
+    overflow:auto;
+}
+
+.pdfHeader{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:#111827;
+    color:white;
+    padding:10px 15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.pdfHeader button{
+    border:0;
+    background:#dc2626;
+    color:white;
+    padding:8px 14px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.pdfControls{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.pdfControls button{
+    background:#374151;
+}
+
+.pdfViewer{
+    position:relative;
+    max-width:1000px;
+    margin:20px auto 50px;
+    padding:15px;
+}
+
+#pdfCanvas{
+    display:block;
+    max-width:100%;
+    margin:auto;
+    background:white;
+    box-shadow:0 5px 25px rgba(0,0,0,.4);
+}
+
+.watermark{
+    position:fixed;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%) rotate(-25deg);
+    z-index:10;
+    pointer-events:none;
+    user-select:none;
     text-align:center;
-    padding:35px;
-    color:#64748b;
+    color:rgba(15,118,110,.16);
+    font-weight:bold;
+    font-size:34px;
+    line-height:1.5;
+    white-space:nowrap;
 }
 
-.spinner{
-    width:35px;
-    height:35px;
-    border:4px solid #cbd5e1;
-    border-top-color:#2563eb;
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-    margin:0 auto 12px;
-}
-
-@keyframes spin{
-    to{transform:rotate(360deg);}
+.watermark small{
+    display:block;
+    font-size:22px;
 }
 
 /* =========================
@@ -541,46 +447,47 @@ body{
 
 .footer{
     text-align:center;
-    padding:25px 15px;
-    color:#64748b;
-    font-size:12px;
+    padding:25px 10px;
+    color:#6b7280;
+    font-size:13px;
 }
 
 /* =========================
-   MOBILE
+   RESPONSIVE
 ========================= */
 
-@media(max-width:750px){
+@media(max-width:800px){
 
-    .header-inner{
+    .headerInner{
         flex-direction:column;
         align-items:flex-start;
     }
 
-    .user-area{
-        justify-content:flex-start;
+    .headerRight{
+        width:100%;
+        justify-content:space-between;
     }
 
-    .search-grid{
+    .searchGrid{
         grid-template-columns:1fr;
     }
 
-    .result-details{
+    .searchBtn,
+    .clearBtn{
+        padding:13px;
+    }
+
+    .resultDetails{
         grid-template-columns:1fr;
     }
 
-    .header-title h1{
-        font-size:18px;
+    .watermark{
+        font-size:24px;
     }
 
-    .search-card{
-        padding:16px;
+    .watermark small{
+        font-size:16px;
     }
-
-    .pdf-body{
-        padding:8px;
-    }
-
 }
 </style>
 </head>
@@ -593,43 +500,52 @@ body{
 
 <div id="loginScreen">
 
-    <div class="login-box">
+    <div class="loginBox">
 
-        <div class="login-logo">
-            ভোট
-        </div>
+        <div class="loginLogo">ভো</div>
 
         <h1>ভোটার তথ্য অনুসন্ধান</h1>
 
-        <div class="login-subtitle">
-            ০৩ নং পাঁচলাইশ ওয়ার্ড
-        </div>
+        <p>৩ নং পাঁচলাইশ ওয়ার্ড</p>
 
-        <div id="loginError" class="login-error"></div>
+        <form id="loginForm">
 
-        <div class="input-group">
-            <label>ইউজার আইডি</label>
-            <input
-                type="text"
-                id="userIdInput"
-                placeholder="যেমন: ALI001"
-                autocomplete="username"
+            <div class="formGroup">
+                <label for="userId">User ID</label>
+                <input
+                    type="text"
+                    id="userId"
+                    placeholder="যেমন: ALI001"
+                    autocomplete="username"
+                    required
+                >
+            </div>
+
+            <div class="formGroup">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Password লিখুন"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <button
+                type="submit"
+                class="loginBtn"
+                id="loginBtn"
             >
-        </div>
+                লগইন
+            </button>
 
-        <div class="input-group">
-            <label>পাসওয়ার্ড</label>
-            <input
-                type="password"
-                id="passwordInput"
-                placeholder="পাসওয়ার্ড লিখুন"
-                autocomplete="current-password"
-            >
-        </div>
+            <div
+                id="loginError"
+                class="loginError"
+            ></div>
 
-        <button class="login-btn" id="loginBtn">
-            লগইন করুন
-        </button>
+        </form>
 
     </div>
 
@@ -644,24 +560,26 @@ body{
 
     <header class="header">
 
-        <div class="header-inner">
+        <div class="headerInner">
 
-            <div class="header-title">
+            <div class="headerTitle">
                 <h1>৩ নং পাঁচলাইশ ওয়ার্ড</h1>
                 <p>ভোটার তথ্য অনুসন্ধান সিস্টেম</p>
             </div>
 
-            <div class="user-area">
+            <div class="headerRight">
 
-                <span class="user-name" id="loggedUserName">
-                    ব্যবহারকারী
+                <span
+                    id="roleBadge"
+                    class="roleBadge"
+                >
+                    -
                 </span>
 
-                <span class="role-badge" id="roleBadge">
-                    Operator
-                </span>
-
-                <button class="logout-btn" id="logoutBtn">
+                <button
+                    class="logoutBtn"
+                    id="logoutBtn"
+                >
                     Logout
                 </button>
 
@@ -674,44 +592,44 @@ body{
 
     <main class="container">
 
-        <!-- SEARCH -->
+        <!-- ADMIN PANEL -->
 
-        <section class="search-card">
+        <section
+            id="adminPanel"
+            class="adminPanel"
+        >
 
-            <h2>🔎 ভোটার তথ্য অনুসন্ধান</h2>
+            <h3>⚙️ Admin Control Panel</h3>
 
-            <div class="search-grid">
+            <p>
+                PDF থেকে ভোটার তথ্যের Search Index তৈরি করতে নিচের
+                বাটনে ক্লিক করুন।
+            </p>
 
-                <input
-                    type="text"
-                    id="nameInput"
-                    class="search-input"
-                    placeholder="ভোটারের নাম লিখুন"
+            <button
+                id="buildIndexBtn"
+                class="adminBtn"
+            >
+                📑 PDF Index পুনরায় তৈরি করুন
+            </button>
+
+            <div
+                id="progressBox"
+                class="progressBox"
+            >
+
+                <div class="progressBar">
+                    <div
+                        id="progressFill"
+                        class="progressFill"
+                    ></div>
+                </div>
+
+                <div
+                    id="progressText"
+                    class="progressText"
                 >
-
-                <input
-                    type="text"
-                    id="dobInput"
-                    class="search-input"
-                    placeholder="জন্ম তারিখ: 01/01/2000"
-                >
-
-                <div class="buttons">
-
-                    <button
-                        class="search-btn"
-                        id="searchBtn"
-                    >
-                        অনুসন্ধান
-                    </button>
-
-                    <button
-                        class="clear-btn"
-                        id="clearBtn"
-                    >
-                        পরিষ্কার
-                    </button>
-
+                    প্রস্তুত হচ্ছে...
                 </div>
 
             </div>
@@ -719,53 +637,60 @@ body{
         </section>
 
 
-        <!-- ADMIN PANEL -->
+        <!-- SEARCH -->
 
-        <section
-            class="admin-panel"
-            id="adminPanel"
-            style="display:none;"
-        >
+        <section class="card">
 
-            <h3>⚙️ Admin Panel</h3>
+            <div class="cardTitle">
+                🔎 ভোটার তথ্য অনুসন্ধান
+            </div>
 
-            <p>
-                PDF Index পুনরায় তৈরি করতে এই বাটনে চাপুন।
-                প্রথমবার ৫৬টি PDF পড়তে কিছু সময় লাগতে পারে।
-            </p>
+            <div class="searchGrid">
 
-            <button
-                class="admin-btn"
-                id="rebuildIndexBtn"
-            >
-                🔄 PDF Index পুনরায় তৈরি করুন
-            </button>
+                <input
+                    type="text"
+                    id="nameSearch"
+                    class="searchInput"
+                    placeholder="ভোটারের নাম লিখুন"
+                >
+
+                <input
+                    type="text"
+                    id="dobSearch"
+                    class="searchInput"
+                    placeholder="জন্ম তারিখ: 01/01/2000"
+                >
+
+                <button
+                    id="searchBtn"
+                    class="searchBtn"
+                >
+                    অনুসন্ধান
+                </button>
+
+            </div>
+
+            <div style="margin-top:10px;">
+                <button
+                    id="clearBtn"
+                    class="clearBtn"
+                >
+                    Clear
+                </button>
+            </div>
 
         </section>
 
 
-        <div id="status" class="status"></div>
-
-
         <!-- RESULTS -->
 
-        <section class="results-area">
+        <section class="card">
 
             <div
-                class="result-header"
-                id="resultHeader"
-                style="display:none;"
+                id="resultInfo"
+                class="resultInfo"
             >
-
-                <h2>অনুসন্ধানের ফলাফল</h2>
-
-                <span
-                    class="result-count"
-                    id="resultCount"
-                >
-                    0
-                </span>
-
+                অনুসন্ধানের জন্য নাম অথবা জন্ম তারিখ লিখুন।
             </div>
 
             <div id="results"></div>
@@ -776,48 +701,83 @@ body{
 
 
     <footer class="footer">
-        © ২০২৬ — ০৩ নং পাঁচলাইশ ওয়ার্ড |
-        আলী ইসলাম, উদ্যোক্তা
+        © ২০২৬ — ৩ নং পাঁচলাইশ ওয়ার্ড ভোটার তথ্য অনুসন্ধান
+        <br>
+        উদ্যোক্তা: আলী ইসলাম
     </footer>
 
 </div>
 
 
 <!-- =========================
-     PDF VIEWER
+     PDF MODAL
 ========================= -->
 
-<div id="pdfViewer">
+<div id="pdfModal">
 
-    <div class="pdf-window">
+    <div class="pdfHeader">
 
-        <div class="pdf-toolbar">
+        <div class="pdfControls">
 
-            <strong id="pdfTitle">
-                PDF Viewer
-            </strong>
+            <button id="prevPage">
+                ◀
+            </button>
 
-            <button id="closePdf">
-                ✕ বন্ধ করুন
+            <span>
+                Page
+                <span id="pageNum">1</span>
+                /
+                <span id="pageCount">0</span>
+            </span>
+
+            <button id="nextPage">
+                ▶
+            </button>
+
+            <button id="zoomOut">
+                −
+            </button>
+
+            <button id="zoomIn">
+                +
             </button>
 
         </div>
 
-        <div
-            class="pdf-body"
-            id="pdfBody"
-        ></div>
+        <button id="closePdf">
+            ✕ বন্ধ করুন
+        </button>
+
+    </div>
+
+
+    <div class="pdfViewer">
+
+        <canvas id="pdfCanvas"></canvas>
+
+        <div class="watermark">
+            আলী ইসলাম
+            <small>উদ্যোক্তা</small>
+            <small>০৩ নং পাঁচলাইশ ওয়ার্ড</small>
+        </div>
 
     </div>
 
 </div>
 
 
-<script type="module">
+<!-- =========================
+     PDF.JS
+========================= -->
 
-/* =========================================================
-   FIREBASE
-========================================================= */
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+
+<!-- =========================
+     FIREBASE
+========================= -->
+
+<script type="module">
 
 import {
     initializeApp
@@ -843,8 +803,7 @@ import {
 
 const firebaseConfig = {
 
-    apiKey:
-        "AIzaSyBg-fUfaN7RaI0uUQCjvnR0vfJv4yZCML0",
+    apiKey: "AIzaSyBg-fUfaN7RaI0uUQCjvnR0vfJv4yZCML0",
 
     authDomain:
         "panchlaish-voter.firebaseapp.com",
@@ -878,128 +837,134 @@ const db = getFirestore(app);
 
 
 /* =========================================================
-   LOGIN USER MAPPING
+   IMPORTANT LOGIN SETTINGS
 =========================================================
 
-   ⚠️ এখানে আপনার Firebase Authentication-এর
-   আসল Email বসাবেন।
+   এখানে Admin-এর Firebase Authentication Email বসাবেন।
 
    উদাহরণ:
-   ALI001 → আপনার Admin Email
-   OP001  → আপনার Operator Email
 
+   ADMIN_EMAIL: "admin@gmail.com"
+
+   Password এখানে লিখবেন না।
 ========================================================= */
 
 const LOGIN_USERS = {
 
     "ALI001": {
+
         email: "আপনার-ADMIN-EMAIL",
+
         displayName: "আলী ইসলাম"
+
     },
 
     "OP001": {
+
         email: "op001@gmail.com",
+
         displayName: "অপারেটর"
+
     }
 
 };
 
 
 /* =========================================================
-   PDF FILE LIST — 56 FILES
+   PDF FILE LIST
 ========================================================= */
 
 const PDF_FILES = [
 
-"151686_com_1443_female.pdf",
-"151686_com_1526_male.pdf",
+    "151686_com_1443_female.pdf",
+    "151686_com_1526_male.pdf",
 
-"151687_com_34_female.pdf",
-"151687_com_57_male.pdf",
+    "151687_com_34_female.pdf",
+    "151687_com_57_male.pdf",
 
-"151688_com_251_female.pdf",
-"151688_com_296_male.pdf",
+    "151688_com_251_female.pdf",
+    "151688_com_296_male.pdf",
 
-"151690_com_1217_female.pdf",
-"151690_com_1305_male.pdf",
+    "151690_com_1217_female.pdf",
+    "151690_com_1305_male.pdf",
 
-"151691_com_436_male.pdf",
-"151691_com_443_female.pdf",
+    "151691_com_436_male.pdf",
+    "151691_com_443_female.pdf",
 
-"151692_com_237_female.pdf",
-"151692_com_269_male.pdf",
+    "151692_com_237_female.pdf",
+    "151692_com_269_male.pdf",
 
-"151693_com_1888_male.pdf",
-"151693_com_1926_female.pdf",
+    "151693_com_1888_male.pdf",
+    "151693_com_1926_female.pdf",
 
-"151694_com_3519_male.pdf",
-"151694_com_3839_female.pdf",
+    "151694_com_3519_male.pdf",
+    "151694_com_3839_female.pdf",
 
-"151695_com_87_female.pdf",
-"151695_com_117_male.pdf",
+    "151695_com_87_female.pdf",
+    "151695_com_117_male.pdf",
 
-"151696_com_380_female.pdf",
-"151696_com_444_male.pdf",
+    "151696_com_380_female.pdf",
+    "151696_com_444_male.pdf",
 
-"151697_com_623_female.pdf",
-"151697_com_643_male.pdf",
+    "151697_com_623_female.pdf",
+    "151697_com_643_male.pdf",
 
-"151698_com_397_female.pdf",
-"151698_com_432_male.pdf",
+    "151698_com_397_female.pdf",
+    "151698_com_432_male.pdf",
 
-"151699_com_366_female.pdf",
-"151699_com_398_male.pdf",
+    "151699_com_366_female.pdf",
+    "151699_com_398_male.pdf",
 
-"151700_com_2199_female.pdf",
-"151700_com_2199_male.pdf",
+    "151700_com_2199_female.pdf",
+    "151700_com_2199_male.pdf",
 
-"151701_com_1606_female.pdf",
-"151701_com_1675_male.pdf",
+    "151701_com_1606_female.pdf",
+    "151701_com_1675_male.pdf",
 
-"151702_com_466_female.pdf",
-"151702_com_865_male.pdf",
+    "151702_com_466_female.pdf",
+    "151702_com_865_male.pdf",
 
-"151703_com_1591_male.pdf",
-"151703_com_1816_female.pdf",
+    "151703_com_1591_male.pdf",
+    "151703_com_1816_female.pdf",
 
-"151704_com_335_male.pdf",
-"151704_com_415_female.pdf",
+    "151704_com_335_male.pdf",
+    "151704_com_415_female.pdf",
 
-"151705_com_1370_male.pdf",
-"151705_com_1427_female.pdf",
+    "151705_com_1370_male.pdf",
+    "151705_com_1427_female.pdf",
 
-"151706_com_582_female.pdf",
-"151706_com_654_male.pdf",
+    "151706_com_582_female.pdf",
+    "151706_com_654_male.pdf",
 
-"151707_com_262_female.pdf",
-"151707_com_286_male.pdf",
+    "151707_com_262_female.pdf",
+    "151707_com_286_male.pdf",
 
-"151708_com_373_female.pdf",
-"151708_com_426_male.pdf",
+    "151708_com_373_female.pdf",
+    "151708_com_426_male.pdf",
 
-"151709_com_384_female.pdf",
-"151709_com_414_male.pdf",
+    "151709_com_384_female.pdf",
+    "151709_com_414_male.pdf",
 
-"151710_com_255_female.pdf",
-"151710_com_296_male.pdf",
+    "151710_com_255_female.pdf",
+    "151710_com_296_male.pdf",
 
-"151711_com_984_male.pdf",
-"151711_com_1188_female.pdf",
+    "151711_com_984_male.pdf",
+    "151711_com_1188_female.pdf",
 
-"151712_com_1123_female.pdf",
-"151712_com_1160_male.pdf",
+    "151712_com_1123_female.pdf",
+    "151712_com_1160_male.pdf",
 
-"151713_com_345_female.pdf",
-"151713_com_385_male.pdf",
+    "151713_com_345_female.pdf",
+    "151713_com_385_male.pdf",
 
-"151714_com_441_male.pdf",
-"151714_com_562_female.pdf"
+    "151714_com_441_male.pdf",
+    "151714_com_562_female.pdf"
 
 ];
 
 
 /* =========================================================
-   PDF.JS
+   PDF.JS WORKER
 ========================================================= */
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -1016,37 +981,46 @@ let currentRole = null;
 
 let voterIndex = [];
 
+let currentPdf = null;
+
+let currentPage = 1;
+
+let currentScale = 1.25;
+
 
 /* =========================================================
-   DOM
+   ELEMENTS
 ========================================================= */
 
 const loginScreen =
     document.getElementById("loginScreen");
 
-const appScreen =
-    document.getElementById("app");
+const loginForm =
+    document.getElementById("loginForm");
 
 const loginBtn =
     document.getElementById("loginBtn");
 
-const logoutBtn =
-    document.getElementById("logoutBtn");
-
 const loginError =
     document.getElementById("loginError");
 
-const userIdInput =
-    document.getElementById("userIdInput");
+const appDiv =
+    document.getElementById("app");
 
-const passwordInput =
-    document.getElementById("passwordInput");
+const roleBadge =
+    document.getElementById("roleBadge");
 
-const nameInput =
-    document.getElementById("nameInput");
+const adminPanel =
+    document.getElementById("adminPanel");
 
-const dobInput =
-    document.getElementById("dobInput");
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
+const nameSearch =
+    document.getElementById("nameSearch");
+
+const dobSearch =
+    document.getElementById("dobSearch");
 
 const searchBtn =
     document.getElementById("searchBtn");
@@ -1057,93 +1031,81 @@ const clearBtn =
 const results =
     document.getElementById("results");
 
-const statusBox =
-    document.getElementById("status");
+const resultInfo =
+    document.getElementById("resultInfo");
 
-const adminPanel =
-    document.getElementById("adminPanel");
+const buildIndexBtn =
+    document.getElementById("buildIndexBtn");
 
-const rebuildIndexBtn =
-    document.getElementById("rebuildIndexBtn");
+const progressBox =
+    document.getElementById("progressBox");
 
-const resultHeader =
-    document.getElementById("resultHeader");
+const progressFill =
+    document.getElementById("progressFill");
 
-const resultCount =
-    document.getElementById("resultCount");
+const progressText =
+    document.getElementById("progressText");
 
-const loggedUserName =
-    document.getElementById("loggedUserName");
+const pdfModal =
+    document.getElementById("pdfModal");
 
-const roleBadge =
-    document.getElementById("roleBadge");
+const pdfCanvas =
+    document.getElementById("pdfCanvas");
 
-const pdfViewer =
-    document.getElementById("pdfViewer");
+const pageNum =
+    document.getElementById("pageNum");
 
-const pdfBody =
-    document.getElementById("pdfBody");
-
-const pdfTitle =
-    document.getElementById("pdfTitle");
+const pageCount =
+    document.getElementById("pageCount");
 
 const closePdf =
     document.getElementById("closePdf");
 
+const prevPage =
+    document.getElementById("prevPage");
+
+const nextPage =
+    document.getElementById("nextPage");
+
+const zoomIn =
+    document.getElementById("zoomIn");
+
+const zoomOut =
+    document.getElementById("zoomOut");
+
 
 /* =========================================================
-   HELPERS
+   BANGLA DIGIT CONVERSION
 ========================================================= */
-
-function showStatus(message, type="info"){
-
-    statusBox.textContent = message;
-
-    statusBox.className =
-        "status " + type;
-
-}
-
-
-function hideStatus(){
-
-    statusBox.style.display = "none";
-
-}
-
 
 function convertDigits(value){
 
     if(!value) return "";
 
-    const bn =
+    const bangla =
         "০১২৩৪৫৬৭৮৯";
 
-    const en =
+    const english =
         "0123456789";
 
-    return String(value).replace(
-        /[০-৯]/g,
-        d => en[bn.indexOf(d)]
-    );
-
-}
-
-
-function normalizeText(value){
-
-    if(!value) return "";
-
     return String(value)
-        .toLowerCase()
-        .replace(/\s+/g," ")
-        .trim();
+        .split("")
+        .map(ch => {
 
+            const index =
+                bangla.indexOf(ch);
+
+            return index >= 0
+                ? english[index]
+                : ch;
+
+        })
+        .join("");
 }
 
 
 /* =========================================================
-   DOB NORMALIZATION
+   NORMALIZE DATE
 ========================================================= */
 
 function normalizeDate(date){
@@ -1151,7 +1113,9 @@ function normalizeDate(date){
     if(!date) return "";
 
     let d =
-        convertDigits(String(date).trim());
+        convertDigits(
+            String(date).trim()
+        );
 
     d =
         d.replace(/[.\-]/g,"/");
@@ -1183,37 +1147,500 @@ function normalizeDate(date){
         match[3];
 
     return `${day}/${month}/${year}`;
+}
+
+
+/* =========================================================
+   NORMALIZE TEXT
+========================================================= */
+
+function normalizeText(text){
+
+    if(!text) return "";
+
+    return String(text)
+        .replace(/\s+/g," ")
+        .trim()
+        .toLowerCase();
 
 }
 
 
 /* =========================================================
-   EXTRACT VOTER DATA
+   SHOW LOGIN ERROR
 ========================================================= */
 
-function extractVoterData(text, fileName){
+function showLoginError(message){
+
+    loginError.style.display =
+        "block";
+
+    loginError.innerHTML =
+        message;
+
+}
+
+
+/* =========================================================
+   HIDE LOGIN ERROR
+========================================================= */
+
+function hideLoginError(){
+
+    loginError.style.display =
+        "none";
+
+    loginError.innerHTML =
+        "";
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+loginForm.addEventListener(
+    "submit",
+    async function(event){
+
+        event.preventDefault();
+
+        hideLoginError();
+
+        const userId =
+            document
+            .getElementById("userId")
+            .value
+            .trim()
+            .toUpperCase();
+
+        const password =
+            document
+            .getElementById("password")
+            .value;
+
+        if(!userId || !password){
+
+            showLoginError(
+                "User ID এবং Password দুটোই লিখুন।"
+            );
+
+            return;
+        }
+
+
+        const account =
+            LOGIN_USERS[userId];
+
+
+        if(!account){
+
+            showLoginError(
+                "User ID সঠিক নয়।"
+            );
+
+            return;
+        }
+
+
+        if(
+            account.email ===
+            "আপনার-ADMIN-EMAIL"
+        ){
+
+            showLoginError(
+                "কোডে Admin-এর আসল Firebase Email বসানো হয়নি।<br><br>" +
+                "LOGIN_USERS-এর ALI001 অংশে Firebase Authentication-এর Admin Email বসান।"
+            );
+
+            return;
+        }
+
+
+        loginBtn.disabled =
+            true;
+
+        loginBtn.innerText =
+            "লগইন হচ্ছে...";
+
+
+        try{
+
+            await signInWithEmailAndPassword(
+                auth,
+                account.email,
+                password
+            );
+
+        }
+        catch(error){
+
+            console.error(
+                "Firebase Login Error:",
+                error
+            );
+
+
+            let message =
+                "লগইন করা যাচ্ছে না।";
+
+
+            if(
+                error.code ===
+                "auth/invalid-credential"
+            ){
+
+                message =
+                    "User ID/Email অথবা Password সঠিক নয়।<br>" +
+                    "Firebase Authentication-এর Email এবং Password মিলিয়ে দেখুন।";
+
+            }
+            else if(
+                error.code ===
+                "auth/invalid-email"
+            ){
+
+                message =
+                    "Firebase Email সঠিক নয়।";
+
+            }
+            else if(
+                error.code ===
+                "auth/user-not-found"
+            ){
+
+                message =
+                    "এই Email-এর Firebase User পাওয়া যায়নি।";
+
+            }
+            else if(
+                error.code ===
+                "auth/wrong-password"
+            ){
+
+                message =
+                    "Password সঠিক নয়।";
+
+            }
+            else if(
+                error.code ===
+                "auth/too-many-requests"
+            ){
+
+                message =
+                    "অনেকবার চেষ্টা করা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।";
+
+            }
+            else{
+
+                message =
+                    "লগইন ব্যর্থ হয়েছে।<br>" +
+                    "Error: " +
+                    (error.code || "unknown");
+
+            }
+
+
+            showLoginError(
+                message
+            );
+
+        }
+        finally{
+
+            loginBtn.disabled =
+                false;
+
+            loginBtn.innerText =
+                "লগইন";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   FIREBASE AUTH STATE
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    async function(user){
+
+        if(!user){
+
+            currentUser =
+                null;
+
+            currentRole =
+                null;
+
+            appDiv.style.display =
+                "none";
+
+            loginScreen.style.display =
+                "flex";
+
+            return;
+        }
+
+
+        try{
+
+            const userRef =
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                );
+
+
+            const userSnap =
+                await getDoc(userRef);
+
+
+            if(!userSnap.exists()){
+
+                await signOut(auth);
+
+                showLoginError(
+                    "আপনার Firebase Account-এর Firestore users ডকুমেন্ট পাওয়া যায়নি।"
+                );
+
+                return;
+            }
+
+
+            const userData =
+                userSnap.data();
+
+
+            const role =
+                String(
+                    userData.role || ""
+                ).toLowerCase();
+
+
+            if(
+                role !== "admin" &&
+                role !== "operator"
+            ){
+
+                await signOut(auth);
+
+                showLoginError(
+                    "আপনার Account-এর অনুমতি নেই।"
+                );
+
+                return;
+            }
+
+
+            currentUser =
+                user;
+
+            currentRole =
+                role;
+
+
+            loginScreen.style.display =
+                "none";
+
+            appDiv.style.display =
+                "block";
+
+
+            if(role === "admin"){
+
+                roleBadge.innerText =
+                    "👑 Admin";
+
+                adminPanel.style.display =
+                    "block";
+
+            }
+            else{
+
+                roleBadge.innerText =
+                    "👤 Operator";
+
+                adminPanel.style.display =
+                    "none";
+
+            }
+
+
+            loadIndexFromStorage();
+
+
+        }
+        catch(error){
+
+            console.error(
+                "Auth/Firestore Error:",
+                error
+            );
+
+            await signOut(auth);
+
+            showLoginError(
+                "Account যাচাই করতে সমস্যা হয়েছে।<br>" +
+                (error.code || "")
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+logoutBtn.addEventListener(
+    "click",
+    async function(){
+
+        try{
+
+            await signOut(auth);
+
+        }
+        catch(error){
+
+            console.error(error);
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LOAD INDEX FROM LOCAL STORAGE
+========================================================= */
+
+function loadIndexFromStorage(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(
+                "panchlaishVoterIndex"
+            );
+
+
+        if(saved){
+
+            voterIndex =
+                JSON.parse(saved);
+
+            resultInfo.innerText =
+                `Index প্রস্তুত আছে — ${voterIndex.length}টি রেকর্ড।`;
+
+        }
+        else{
+
+            voterIndex = [];
+
+            resultInfo.innerText =
+                "Search Index পাওয়া যায়নি। Admin হলে PDF Index তৈরি করুন।";
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Index Load Error:",
+            error
+        );
+
+        voterIndex = [];
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVE INDEX
+========================================================= */
+
+function saveIndex(){
+
+    try{
+
+        localStorage.setItem(
+            "panchlaishVoterIndex",
+            JSON.stringify(voterIndex)
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Index Save Error:",
+            error
+        );
+
+        alert(
+            "Index Save করতে সমস্যা হয়েছে। Browser Storage পূর্ণ হতে পারে।"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   EXTRACT VOTER INFORMATION
+========================================================= */
+
+function extractVoterInfo(
+    text,
+    fileName,
+    pageNumber
+){
+
+    if(!text) return null;
+
 
     const clean =
-        String(text || "")
+        String(text)
+        .replace(/\r/g," ")
+        .replace(/\n+/g," ")
         .replace(/\s+/g," ")
         .trim();
 
 
-    /* NAME */
-
     let name = "";
+
+    let dob = "";
+
+
+    /* =========================
+       NAME
+    ========================= */
 
     const namePatterns = [
 
-        /নাম\s*[:：]?\s*([^\n,]+)/i,
+        /নাম\s*[:：]?\s*([^\n\r]{2,80}?)(?=\s+(?:পিতা|মাতা|জন্ম|জাতীয়|ভোটার|ঠিকানা))/i,
 
-        /নামঃ\s*([^\n,]+)/i,
+        /নাম\s*[:：]?\s*([^\n\r]{2,80})/i,
 
-        /Name\s*[:：]?\s*([^\n,]+)/i
+        /Name\s*[:：]?\s*([A-Za-z\u0980-\u09FF .'-]{2,80})/i
 
     ];
 
-    for(const pattern of namePatterns){
+
+    for(
+        const pattern
+        of namePatterns
+    ){
 
         const match =
             clean.match(pattern);
@@ -1221,7 +1648,9 @@ function extractVoterData(text, fileName){
         if(match){
 
             name =
-                match[1].trim();
+                match[1]
+                .replace(/\s+/g," ")
+                .trim();
 
             break;
 
@@ -1230,19 +1659,24 @@ function extractVoterData(text, fileName){
     }
 
 
-    /* DOB */
-
-    let dob = "";
+    /* =========================
+       DOB
+    ========================= */
 
     const dobMatch =
         clean.match(
+
             /জন্ম\s*তারিখ\s*[:：]?\s*([০-৯0-9]{1,2}\s*[\/.\-]\s*[০-৯0-9]{1,2}\s*[\/.\-]\s*[০-৯0-9]{4})/i
+
         );
+
 
     if(dobMatch){
 
         dob =
-            normalizeDate(dobMatch[1]);
+            normalizeDate(
+                dobMatch[1]
+            );
 
     }
     else{
@@ -1264,99 +1698,100 @@ function extractVoterData(text, fileName){
     }
 
 
+    /* =========================
+       NID
+    ========================= */
+
+    let nid = "";
+
+    const nidMatch =
+        clean.match(
+            /(?:জাতীয় পরিচয়পত্র|NID|NID No|পরিচয়পত্র)\s*[:：]?\s*([০-৯0-9]{8,20})/i
+        );
+
+    if(nidMatch){
+
+        nid =
+            convertDigits(
+                nidMatch[1]
+            );
+
+    }
+
+
+    /* =========================
+       FATHER
+    ========================= */
+
+    let father = "";
+
+    const fatherMatch =
+        clean.match(
+            /পিতা\s*[:：]?\s*([^\n\r]{2,80}?)(?=\s+(?:মাতা|জন্ম|জাতীয়|ভোটার|ঠিকানা))/i
+        );
+
+    if(fatherMatch){
+
+        father =
+            fatherMatch[1]
+            .trim();
+
+    }
+
+
+    /* =========================
+       MOTHER
+    ========================= */
+
+    let mother = "";
+
+    const motherMatch =
+        clean.match(
+            /মাতা\s*[:：]?\s*([^\n\r]{2,80}?)(?=\s+(?:জন্ম|জাতীয়|ভোটার|ঠিকানা))/i
+        );
+
+    if(motherMatch){
+
+        mother =
+            motherMatch[1]
+            .trim();
+
+    }
+
+
+    /* =========================
+       IF NO NAME
+    ========================= */
+
+    if(!name){
+
+        return null;
+
+    }
+
+
     return {
 
         name: name,
 
+        nameNormalized:
+            normalizeText(name),
+
         dob: dob,
 
-        file: fileName,
+        nid: nid,
 
-        text: clean
+        father: father,
+
+        mother: mother,
+
+        file:
+            fileName,
+
+        page:
+            pageNumber
 
     };
-
-}
-
-
-/* =========================================================
-   LOAD PDF TEXT
-========================================================= */
-
-async function readPdf(fileName){
-
-    try{
-
-        const response =
-            await fetch(
-                "pdfs/" +
-                encodeURIComponent(fileName)
-            );
-
-        if(!response.ok){
-
-            throw new Error(
-                "PDF পাওয়া যায়নি: " +
-                fileName
-            );
-
-        }
-
-        const arrayBuffer =
-            await response.arrayBuffer();
-
-        const pdf =
-            await pdfjsLib.getDocument({
-                data: arrayBuffer
-            }).promise;
-
-        let fullText = "";
-
-        for(
-            let pageNo = 1;
-            pageNo <= pdf.numPages;
-            pageNo++
-        ){
-
-            const page =
-                await pdf.getPage(pageNo);
-
-            const content =
-                await page.getTextContent();
-
-            const pageText =
-                content.items
-                .map(item => item.str)
-                .join(" ");
-
-            fullText +=
-                " " + pageText;
-
-        }
-
-        return extractVoterData(
-            fullText,
-            fileName
-        );
-
-    }
-    catch(error){
-
-        console.error(
-            fileName,
-            error
-        );
-
-        return {
-
-            name:"",
-            dob:"",
-            file:fileName,
-            text:""
-
-        };
-
-    }
 
 }
 
@@ -1365,192 +1800,322 @@ async function readPdf(fileName){
    BUILD PDF INDEX
 ========================================================= */
 
-async function buildIndex(){
+buildIndexBtn.addEventListener(
+    "click",
+    async function(){
 
-    showStatus(
-        "PDF Index তৈরি হচ্ছে... দয়া করে অপেক্ষা করুন।",
-        "info"
-    );
+        if(currentRole !== "admin"){
 
-    results.innerHTML = "";
-
-    const tempIndex = [];
-
-    for(
-        let i = 0;
-        i < PDF_FILES.length;
-        i++
-    ){
-
-        const file =
-            PDF_FILES[i];
-
-        showStatus(
-            `PDF পড়া হচ্ছে: ${i+1}/${PDF_FILES.length}`,
-            "info"
-        );
-
-        const data =
-            await readPdf(file);
-
-        if(
-            data.name ||
-            data.dob
-        ){
-
-            tempIndex.push(data);
-
-        }
-
-    }
-
-
-    voterIndex =
-        tempIndex;
-
-
-    try{
-
-        localStorage.setItem(
-            "panchlaishVoterIndex",
-            JSON.stringify(voterIndex)
-        );
-
-    }
-    catch(e){
-
-        console.warn(
-            "LocalStorage unavailable",
-            e
-        );
-
-    }
-
-
-    showStatus(
-        `Index তৈরি সম্পন্ন। মোট ${voterIndex.length}টি তথ্য পাওয়া গেছে।`,
-        "success"
-    );
-
-}
-
-
-/* =========================================================
-   LOAD LOCAL INDEX
-========================================================= */
-
-function loadLocalIndex(){
-
-    try{
-
-        const saved =
-            localStorage.getItem(
-                "panchlaishVoterIndex"
+            alert(
+                "শুধুমাত্র Admin এই কাজটি করতে পারবেন।"
             );
 
-        if(saved){
+            return;
 
-            voterIndex =
-                JSON.parse(saved);
+        }
 
-            return true;
+
+        const confirmed =
+            confirm(
+                "সব ৫৬টি PDF থেকে নতুন Search Index তৈরি করবেন?"
+            );
+
+
+        if(!confirmed) return;
+
+
+        buildIndexBtn.disabled =
+            true;
+
+        progressBox.style.display =
+            "block";
+
+
+        voterIndex = [];
+
+
+        let processed =
+            0;
+
+
+        try{
+
+            for(
+                const fileName
+                of PDF_FILES
+            ){
+
+                processed++;
+
+
+                const percent =
+                    Math.round(
+                        (
+                            processed /
+                            PDF_FILES.length
+                        ) * 100
+                    );
+
+
+                progressFill.style.width =
+                    percent + "%";
+
+
+                progressText.innerText =
+                    `${processed} / ${PDF_FILES.length} PDF পড়া হচ্ছে...`;
+
+
+                const url =
+                    "./pdf/" +
+                    fileName;
+
+
+                try{
+
+                    const loadingTask =
+                        pdfjsLib.getDocument({
+                            url:url
+                        });
+
+
+                    const pdf =
+                        await loadingTask.promise;
+
+
+                    for(
+                        let p = 1;
+                        p <= pdf.numPages;
+                        p++
+                    ){
+
+                        const page =
+                            await pdf.getPage(p);
+
+
+                        const content =
+                            await page.getTextContent();
+
+
+                        const text =
+                            content.items
+                            .map(
+                                item =>
+                                    item.str
+                            )
+                            .join(" ");
+
+
+                        const voter =
+                            extractVoterInfo(
+                                text,
+                                fileName,
+                                p
+                            );
+
+
+                        if(voter){
+
+                            voterIndex.push(
+                                voter
+                            );
+
+                        }
+
+                    }
+
+
+                }
+                catch(pdfError){
+
+                    console.error(
+                        "PDF Error:",
+                        fileName,
+                        pdfError
+                    );
+
+                }
+
+
+                /* Browser responsive রাখার জন্য */
+
+                await new Promise(
+                    resolve =>
+                        setTimeout(
+                            resolve,
+                            10
+                        )
+                );
+
+            }
+
+
+            saveIndex();
+
+
+            progressFill.style.width =
+                "100%";
+
+
+            progressText.innerText =
+                `সম্পন্ন হয়েছে। মোট ${voterIndex.length}টি রেকর্ড পাওয়া গেছে।`;
+
+
+            resultInfo.innerText =
+                `Index তৈরি হয়েছে — ${voterIndex.length}টি রেকর্ড।`;
+
+
+            alert(
+                `PDF Index সফলভাবে তৈরি হয়েছে।\n\nমোট রেকর্ড: ${voterIndex.length}`
+            );
+
+
+        }
+        catch(error){
+
+            console.error(
+                "Index Build Error:",
+                error
+            );
+
+
+            alert(
+                "Index তৈরি করতে সমস্যা হয়েছে। Console দেখুন।"
+            );
+
+        }
+        finally{
+
+            buildIndexBtn.disabled =
+                false;
 
         }
 
     }
-    catch(e){
-
-        console.error(e);
-
-    }
-
-    return false;
-
-}
+);
 
 
 /* =========================================================
    SEARCH
 ========================================================= */
 
-function searchVoters(){
+searchBtn.addEventListener(
+    "click",
+    performSearch
+);
 
-    const nameQuery =
+
+nameSearch.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            performSearch();
+
+        }
+
+    }
+);
+
+
+dobSearch.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            performSearch();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SEARCH FUNCTION
+========================================================= */
+
+function performSearch(){
+
+    const name =
         normalizeText(
-            nameInput.value
+            nameSearch.value
         );
 
-    const dobQuery =
+    const dob =
         normalizeDate(
-            dobInput.value
+            dobSearch.value
         );
 
 
-    if(
-        !nameQuery &&
-        !dobQuery
-    ){
+    if(!name && !dob){
 
-        showStatus(
-            "নাম অথবা জন্ম তারিখ লিখুন।",
-            "error"
-        );
+        resultInfo.innerText =
+            "নাম অথবা জন্ম তারিখ লিখুন।";
+
+        results.innerHTML =
+            "";
 
         return;
 
     }
 
 
-    if(
-        voterIndex.length === 0
-    ){
+    if(!voterIndex.length){
 
-        showStatus(
-            "ভোটার Index পাওয়া যাচ্ছে না। Admin থেকে PDF Index তৈরি করুন।",
-            "error"
-        );
+        resultInfo.innerText =
+            "Search Index পাওয়া যায়নি।";
+
+        results.innerHTML = `
+
+            <div class="noResult">
+
+                <h3>⚠️ Index পাওয়া যায়নি</h3>
+
+                <p>
+                    Admin হলে
+                    <b>PDF Index পুনরায় তৈরি করুন</b>
+                    বাটনে ক্লিক করুন।
+                </p>
+
+            </div>
+
+        `;
 
         return;
 
     }
 
 
-    const matches =
-        voterIndex.filter(data => {
+    const matched =
+        voterIndex.filter(
+            voter => {
 
-            let nameOK = true;
-
-            let dobOK = true;
-
-
-            if(nameQuery){
-
-                nameOK =
-                    normalizeText(
-                        data.name
-                    ).includes(
-                        nameQuery
-                    );
-
-            }
+                const nameMatch =
+                    name
+                    ? voter.nameNormalized.includes(name)
+                    : true;
 
 
-            if(dobQuery){
+                const dobMatch =
+                    dob
+                    ? normalizeDate(voter.dob) === dob
+                    : true;
 
-                dobOK =
-                    normalizeDate(
-                        data.dob
-                    ) === dobQuery;
+
+                return (
+                    nameMatch &&
+                    dobMatch
+                );
 
             }
+        );
 
 
-            return nameOK && dobOK;
-
-        });
-
-
-    displayResults(matches);
+    displayResults(
+        matched
+    );
 
 }
 
@@ -1559,25 +2124,38 @@ function searchVoters(){
    DISPLAY RESULTS
 ========================================================= */
 
-function displayResults(data){
+function displayResults(
+    matched
+){
 
-    results.innerHTML = "";
-
-    resultHeader.style.display =
-        "flex";
-
-    resultCount.textContent =
-        data.length;
+    results.innerHTML =
+        "";
 
 
-    if(data.length === 0){
+    resultInfo.innerText =
+        `মোট ${matched.length}টি ফলাফল পাওয়া গেছে।`;
+
+
+    if(!matched.length){
 
         results.innerHTML = `
-            <div class="result-card">
-                <div class="loading">
-                    ❌ কোনো ভোটার তথ্য পাওয়া যায়নি।
+
+            <div class="noResult">
+
+                <div style="font-size:45px;">
+                    🔍
                 </div>
+
+                <h3>
+                    কোনো তথ্য পাওয়া যায়নি
+                </h3>
+
+                <p>
+                    নাম অথবা জন্ম তারিখ সঠিকভাবে লিখে আবার চেষ্টা করুন।
+                </p>
+
             </div>
+
         `;
 
         return;
@@ -1585,126 +2163,107 @@ function displayResults(data){
     }
 
 
-    data.forEach((voter,index) => {
+    matched
+    .slice(0,200)
+    .forEach(
+        function(voter){
 
-        const card =
-            document.createElement("div");
+            const card =
+                document.createElement(
+                    "div"
+                );
 
-        card.className =
-            "result-card";
+            card.className =
+                "resultCard";
 
 
-        card.innerHTML = `
+            card.innerHTML = `
 
-            <div class="result-top">
-
-                <div class="result-name">
-                    ${escapeHtml(
-                        voter.name ||
-                        "নাম পাওয়া যায়নি"
-                    )}
+                <div class="resultName">
+                    ${escapeHtml(voter.name || "নাম পাওয়া যায়নি")}
                 </div>
 
-            </div>
+                <div class="resultDetails">
 
-            <div class="result-details">
-
-                <div class="detail">
-
-                    <div class="detail-label">
-                        জন্ম তারিখ
+                    <div>
+                        <b>জন্ম তারিখ:</b>
+                        ${escapeHtml(voter.dob || "-")}
                     </div>
 
-                    <div class="detail-value">
-                        ${escapeHtml(
-                            voter.dob ||
-                            "পাওয়া যায়নি"
-                        )}
+                    <div>
+                        <b>NID:</b>
+                        ${escapeHtml(voter.nid || "-")}
                     </div>
 
-                </div>
-
-
-                <div class="detail">
-
-                    <div class="detail-label">
-                        PDF
+                    <div>
+                        <b>পিতা:</b>
+                        ${escapeHtml(voter.father || "-")}
                     </div>
 
-                    <div class="detail-value">
-                        ${escapeHtml(
-                            voter.file
-                        )}
+                    <div>
+                        <b>মাতা:</b>
+                        ${escapeHtml(voter.mother || "-")}
                     </div>
 
-                </div>
-
-
-                <div class="detail">
-
-                    <div class="detail-label">
-                        ফলাফল
+                    <div>
+                        <b>PDF:</b>
+                        ${escapeHtml(voter.file || "-")}
                     </div>
 
-                    <div class="detail-value">
-                        ${index+1}
+                    <div>
+                        <b>পৃষ্ঠা:</b>
+                        ${escapeHtml(String(voter.page || "-"))}
                     </div>
 
                 </div>
-
-            </div>
-
-
-            <div class="result-actions">
 
                 <button
-                    class="action-btn view-btn"
-                    data-file="${escapeAttr(
-                        voter.file
-                    )}"
+                    class="viewPdfBtn"
+                    data-file="${encodeURIComponent(voter.file)}"
+                    data-page="${voter.page || 1}"
                 >
                     📄 PDF দেখুন
                 </button>
 
-                <button
-                    class="action-btn copy-btn"
-                    data-copy="${escapeAttr(
-                        voter.name
-                    )}"
-                >
-                    📋 তথ্য Copy
-                </button>
-
-            </div>
-
-        `;
+            `;
 
 
-        const viewButton =
-            card.querySelector(
-                ".view-btn"
+            const btn =
+                card.querySelector(
+                    ".viewPdfBtn"
+                );
+
+
+            btn.addEventListener(
+                "click",
+                function(){
+
+                    const file =
+                        decodeURIComponent(
+                            btn.dataset.file
+                        );
+
+                    const page =
+                        Number(
+                            btn.dataset.page
+                        ) || 1;
+
+
+                    openPdf(
+                        file,
+                        page
+                    );
+
+                }
             );
 
-        viewButton.addEventListener(
-            "click",
-            () => openPdf(voter.file)
-        );
 
-
-        const copyButton =
-            card.querySelector(
-                ".copy-btn"
+            results.appendChild(
+                card
             );
 
-        copyButton.addEventListener(
-            "click",
-            () => copyVoter(voter)
-        );
-
-
-        results.appendChild(card);
-
-    });
+        }
+    );
 
 }
 
@@ -1716,240 +2275,294 @@ function displayResults(data){
 function escapeHtml(value){
 
     return String(value || "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
-
-
-function escapeAttr(value){
-
-    return escapeHtml(value);
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
 
 /* =========================================================
-   COPY VOTER
+   CLEAR SEARCH
 ========================================================= */
 
-async function copyVoter(voter){
+clearBtn.addEventListener(
+    "click",
+    function(){
 
-    const text =
+        nameSearch.value =
+            "";
 
-`ভোটারের নাম: ${voter.name || ""}
+        dobSearch.value =
+            "";
 
-জন্ম তারিখ: ${voter.dob || ""}
+        results.innerHTML =
+            "";
 
-PDF: ${voter.file || ""}
-
-০৩ নং পাঁচলাইশ ওয়ার্ড
-আলী ইসলাম
-উদ্যোক্তা`;
-
-
-    try{
-
-        await navigator.clipboard.writeText(
-            text
-        );
-
-        showStatus(
-            "তথ্য Copy হয়েছে।",
-            "success"
-        );
+        resultInfo.innerText =
+            voterIndex.length
+            ? `Index প্রস্তুত আছে — ${voterIndex.length}টি রেকর্ড।`
+            : "অনুসন্ধানের জন্য নাম অথবা জন্ম তারিখ লিখুন।";
 
     }
-    catch(error){
-
-        alert(text);
-
-    }
-
-}
+);
 
 
 /* =========================================================
    OPEN PDF
 ========================================================= */
 
-async function openPdf(fileName){
+async function openPdf(
+    fileName,
+    pageNumber
+){
 
-    pdfViewer.style.display =
+    pdfModal.style.display =
         "block";
 
-    pdfBody.innerHTML = `
+    document.body.style.overflow =
+        "hidden";
 
-        <div class="loading">
 
-            <div class="spinner"></div>
+    currentPage =
+        pageNumber || 1;
 
-            PDF লোড হচ্ছে...
 
-        </div>
+    currentScale =
+        1.25;
 
-    `;
 
-    pdfTitle.textContent =
+    const url =
+        "./pdf/" +
         fileName;
 
 
     try{
 
-        const response =
-            await fetch(
-                "pdfs/" +
-                encodeURIComponent(fileName)
-            );
-
-        if(!response.ok){
-
-            throw new Error(
-                "PDF পাওয়া যায়নি"
-            );
-
-        }
-
-        const arrayBuffer =
-            await response.arrayBuffer();
-
-        const pdf =
-            await pdfjsLib.getDocument({
-                data:arrayBuffer
-            }).promise;
+        const loadingTask =
+            pdfjsLib.getDocument({
+                url:url
+            });
 
 
-        pdfBody.innerHTML = "";
+        currentPdf =
+            await loadingTask.promise;
 
 
-        for(
-            let pageNumber = 1;
-            pageNumber <= pdf.numPages;
-            pageNumber++
-        ){
-
-            const page =
-                await pdf.getPage(
-                    pageNumber
-                );
+        pageCount.innerText =
+            currentPdf.numPages;
 
 
-            const viewport =
-                page.getViewport({
-                    scale:1.4
-                });
+        await renderPdfPage(
+            currentPage
+        );
 
-
-            const pageDiv =
-                document.createElement(
-                    "div"
-                );
-
-            pageDiv.className =
-                "pdf-page";
-
-
-            const canvas =
-                document.createElement(
-                    "canvas"
-                );
-
-            canvas.width =
-                viewport.width;
-
-            canvas.height =
-                viewport.height;
-
-
-            pageDiv.appendChild(
-                canvas
-            );
-
-
-            /* WATERMARK */
-
-            const watermark =
-                document.createElement(
-                    "div"
-                );
-
-            watermark.className =
-                "watermark";
-
-            watermark.innerHTML =
-
-                "আলী ইসলাম<br>" +
-                "উদ্যোক্তা<br>" +
-                "০৩ নং পাঁচলাইশ ওয়ার্ড";
-
-
-            pageDiv.appendChild(
-                watermark
-            );
-
-
-            /* SMALL WATERMARK */
-
-            const smallWatermark =
-                document.createElement(
-                    "div"
-                );
-
-            smallWatermark.className =
-                "watermark-small";
-
-            smallWatermark.textContent =
-                "আলী ইসলাম • উদ্যোক্তা • ০৩ নং পাঁচলাইশ ওয়ার্ড";
-
-
-            pageDiv.appendChild(
-                smallWatermark
-            );
-
-
-            pdfBody.appendChild(
-                pageDiv
-            );
-
-
-            await page.render({
-
-                canvasContext:
-                    canvas.getContext("2d"),
-
-                viewport:
-                    viewport
-
-            }).promise;
-
-        }
 
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Open PDF Error:",
+            error
+        );
 
-        pdfBody.innerHTML = `
 
-            <div class="loading">
+        alert(
+            "PDF খুলতে সমস্যা হয়েছে।\n\n" +
+            "ফাইলটি ঠিক আছে কিনা এবং pdf ফোল্ডারে আছে কিনা দেখুন।"
+        );
 
-                ❌ PDF লোড করা যাচ্ছে না।
-
-                <br><br>
-
-                নিশ্চিত করুন PDF ফাইলটি
-                <b>pdfs</b> folder-এর মধ্যে আছে।
-
-            </div>
-
-        `;
+        closePdfViewer();
 
     }
 
 }
+
+
+/* =========================================================
+   RENDER PDF PAGE
+========================================================= */
+
+async function renderPdfPage(
+    pageNumber
+){
+
+    if(!currentPdf) return;
+
+
+    if(
+        pageNumber < 1
+    ){
+
+        pageNumber = 1;
+
+    }
+
+
+    if(
+        pageNumber >
+        currentPdf.numPages
+    ){
+
+        pageNumber =
+            currentPdf.numPages;
+
+    }
+
+
+    currentPage =
+        pageNumber;
+
+
+    pageNum.innerText =
+        currentPage;
+
+
+    const page =
+        await currentPdf.getPage(
+            currentPage
+        );
+
+
+    const viewport =
+        page.getViewport({
+            scale:currentScale
+        });
+
+
+    const context =
+        pdfCanvas.getContext(
+            "2d"
+        );
+
+
+    pdfCanvas.width =
+        viewport.width;
+
+    pdfCanvas.height =
+        viewport.height;
+
+
+    await page.render({
+
+        canvasContext:
+            context,
+
+        viewport:
+            viewport
+
+    }).promise;
+
+}
+
+
+/* =========================================================
+   PDF NEXT PAGE
+========================================================= */
+
+nextPage.addEventListener(
+    "click",
+    async function(){
+
+        if(
+            currentPdf &&
+            currentPage <
+            currentPdf.numPages
+        ){
+
+            await renderPdfPage(
+                currentPage + 1
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   PDF PREVIOUS PAGE
+========================================================= */
+
+prevPage.addEventListener(
+    "click",
+    async function(){
+
+        if(
+            currentPdf &&
+            currentPage > 1
+        ){
+
+            await renderPdfPage(
+                currentPage - 1
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ZOOM IN
+========================================================= */
+
+zoomIn.addEventListener(
+    "click",
+    async function(){
+
+        if(!currentPdf) return;
+
+        currentScale +=
+            0.20;
+
+        await renderPdfPage(
+            currentPage
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ZOOM OUT
+========================================================= */
+
+zoomOut.addEventListener(
+    "click",
+    async function(){
+
+        if(!currentPdf) return;
+
+        currentScale =
+            Math.max(
+                0.60,
+                currentScale - 0.20
+            );
+
+        await renderPdfPage(
+            currentPage
+        );
+
+    }
+);
 
 
 /* =========================================================
@@ -1958,148 +2571,20 @@ async function openPdf(fileName){
 
 closePdf.addEventListener(
     "click",
-    () => {
-
-        pdfViewer.style.display =
-            "none";
-
-        pdfBody.innerHTML = "";
-
-    }
+    closePdfViewer
 );
 
 
-/* =========================================================
-   LOGIN
-========================================================= */
-
-loginBtn.addEventListener(
+pdfModal.addEventListener(
     "click",
-    async () => {
-
-        loginError.style.display =
-            "none";
-
-
-        const userId =
-            userIdInput.value
-            .trim()
-            .toUpperCase();
-
-
-        const password =
-            passwordInput.value;
-
-
-        if(!userId || !password){
-
-            showLoginError(
-                "User ID এবং Password দিন।"
-            );
-
-            return;
-
-        }
-
-
-        const account =
-            LOGIN_USERS[userId];
-
-
-        if(!account){
-
-            showLoginError(
-                "এই User ID সিস্টেমে পাওয়া যায়নি।"
-            );
-
-            return;
-
-        }
-
+    function(event){
 
         if(
-            account.email.includes(
-                "আপনার-ADMIN-EMAIL"
-            )
+            event.target ===
+            pdfModal
         ){
 
-            showLoginError(
-                "কোডে Admin-এর আসল Firebase Email বসানো হয়নি।"
-            );
-
-            return;
-
-        }
-
-
-        loginBtn.disabled = true;
-
-        loginBtn.textContent =
-            "লগইন হচ্ছে...";
-
-
-        try{
-
-            await signInWithEmailAndPassword(
-                auth,
-                account.email,
-                password
-            );
-
-        }
-        catch(error){
-
-            console.error(error);
-
-            let message =
-                "Login ব্যর্থ হয়েছে।";
-
-
-            if(
-                error.code ===
-                "auth/invalid-credential"
-            ){
-
-                message =
-                    "User ID অথবা Password ভুল।";
-
-            }
-
-
-            if(
-                error.code ===
-                "auth/user-not-found"
-            ){
-
-                message =
-                    "Firebase Authentication-এ এই User পাওয়া যায়নি।";
-
-            }
-
-
-            if(
-                error.code ===
-                "auth/wrong-password"
-            ){
-
-                message =
-                    "Password ভুল।";
-
-            }
-
-
-            showLoginError(
-                message
-            );
-
-        }
-        finally{
-
-            loginBtn.disabled =
-                false;
-
-            loginBtn.textContent =
-                "লগইন করুন";
+            closePdfViewer();
 
         }
 
@@ -2107,308 +2592,92 @@ loginBtn.addEventListener(
 );
 
 
-/* =========================================================
-   LOGIN ERROR
-========================================================= */
+function closePdfViewer(){
 
-function showLoginError(message){
+    pdfModal.style.display =
+        "none";
 
-    loginError.textContent =
-        message;
+    document.body.style.overflow =
+        "";
 
-    loginError.style.display =
-        "block";
+    currentPdf =
+        null;
+
+    const context =
+        pdfCanvas.getContext(
+            "2d"
+        );
+
+    context.clearRect(
+        0,
+        0,
+        pdfCanvas.width,
+        pdfCanvas.height
+    );
 
 }
 
 
 /* =========================================================
-   FIREBASE AUTH STATE
+   KEYBOARD PDF CONTROL
 ========================================================= */
 
-onAuthStateChanged(
-    auth,
-    async (user) => {
-
-        if(!user){
-
-            currentUser =
-                null;
-
-            currentRole =
-                null;
-
-            loginScreen.style.display =
-                "flex";
-
-            appScreen.style.display =
-                "none";
-
-            return;
-
-        }
-
-
-        try{
-
-            currentUser =
-                user;
-
-
-            /* GET FIRESTORE USER ROLE */
-
-            const userRef =
-                doc(
-                    db,
-                    "users",
-                    user.uid
-                );
-
-
-            const userSnap =
-                await getDoc(userRef);
-
-
-            if(!userSnap.exists()){
-
-                await signOut(auth);
-
-                showLoginError(
-                    "আপনার Firestore User Role সেট করা হয়নি।"
-                );
-
-                return;
-
-            }
-
-
-            const userData =
-                userSnap.data();
-
-
-            currentRole =
-                String(
-                    userData.role || ""
-                ).toLowerCase();
-
-
-            if(
-                currentRole !== "admin" &&
-                currentRole !== "operator"
-            ){
-
-                await signOut(auth);
-
-                showLoginError(
-                    "আপনার অনুমতি নেই। Admin/Operator Role প্রয়োজন।"
-                );
-
-                return;
-
-            }
-
-
-            /* SHOW APP */
-
-            loginScreen.style.display =
-                "none";
-
-            appScreen.style.display =
-                "block";
-
-
-            loggedUserName.textContent =
-                userData.name ||
-                user.email;
-
-
-            roleBadge.textContent =
-                currentRole === "admin"
-                    ? "ADMIN"
-                    : "OPERATOR";
-
-
-            /* ADMIN PANEL */
-
-            if(
-                currentRole === "admin"
-            ){
-
-                adminPanel.style.display =
-                    "block";
-
-            }
-            else{
-
-                adminPanel.style.display =
-                    "none";
-
-            }
-
-
-            /* LOAD LOCAL INDEX */
-
-            if(loadLocalIndex()){
-
-                showStatus(
-                    `Index প্রস্তুত আছে। ${voterIndex.length}টি তথ্য লোড হয়েছে।`,
-                    "success"
-                );
-
-            }
-            else{
-
-                showStatus(
-                    "প্রথমবার ব্যবহার করতে Admin-কে PDF Index তৈরি করতে হবে।",
-                    "info"
-                );
-
-            }
-
-        }
-        catch(error){
-
-            console.error(error);
-
-            await signOut(auth);
-
-            showLoginError(
-                "User Role যাচাই করতে সমস্যা হয়েছে।"
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-logoutBtn.addEventListener(
-    "click",
-    async () => {
-
-        await signOut(auth);
-
-    }
-);
-
-
-/* =========================================================
-   SEARCH BUTTON
-========================================================= */
-
-searchBtn.addEventListener(
-    "click",
-    searchVoters
-);
-
-
-/* =========================================================
-   ENTER KEY SEARCH
-========================================================= */
-
-[nameInput, dobInput].forEach(
-    input => {
-
-        input.addEventListener(
-            "keydown",
-            event => {
-
-                if(
-                    event.key === "Enter"
-                ){
-
-                    searchVoters();
-
-                }
-
-            }
-        );
-
-    }
-);
-
-
-/* =========================================================
-   CLEAR
-========================================================= */
-
-clearBtn.addEventListener(
-    "click",
-    () => {
-
-        nameInput.value = "";
-
-        dobInput.value = "";
-
-        results.innerHTML = "";
-
-        resultHeader.style.display =
-            "none";
-
-        hideStatus();
-
-    }
-);
-
-
-/* =========================================================
-   ADMIN REBUILD INDEX
-========================================================= */
-
-rebuildIndexBtn.addEventListener(
-    "click",
-    async () => {
+document.addEventListener(
+    "keydown",
+    async function(event){
 
         if(
-            currentRole !== "admin"
+            pdfModal.style.display !==
+            "block"
         ){
 
-            showStatus(
-                "শুধুমাত্র Admin এই কাজ করতে পারবেন।",
-                "error"
-            );
-
             return;
 
         }
 
 
-        const confirmation =
-            confirm(
-                "৫৬টি PDF আবার পড়া হবে। সময় লাগতে পারে। আপনি কি চালিয়ে যেতে চান?"
-            );
+        if(event.key === "Escape"){
 
-
-        if(!confirmation){
-
-            return;
+            closePdfViewer();
 
         }
 
 
-        rebuildIndexBtn.disabled =
-            true;
+        if(
+            event.key === "ArrowRight" ||
+            event.key === "PageDown"
+        ){
 
-        rebuildIndexBtn.textContent =
-            "Index তৈরি হচ্ছে...";
+            if(
+                currentPdf &&
+                currentPage <
+                currentPdf.numPages
+            ){
 
+                await renderPdfPage(
+                    currentPage + 1
+                );
 
-        try{
-
-            await buildIndex();
+            }
 
         }
-        finally{
 
-            rebuildIndexBtn.disabled =
-                false;
 
-            rebuildIndexBtn.textContent =
-                "🔄 PDF Index পুনরায় তৈরি করুন";
+        if(
+            event.key === "ArrowLeft" ||
+            event.key === "PageUp"
+        ){
+
+            if(
+                currentPdf &&
+                currentPage > 1
+            ){
+
+                await renderPdfPage(
+                    currentPage - 1
+                );
+
+            }
 
         }
 
@@ -2420,14 +2689,9 @@ rebuildIndexBtn.addEventListener(
    INITIAL MESSAGE
 ========================================================= */
 
-console.log(
-    "Panchlaish Voter Information System Loaded"
-);
+resultInfo.innerText =
+    "অনুসন্ধানের জন্য নাম অথবা জন্ম তারিখ লিখুন।";
 
-console.log(
-    "Total PDFs:",
-    PDF_FILES.length
-);
 
 </script>
 
