@@ -3,8 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
 <style>
 *{
@@ -13,130 +20,111 @@
 
 body{
     margin:0;
-    font-family:"Noto Sans Bengali","SolaimanLipi","Vrinda",Arial,sans-serif;
-    background:#f3f6f9;
-    color:#1f2937;
+    font-family:"Noto Sans Bengali","Noto Sans",Arial,sans-serif;
+    background:#f1f5f9;
+    color:#1e293b;
 }
 
-/* =========================
-   LOGIN
-========================= */
-
-#loginScreen{
+/* LOGIN OVERLAY */
+#loginOverlay{
     position:fixed;
     inset:0;
-    background:linear-gradient(135deg,#0f766e,#0e7490,#1d4ed8);
+    background:linear-gradient(135deg,#0f172a,#1e3a8a,#0f766e);
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
     padding:20px;
-    z-index:9999;
+    z-index:99999;
 }
 
 .loginBox{
     width:100%;
-    max-width:430px;
+    max-width:420px;
     background:white;
     border-radius:20px;
     padding:30px;
-    box-shadow:0 20px 60px rgba(0,0,0,.25);
+    box-shadow:0 20px 60px rgba(0,0,0,.30);
 }
 
 .loginLogo{
-    width:75px;
-    height:75px;
-    margin:0 auto 15px;
-    border-radius:50%;
-    background:#0f766e;
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:35px;
-    font-weight:bold;
+    text-align:center;
+    font-size:42px;
+    margin-bottom:8px;
 }
 
-.loginBox h1{
+.loginBox h2{
     text-align:center;
     margin:0;
-    font-size:24px;
-    color:#0f766e;
+    color:#0f172a;
 }
 
 .loginBox p{
     text-align:center;
-    color:#6b7280;
-    margin:8px 0 25px;
+    color:#64748b;
+    margin-top:8px;
 }
 
 .formGroup{
-    margin-bottom:16px;
+    margin-top:18px;
 }
 
 .formGroup label{
     display:block;
-    margin-bottom:7px;
     font-weight:bold;
+    margin-bottom:7px;
 }
 
 .formGroup input{
     width:100%;
-    padding:13px 14px;
-    border:1px solid #d1d5db;
+    padding:13px;
+    border:1px solid #cbd5e1;
     border-radius:10px;
     font-size:16px;
     outline:none;
 }
 
 .formGroup input:focus{
-    border-color:#0f766e;
-    box-shadow:0 0 0 3px rgba(15,118,110,.12);
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.10);
 }
 
-.loginBtn{
+#loginBtn{
     width:100%;
+    margin-top:22px;
     padding:14px;
     border:0;
     border-radius:10px;
-    background:#0f766e;
+    background:#2563eb;
     color:white;
     font-size:17px;
     font-weight:bold;
     cursor:pointer;
 }
 
-.loginBtn:hover{
-    background:#115e59;
+#loginBtn:hover{
+    background:#1d4ed8;
 }
 
-.loginBtn:disabled{
-    opacity:.6;
-    cursor:not-allowed;
-}
-
-.loginError{
-    display:none;
+#loginError{
     margin-top:15px;
-    padding:12px;
-    border-radius:9px;
+    padding:10px;
+    border-radius:8px;
     background:#fee2e2;
     color:#b91c1c;
-    font-size:14px;
-    line-height:1.6;
+    display:none;
+    text-align:center;
 }
 
-/* =========================
-   MAIN
-========================= */
-
+/* MAIN APP */
 #app{
     display:none;
+    min-height:100vh;
 }
 
-.header{
-    background:linear-gradient(135deg,#0f766e,#0e7490);
+header{
+    background:linear-gradient(135deg,#0f172a,#1e3a8a);
     color:white;
-    padding:16px 20px;
+    padding:15px 20px;
     box-shadow:0 3px 15px rgba(0,0,0,.15);
 }
 
@@ -149,2550 +137,286 @@ body{
     gap:15px;
 }
 
-.headerTitle h1{
-    margin:0;
-    font-size:24px;
+.headerTitle{
+    font-size:21px;
+    font-weight:bold;
 }
 
-.headerTitle p{
-    margin:4px 0 0;
-    opacity:.9;
-    font-size:14px;
-}
-
-.headerRight{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.roleBadge{
-    background:rgba(255,255,255,.18);
-    padding:8px 12px;
-    border-radius:20px;
+.headerSub{
     font-size:13px;
+    opacity:.85;
+    margin-top:4px;
 }
 
-.logoutBtn{
-    border:1px solid rgba(255,255,255,.5);
-    background:rgba(255,255,255,.1);
-    color:white;
-    padding:8px 13px;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-.container{
-    max-width:1200px;
-    margin:25px auto;
-    padding:0 15px;
-}
-
-/* =========================
-   SEARCH CARD
-========================= */
-
-.card{
-    background:white;
-    border-radius:16px;
-    padding:22px;
-    box-shadow:0 5px 20px rgba(0,0,0,.07);
-    margin-bottom:20px;
-}
-
-.cardTitle{
-    font-size:20px;
-    font-weight:bold;
-    color:#0f766e;
-    margin-bottom:17px;
-}
-
-.searchGrid{
-    display:grid;
-    grid-template-columns:1fr 1fr auto;
-    gap:12px;
-}
-
-.searchInput{
-    width:100%;
-    padding:13px;
-    border:1px solid #d1d5db;
-    border-radius:10px;
-    font-size:16px;
-}
-
-.searchInput:focus{
-    outline:none;
-    border-color:#0f766e;
-}
-
-.searchBtn{
-    border:0;
-    border-radius:10px;
-    background:#0f766e;
-    color:white;
-    padding:0 25px;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.clearBtn{
-    border:0;
-    border-radius:10px;
-    background:#6b7280;
-    color:white;
-    padding:0 20px;
-    font-size:16px;
-    cursor:pointer;
-}
-
-/* =========================
-   ADMIN
-========================= */
-
-.adminPanel{
-    display:none;
-    background:#fff7ed;
-    border:1px solid #fed7aa;
-    border-radius:15px;
-    padding:18px;
-    margin-bottom:20px;
-}
-
-.adminPanel h3{
-    margin-top:0;
-    color:#c2410c;
-}
-
-.adminBtn{
-    background:#ea580c;
-    color:white;
-    border:0;
-    border-radius:9px;
-    padding:11px 17px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.adminBtn:disabled{
-    opacity:.6;
-    cursor:not-allowed;
-}
-
-.progressBox{
-    display:none;
-    margin-top:15px;
-}
-
-.progressBar{
-    width:100%;
-    height:14px;
-    background:#e5e7eb;
-    border-radius:10px;
-    overflow:hidden;
-}
-
-.progressFill{
-    height:100%;
-    width:0%;
-    background:#0f766e;
-    transition:.2s;
-}
-
-.progressText{
-    margin-top:7px;
-    font-size:14px;
-}
-
-/* =========================
-   RESULTS
-========================= */
-
-.resultInfo{
-    margin-bottom:15px;
-    font-weight:bold;
-    color:#374151;
-}
-
-.resultCard{
-    background:white;
-    border-radius:13px;
-    border:1px solid #e5e7eb;
-    padding:17px;
-    margin-bottom:12px;
-    transition:.2s;
-}
-
-.resultCard:hover{
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
-}
-
-.resultName{
-    font-size:18px;
-    font-weight:bold;
-    color:#0f766e;
-    margin-bottom:7px;
-}
-
-.resultDetails{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:6px;
-    font-size:14px;
-    color:#4b5563;
-}
-
-.viewPdfBtn{
-    margin-top:13px;
-    background:#1d4ed8;
-    color:white;
-    border:0;
-    padding:9px 15px;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-.noResult{
-    padding:30px;
-    text-align:center;
-    color:#6b7280;
-}
-
-/* =========================
-   PDF MODAL
-========================= */
-
-#pdfModal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.82);
-    z-index:5000;
-    overflow:auto;
-}
-
-.pdfHeader{
-    position:sticky;
-    top:0;
-    z-index:20;
-    background:#111827;
-    color:white;
-    padding:10px 15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-}
-
-.pdfHeader button{
-    border:0;
-    background:#dc2626;
-    color:white;
-    padding:8px 14px;
-    border-radius:7px;
-    cursor:pointer;
-}
-
-.pdfControls{
+.userArea{
     display:flex;
     align-items:center;
     gap:8px;
     flex-wrap:wrap;
+    justify-content:flex-end;
 }
 
-.pdfControls button{
-    background:#374151;
-}
-
-.pdfViewer{
-    position:relative;
-    max-width:1000px;
-    margin:20px auto 50px;
-    padding:15px;
-}
-
-#pdfCanvas{
-    display:block;
-    max-width:100%;
-    margin:auto;
-    background:white;
-    box-shadow:0 5px 25px rgba(0,0,0,.4);
-}
-
-.watermark{
-    position:fixed;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%) rotate(-25deg);
-    z-index:10;
-    pointer-events:none;
-    user-select:none;
-    text-align:center;
-    color:rgba(15,118,110,.16);
+#loggedUserName{
     font-weight:bold;
-    font-size:34px;
-    line-height:1.5;
-    white-space:nowrap;
 }
 
-.watermark small{
-    display:block;
-    font-size:22px;
+#roleBadge{
+    background:#22c55e;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
 }
 
-/* =========================
-   FOOTER
-========================= */
-
-.footer{
-    text-align:center;
-    padding:25px 10px;
-    color:#6b7280;
-    font-size:13px;
+#logoutBtn{
+    border:0;
+    background:#ef4444;
+    color:white;
+    padding:8px 13px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+#logoutBtn:hover{
+    background:#dc2626;
+}
 
-@media(max-width:800px){
+/* CONTAINER */
+.container{
+    width:100%;
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
 
-    .headerInner{
-        flex-direction:column;
-        align-items:flex-start;
-    }
+/* SEARCH CARD */
+.searchCard{
+    background:white;
+    border-radius:16px;
+    padding:22px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
 
-    .headerRight{
-        width:100%;
-        justify-content:space-between;
-    }
+.searchCard h3{
+    margin-top:0;
+}
 
+.searchGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr auto auto;
+    gap:12px;
+    align-items:end;
+}
+
+@media(max-width:768px){
     .searchGrid{
         grid-template-columns:1fr;
     }
+}
 
-    .searchBtn,
-    .clearBtn{
-        padding:13px;
-    }
+.inputBox label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:6px;
+}
 
-    .resultDetails{
-        grid-template-columns:1fr;
-    }
+.inputBox input{
+    width:100%;
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:9px;
+    font-size:16px;
+}
 
-    .watermark{
-        font-size:24px;
-    }
+.btn{
+    padding:12px 18px;
+    border:0;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+}
 
-    .watermark small{
-        font-size:16px;
-    }
+#searchBtn{
+    background:#2563eb;
+    color:white;
+}
+
+#clearBtn{
+    background:#e2e8f0;
+    color:#0f172a;
+}
+
+#searchBtn:hover{
+    background:#1d4ed8;
+}
+
+#clearBtn:hover{
+    background:#cbd5e1;
+}
+
+/* STATUS */
+#status{
+    margin-top:15px;
+    padding:12px;
+    background:#eff6ff;
+    color:#1d4ed8;
+    border-radius:10px;
+    display:none;
+}
+
+#status.success{
+    background:#dcfce7;
+    color:#166534;
+}
+
+#status.error{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* RESULT CARD */
+.resultCard{
+    margin-top:20px;
+    background:white;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+#resultHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
 }
 </style>
 </head>
-
 <body>
 
-<!-- =========================
-     LOGIN SCREEN
-========================= -->
-
-<div id="loginScreen">
-
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay">
     <div class="loginBox">
-
-        <div class="loginLogo">ভো</div>
-
-        <h1>ভোটার তথ্য অনুসন্ধান</h1>
-
-        <p>৩ নং পাঁচলাইশ ওয়ার্ড</p>
-
-        <form id="loginForm">
-
-            <div class="formGroup">
-                <label for="userId">User ID</label>
-                <input
-                    type="text"
-                    id="userId"
-                    placeholder="যেমন: ALI001"
-                    autocomplete="username"
-                    required
-                >
-            </div>
-
-            <div class="formGroup">
-                <label for="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Password লিখুন"
-                    autocomplete="current-password"
-                    required
-                >
-            </div>
-
-            <button
-                type="submit"
-                class="loginBtn"
-                id="loginBtn"
-            >
-                লগইন
-            </button>
-
-            <div
-                id="loginError"
-                class="loginError"
-            ></div>
-
-        </form>
-
+        <div class="loginLogo">🗳️</div>
+        <h2>স্বাগতম</h2>
+        <p>ভোটার তথ্য অনুসন্ধানে লগইন করুন</p>
+        <div class="formGroup">
+            <label for="username">ব্যবহারকারীর নাম</label>
+            <input type="text" id="username" placeholder="ইউজারনেম লিখুন">
+        </div>
+        <div class="formGroup">
+            <label for="password">পাসওয়ার্ড</label>
+            <input type="password" id="password" placeholder="পাসওয়ার্ড লিখুন">
+        </div>
+        <button id="loginBtn" onclick="handleLogin()">লগইন করুন</button>
+        <div id="loginError">ভুল তথ্য প্রদান করা হয়েছে!</div>
     </div>
-
 </div>
 
-
-<!-- =========================
-     MAIN APP
-========================= -->
-
+<!-- MAIN APP -->
 <div id="app">
-
-    <header class="header">
-
+    <header>
         <div class="headerInner">
-
-            <div class="headerTitle">
-                <h1>৩ নং পাঁচলাইশ ওয়ার্ড</h1>
-                <p>ভোটার তথ্য অনুসন্ধান সিস্টেম</p>
+            <div>
+                <div class="headerTitle">৩ নং পাঁচলাইশ ওয়ার্ড</div>
+                <div class="headerSub">ভোটার তথ্য অনুসন্ধান পোর্টালে আপনাকে স্বাগতম</div>
             </div>
-
-            <div class="headerRight">
-
-                <span
-                    id="roleBadge"
-                    class="roleBadge"
-                >
-                    -
-                </span>
-
-                <button
-                    class="logoutBtn"
-                    id="logoutBtn"
-                >
-                    Logout
-                </button>
-
+            <div class="userArea">
+                <span id="loggedUserName">এডমিন</span>
+                <span id="roleBadge">সক্রিয়</span>
+                <button id="logoutBtn" onclick="handleLogout()">লগআউট</button>
             </div>
-
         </div>
-
     </header>
 
-
-    <main class="container">
-
-        <!-- ADMIN PANEL -->
-
-        <section
-            id="adminPanel"
-            class="adminPanel"
-        >
-
-            <h3>⚙️ Admin Control Panel</h3>
-
-            <p>
-                PDF থেকে ভোটার তথ্যের Search Index তৈরি করতে নিচের
-                বাটনে ক্লিক করুন।
-            </p>
-
-            <button
-                id="buildIndexBtn"
-                class="adminBtn"
-            >
-                📑 PDF Index পুনরায় তৈরি করুন
-            </button>
-
-            <div
-                id="progressBox"
-                class="progressBox"
-            >
-
-                <div class="progressBar">
-                    <div
-                        id="progressFill"
-                        class="progressFill"
-                    ></div>
-                </div>
-
-                <div
-                    id="progressText"
-                    class="progressText"
-                >
-                    প্রস্তুত হচ্ছে...
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- SEARCH -->
-
-        <section class="card">
-
-            <div class="cardTitle">
-                🔎 ভোটার তথ্য অনুসন্ধান
-            </div>
-
+    <div class="container">
+        <div class="searchCard">
+            <h3>ভোটার খুঁজুন</h3>
             <div class="searchGrid">
-
-                <input
-                    type="text"
-                    id="nameSearch"
-                    class="searchInput"
-                    placeholder="ভোটারের নাম লিখুন"
-                >
-
-                <input
-                    type="text"
-                    id="dobSearch"
-                    class="searchInput"
-                    placeholder="জন্ম তারিখ: 01/01/2000"
-                >
-
-                <button
-                    id="searchBtn"
-                    class="searchBtn"
-                >
-                    অনুসন্ধান
-                </button>
-
+                <div class="inputBox">
+                    <label for="voterName">ভোটারের নাম</label>
+                    <input type="text" id="voterName" placeholder="নাম দিয়ে খুঁজুন...">
+                </div>
+                <div class="inputBox">
+                    <label for="voterId">ভোটার আইডি / NID</label>
+                    <input type="text" id="voterId" placeholder="আইডি নম্বর দিয়ে খুঁজুন...">
+                </div>
+                <button class="btn" id="searchBtn" onclick="performSearch()">খুঁজুন</button>
+                <button class="btn" id="clearBtn" onclick="clearFields()">মুছে ফেলুন</button>
             </div>
-
-            <div style="margin-top:10px;">
-                <button
-                    id="clearBtn"
-                    class="clearBtn"
-                >
-                    Clear
-                </button>
-            </div>
-
-        </section>
-
-
-        <!-- RESULTS -->
-
-        <section class="card">
-
-            <div
-                id="resultInfo"
-                class="resultInfo"
-            >
-                অনুসন্ধানের জন্য নাম অথবা জন্ম তারিখ লিখুন।
-            </div>
-
-            <div id="results"></div>
-
-        </section>
-
-    </main>
-
-
-    <footer class="footer">
-        © ২০২৬ — ৩ নং পাঁচলাইশ ওয়ার্ড ভোটার তথ্য অনুসন্ধান
-        <br>
-        উদ্যোক্তা: আলী ইসলাম
-    </footer>
-
-</div>
-
-
-<!-- =========================
-     PDF MODAL
-========================= -->
-
-<div id="pdfModal">
-
-    <div class="pdfHeader">
-
-        <div class="pdfControls">
-
-            <button id="prevPage">
-                ◀
-            </button>
-
-            <span>
-                Page
-                <span id="pageNum">1</span>
-                /
-                <span id="pageCount">0</span>
-            </span>
-
-            <button id="nextPage">
-                ▶
-            </button>
-
-            <button id="zoomOut">
-                −
-            </button>
-
-            <button id="zoomIn">
-                +
-            </button>
-
+            <div id="status"></div>
         </div>
 
-        <button id="closePdf">
-            ✕ বন্ধ করুন
-        </button>
-
-    </div>
-
-
-    <div class="pdfViewer">
-
-        <canvas id="pdfCanvas"></canvas>
-
-        <div class="watermark">
-            আলী ইসলাম
-            <small>উদ্যোক্তা</small>
-            <small>০৩ নং পাঁচলাইশ ওয়ার্ড</small>
+        <div class="resultCard">
+            <div id="resultHeader">
+                <h3>অনুসন্ধান ফলাফল</h3>
+            </div>
+            <div id="resultBody">
+                <p style="color: #64748b;">উপরে তথ্য প্রবেশ করিয়ে অনুসন্ধান করুন।</p>
+            </div>
         </div>
-
     </div>
-
 </div>
 
+<script>
+function handleLogin() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+    const errorDiv = document.getElementById('loginError');
 
-<!-- =========================
-     PDF.JS
-========================= -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-
-
-<!-- =========================
-     FIREBASE
-========================= -->
-
-<script type="module">
-
-import {
-    initializeApp
-} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-
-import {
-    getAuth,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut
-} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-
-import {
-    getFirestore,
-    doc,
-    getDoc
-} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
-
-
-/* =========================================================
-   FIREBASE CONFIG
-========================================================= */
-
-const firebaseConfig = {
-
-    apiKey: "AIzaSyBg-fUfaN7RaI0uUQCjvnR0vfJv4yZCML0",
-
-    authDomain:
-        "panchlaish-voter.firebaseapp.com",
-
-    projectId:
-        "panchlaish-voter",
-
-    storageBucket:
-        "panchlaish-voter.firebasestorage.app",
-
-    messagingSenderId:
-        "4272048264",
-
-    appId:
-        "1:4272048264:web:577b03225af8a22971b73d",
-
-    measurementId:
-        "G-WN2MVS1GSH"
-};
-
-
-/* =========================================================
-   INITIALIZE FIREBASE
-========================================================= */
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-
-/* =========================================================
-   IMPORTANT LOGIN SETTINGS
-=========================================================
-
-   এখানে Admin-এর Firebase Authentication Email বসাবেন।
-
-   উদাহরণ:
-
-   ADMIN_EMAIL: "admin@gmail.com"
-
-   Password এখানে লিখবেন না।
-========================================================= */
-
-const LOGIN_USERS = {
-
-    "ALI001": {
-
-        email: "আপনার-ADMIN-EMAIL",
-
-        displayName: "আলী ইসলাম"
-
-    },
-
-    "OP001": {
-
-        email: "op001@gmail.com",
-
-        displayName: "অপারেটর"
-
+    // ডামি লগইন চেক (প্রয়োজন অনুযায়ী পরিবর্তন করতে পারেন)
+    if(user !== '' && pass !== '') {
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        document.getElementById('loggedUserName').innerText = user;
+        errorDiv.style.display = 'none';
+    } else {
+        errorDiv.style.display = 'block';
+        errorDiv.innerText = 'ইউজারনেম এবং পাসওয়ার্ড দিন!';
     }
-
-};
-
-
-/* =========================================================
-   PDF FILE LIST
-========================================================= */
-
-const PDF_FILES = [
-
-    "151686_com_1443_female.pdf",
-    "151686_com_1526_male.pdf",
-
-    "151687_com_34_female.pdf",
-    "151687_com_57_male.pdf",
-
-    "151688_com_251_female.pdf",
-    "151688_com_296_male.pdf",
-
-    "151690_com_1217_female.pdf",
-    "151690_com_1305_male.pdf",
-
-    "151691_com_436_male.pdf",
-    "151691_com_443_female.pdf",
-
-    "151692_com_237_female.pdf",
-    "151692_com_269_male.pdf",
-
-    "151693_com_1888_male.pdf",
-    "151693_com_1926_female.pdf",
-
-    "151694_com_3519_male.pdf",
-    "151694_com_3839_female.pdf",
-
-    "151695_com_87_female.pdf",
-    "151695_com_117_male.pdf",
-
-    "151696_com_380_female.pdf",
-    "151696_com_444_male.pdf",
-
-    "151697_com_623_female.pdf",
-    "151697_com_643_male.pdf",
-
-    "151698_com_397_female.pdf",
-    "151698_com_432_male.pdf",
-
-    "151699_com_366_female.pdf",
-    "151699_com_398_male.pdf",
-
-    "151700_com_2199_female.pdf",
-    "151700_com_2199_male.pdf",
-
-    "151701_com_1606_female.pdf",
-    "151701_com_1675_male.pdf",
-
-    "151702_com_466_female.pdf",
-    "151702_com_865_male.pdf",
-
-    "151703_com_1591_male.pdf",
-    "151703_com_1816_female.pdf",
-
-    "151704_com_335_male.pdf",
-    "151704_com_415_female.pdf",
-
-    "151705_com_1370_male.pdf",
-    "151705_com_1427_female.pdf",
-
-    "151706_com_582_female.pdf",
-    "151706_com_654_male.pdf",
-
-    "151707_com_262_female.pdf",
-    "151707_com_286_male.pdf",
-
-    "151708_com_373_female.pdf",
-    "151708_com_426_male.pdf",
-
-    "151709_com_384_female.pdf",
-    "151709_com_414_male.pdf",
-
-    "151710_com_255_female.pdf",
-    "151710_com_296_male.pdf",
-
-    "151711_com_984_male.pdf",
-    "151711_com_1188_female.pdf",
-
-    "151712_com_1123_female.pdf",
-    "151712_com_1160_male.pdf",
-
-    "151713_com_345_female.pdf",
-    "151713_com_385_male.pdf",
-
-    "151714_com_441_male.pdf",
-    "151714_com_562_female.pdf"
-
-];
-
-
-/* =========================================================
-   PDF.JS WORKER
-========================================================= */
-
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
-
-
-/* =========================================================
-   GLOBAL VARIABLES
-========================================================= */
-
-let currentUser = null;
-
-let currentRole = null;
-
-let voterIndex = [];
-
-let currentPdf = null;
-
-let currentPage = 1;
-
-let currentScale = 1.25;
-
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const loginScreen =
-    document.getElementById("loginScreen");
-
-const loginForm =
-    document.getElementById("loginForm");
-
-const loginBtn =
-    document.getElementById("loginBtn");
-
-const loginError =
-    document.getElementById("loginError");
-
-const appDiv =
-    document.getElementById("app");
-
-const roleBadge =
-    document.getElementById("roleBadge");
-
-const adminPanel =
-    document.getElementById("adminPanel");
-
-const logoutBtn =
-    document.getElementById("logoutBtn");
-
-const nameSearch =
-    document.getElementById("nameSearch");
-
-const dobSearch =
-    document.getElementById("dobSearch");
-
-const searchBtn =
-    document.getElementById("searchBtn");
-
-const clearBtn =
-    document.getElementById("clearBtn");
-
-const results =
-    document.getElementById("results");
-
-const resultInfo =
-    document.getElementById("resultInfo");
-
-const buildIndexBtn =
-    document.getElementById("buildIndexBtn");
-
-const progressBox =
-    document.getElementById("progressBox");
-
-const progressFill =
-    document.getElementById("progressFill");
-
-const progressText =
-    document.getElementById("progressText");
-
-const pdfModal =
-    document.getElementById("pdfModal");
-
-const pdfCanvas =
-    document.getElementById("pdfCanvas");
-
-const pageNum =
-    document.getElementById("pageNum");
-
-const pageCount =
-    document.getElementById("pageCount");
-
-const closePdf =
-    document.getElementById("closePdf");
-
-const prevPage =
-    document.getElementById("prevPage");
-
-const nextPage =
-    document.getElementById("nextPage");
-
-const zoomIn =
-    document.getElementById("zoomIn");
-
-const zoomOut =
-    document.getElementById("zoomOut");
-
-
-/* =========================================================
-   BANGLA DIGIT CONVERSION
-========================================================= */
-
-function convertDigits(value){
-
-    if(!value) return "";
-
-    const bangla =
-        "০১২৩৪৫৬৭৮৯";
-
-    const english =
-        "0123456789";
-
-    return String(value)
-        .split("")
-        .map(ch => {
-
-            const index =
-                bangla.indexOf(ch);
-
-            return index >= 0
-                ? english[index]
-                : ch;
-
-        })
-        .join("");
 }
 
-
-/* =========================================================
-   NORMALIZE DATE
-========================================================= */
-
-function normalizeDate(date){
-
-    if(!date) return "";
-
-    let d =
-        convertDigits(
-            String(date).trim()
-        );
-
-    d =
-        d.replace(/[.\-]/g,"/");
-
-    d =
-        d.replace(/\s*\/\s*/g,"/");
-
-    d =
-        d.replace(/\s+/g,"");
-
-    const match =
-        d.match(
-            /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
-        );
-
-    if(!match){
-
-        return d;
-
-    }
-
-    const day =
-        match[1].padStart(2,"0");
-
-    const month =
-        match[2].padStart(2,"0");
-
-    const year =
-        match[3];
-
-    return `${day}/${month}/${year}`;
+function handleLogout() {
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('loginOverlay').style.display = 'flex';
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
 }
 
-
-/* =========================================================
-   NORMALIZE TEXT
-========================================================= */
-
-function normalizeText(text){
-
-    if(!text) return "";
-
-    return String(text)
-        .replace(/\s+/g," ")
-        .trim()
-        .toLowerCase();
-
-}
-
-
-/* =========================================================
-   SHOW LOGIN ERROR
-========================================================= */
-
-function showLoginError(message){
-
-    loginError.style.display =
-        "block";
-
-    loginError.innerHTML =
-        message;
-
-}
-
-
-/* =========================================================
-   HIDE LOGIN ERROR
-========================================================= */
-
-function hideLoginError(){
-
-    loginError.style.display =
-        "none";
-
-    loginError.innerHTML =
-        "";
-
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-loginForm.addEventListener(
-    "submit",
-    async function(event){
-
-        event.preventDefault();
-
-        hideLoginError();
-
-        const userId =
-            document
-            .getElementById("userId")
-            .value
-            .trim()
-            .toUpperCase();
-
-        const password =
-            document
-            .getElementById("password")
-            .value;
-
-        if(!userId || !password){
-
-            showLoginError(
-                "User ID এবং Password দুটোই লিখুন।"
-            );
-
-            return;
-        }
-
-
-        const account =
-            LOGIN_USERS[userId];
-
-
-        if(!account){
-
-            showLoginError(
-                "User ID সঠিক নয়।"
-            );
-
-            return;
-        }
-
-
-        if(
-            account.email ===
-            "আপনার-ADMIN-EMAIL"
-        ){
-
-            showLoginError(
-                "কোডে Admin-এর আসল Firebase Email বসানো হয়নি।<br><br>" +
-                "LOGIN_USERS-এর ALI001 অংশে Firebase Authentication-এর Admin Email বসান।"
-            );
-
-            return;
-        }
-
-
-        loginBtn.disabled =
-            true;
-
-        loginBtn.innerText =
-            "লগইন হচ্ছে...";
-
-
-        try{
-
-            await signInWithEmailAndPassword(
-                auth,
-                account.email,
-                password
-            );
-
-        }
-        catch(error){
-
-            console.error(
-                "Firebase Login Error:",
-                error
-            );
-
-
-            let message =
-                "লগইন করা যাচ্ছে না।";
-
-
-            if(
-                error.code ===
-                "auth/invalid-credential"
-            ){
-
-                message =
-                    "User ID/Email অথবা Password সঠিক নয়।<br>" +
-                    "Firebase Authentication-এর Email এবং Password মিলিয়ে দেখুন।";
-
-            }
-            else if(
-                error.code ===
-                "auth/invalid-email"
-            ){
-
-                message =
-                    "Firebase Email সঠিক নয়।";
-
-            }
-            else if(
-                error.code ===
-                "auth/user-not-found"
-            ){
-
-                message =
-                    "এই Email-এর Firebase User পাওয়া যায়নি।";
-
-            }
-            else if(
-                error.code ===
-                "auth/wrong-password"
-            ){
-
-                message =
-                    "Password সঠিক নয়।";
-
-            }
-            else if(
-                error.code ===
-                "auth/too-many-requests"
-            ){
-
-                message =
-                    "অনেকবার চেষ্টা করা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।";
-
-            }
-            else{
-
-                message =
-                    "লগইন ব্যর্থ হয়েছে।<br>" +
-                    "Error: " +
-                    (error.code || "unknown");
-
-            }
-
-
-            showLoginError(
-                message
-            );
-
-        }
-        finally{
-
-            loginBtn.disabled =
-                false;
-
-            loginBtn.innerText =
-                "লগইন";
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   FIREBASE AUTH STATE
-========================================================= */
-
-onAuthStateChanged(
-    auth,
-    async function(user){
-
-        if(!user){
-
-            currentUser =
-                null;
-
-            currentRole =
-                null;
-
-            appDiv.style.display =
-                "none";
-
-            loginScreen.style.display =
-                "flex";
-
-            return;
-        }
-
-
-        try{
-
-            const userRef =
-                doc(
-                    db,
-                    "users",
-                    user.uid
-                );
-
-
-            const userSnap =
-                await getDoc(userRef);
-
-
-            if(!userSnap.exists()){
-
-                await signOut(auth);
-
-                showLoginError(
-                    "আপনার Firebase Account-এর Firestore users ডকুমেন্ট পাওয়া যায়নি।"
-                );
-
-                return;
-            }
-
-
-            const userData =
-                userSnap.data();
-
-
-            const role =
-                String(
-                    userData.role || ""
-                ).toLowerCase();
-
-
-            if(
-                role !== "admin" &&
-                role !== "operator"
-            ){
-
-                await signOut(auth);
-
-                showLoginError(
-                    "আপনার Account-এর অনুমতি নেই।"
-                );
-
-                return;
-            }
-
-
-            currentUser =
-                user;
-
-            currentRole =
-                role;
-
-
-            loginScreen.style.display =
-                "none";
-
-            appDiv.style.display =
-                "block";
-
-
-            if(role === "admin"){
-
-                roleBadge.innerText =
-                    "👑 Admin";
-
-                adminPanel.style.display =
-                    "block";
-
-            }
-            else{
-
-                roleBadge.innerText =
-                    "👤 Operator";
-
-                adminPanel.style.display =
-                    "none";
-
-            }
-
-
-            loadIndexFromStorage();
-
-
-        }
-        catch(error){
-
-            console.error(
-                "Auth/Firestore Error:",
-                error
-            );
-
-            await signOut(auth);
-
-            showLoginError(
-                "Account যাচাই করতে সমস্যা হয়েছে।<br>" +
-                (error.code || "")
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-logoutBtn.addEventListener(
-    "click",
-    async function(){
-
-        try{
-
-            await signOut(auth);
-
-        }
-        catch(error){
-
-            console.error(error);
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   LOAD INDEX FROM LOCAL STORAGE
-========================================================= */
-
-function loadIndexFromStorage(){
-
-    try{
-
-        const saved =
-            localStorage.getItem(
-                "panchlaishVoterIndex"
-            );
-
-
-        if(saved){
-
-            voterIndex =
-                JSON.parse(saved);
-
-            resultInfo.innerText =
-                `Index প্রস্তুত আছে — ${voterIndex.length}টি রেকর্ড।`;
-
-        }
-        else{
-
-            voterIndex = [];
-
-            resultInfo.innerText =
-                "Search Index পাওয়া যায়নি। Admin হলে PDF Index তৈরি করুন।";
-
-        }
-
-    }
-    catch(error){
-
-        console.error(
-            "Index Load Error:",
-            error
-        );
-
-        voterIndex = [];
-
-    }
-
-}
-
-
-/* =========================================================
-   SAVE INDEX
-========================================================= */
-
-function saveIndex(){
-
-    try{
-
-        localStorage.setItem(
-            "panchlaishVoterIndex",
-            JSON.stringify(voterIndex)
-        );
-
-    }
-    catch(error){
-
-        console.error(
-            "Index Save Error:",
-            error
-        );
-
-        alert(
-            "Index Save করতে সমস্যা হয়েছে। Browser Storage পূর্ণ হতে পারে।"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   EXTRACT VOTER INFORMATION
-========================================================= */
-
-function extractVoterInfo(
-    text,
-    fileName,
-    pageNumber
-){
-
-    if(!text) return null;
-
-
-    const clean =
-        String(text)
-        .replace(/\r/g," ")
-        .replace(/\n+/g," ")
-        .replace(/\s+/g," ")
-        .trim();
-
-
-    let name = "";
-
-    let dob = "";
-
-
-    /* =========================
-       NAME
-    ========================= */
-
-    const namePatterns = [
-
-        /নাম\s*[:：]?\s*([^\n\r]{2,80}?)(?=\s+(?:পিতা|মাতা|জন্ম|জাতীয়|ভোটার|ঠিকানা))/i,
-
-        /নাম\s*[:：]?\s*([^\n\r]{2,80})/i,
-
-        /Name\s*[:：]?\s*([A-Za-z\u0980-\u09FF .'-]{2,80})/i
-
-    ];
-
-
-    for(
-        const pattern
-        of namePatterns
-    ){
-
-        const match =
-            clean.match(pattern);
-
-        if(match){
-
-            name =
-                match[1]
-                .replace(/\s+/g," ")
-                .trim();
-
-            break;
-
-        }
-
-    }
-
-
-    /* =========================
-       DOB
-    ========================= */
-
-    const dobMatch =
-        clean.match(
-
-            /জন্ম\s*তারিখ\s*[:：]?\s*([০-৯0-9]{1,2}\s*[\/.\-]\s*[০-৯0-9]{1,2}\s*[\/.\-]\s*[০-৯0-9]{4})/i
-
-        );
-
-
-    if(dobMatch){
-
-        dob =
-            normalizeDate(
-                dobMatch[1]
-            );
-
-    }
-    else{
-
-        const englishDob =
-            clean.match(
-                /Date\s*of\s*Birth\s*[:：]?\s*([0-9]{1,2}\s*[\/.\-]\s*[0-9]{1,2}\s*[\/.\-]\s*[0-9]{4})/i
-            );
-
-        if(englishDob){
-
-            dob =
-                normalizeDate(
-                    englishDob[1]
-                );
-
-        }
-
-    }
-
-
-    /* =========================
-       NID
-    ========================= */
-
-    let nid = "";
-
-    const nidMatch =
-        clean.match(
-            /(?:জাতীয় পরিচয়পত্র|NID|NID No|পরিচয়পত্র)\s*[:：]?\s*([০-৯0-9]{8,20})/i
-        );
-
-    if(nidMatch){
-
-        nid =
-            convertDigits(
-                nidMatch[1]
-            );
-
-    }
-
-
-    /* =========================
-       FATHER
-    ========================= */
-
-    let father = "";
-
-    const fatherMatch =
-        clean.match(
-            /পিতা\s*[:：]?\s*([^\n\r]{2,80}?)(?=\s+(?:মাতা|জন্ম|জাতীয়|ভোটার|ঠিকানা))/i
-        );
-
-    if(fatherMatch){
-
-        father =
-            fatherMatch[1]
-            .trim();
-
-    }
-
-
-    /* =========================
-       MOTHER
-    ========================= */
-
-    let mother = "";
-
-    const motherMatch =
-        clean.match(
-            /মাতা\s*[:：]?\s*([^\n\r]{2,80}?)(?=\s+(?:জন্ম|জাতীয়|ভোটার|ঠিকানা))/i
-        );
-
-    if(motherMatch){
-
-        mother =
-            motherMatch[1]
-            .trim();
-
-    }
-
-
-    /* =========================
-       IF NO NAME
-    ========================= */
-
-    if(!name){
-
-        return null;
-
-    }
-
-
-    return {
-
-        name: name,
-
-        nameNormalized:
-            normalizeText(name),
-
-        dob: dob,
-
-        nid: nid,
-
-        father: father,
-
-        mother: mother,
-
-        file:
-            fileName,
-
-        page:
-            pageNumber
-
-    };
-
-}
-
-
-/* =========================================================
-   BUILD PDF INDEX
-========================================================= */
-
-buildIndexBtn.addEventListener(
-    "click",
-    async function(){
-
-        if(currentRole !== "admin"){
-
-            alert(
-                "শুধুমাত্র Admin এই কাজটি করতে পারবেন।"
-            );
-
-            return;
-
-        }
-
-
-        const confirmed =
-            confirm(
-                "সব ৫৬টি PDF থেকে নতুন Search Index তৈরি করবেন?"
-            );
-
-
-        if(!confirmed) return;
-
-
-        buildIndexBtn.disabled =
-            true;
-
-        progressBox.style.display =
-            "block";
-
-
-        voterIndex = [];
-
-
-        let processed =
-            0;
-
-
-        try{
-
-            for(
-                const fileName
-                of PDF_FILES
-            ){
-
-                processed++;
-
-
-                const percent =
-                    Math.round(
-                        (
-                            processed /
-                            PDF_FILES.length
-                        ) * 100
-                    );
-
-
-                progressFill.style.width =
-                    percent + "%";
-
-
-                progressText.innerText =
-                    `${processed} / ${PDF_FILES.length} PDF পড়া হচ্ছে...`;
-
-
-                const url =
-                    "./pdf/" +
-                    fileName;
-
-
-                try{
-
-                    const loadingTask =
-                        pdfjsLib.getDocument({
-                            url:url
-                        });
-
-
-                    const pdf =
-                        await loadingTask.promise;
-
-
-                    for(
-                        let p = 1;
-                        p <= pdf.numPages;
-                        p++
-                    ){
-
-                        const page =
-                            await pdf.getPage(p);
-
-
-                        const content =
-                            await page.getTextContent();
-
-
-                        const text =
-                            content.items
-                            .map(
-                                item =>
-                                    item.str
-                            )
-                            .join(" ");
-
-
-                        const voter =
-                            extractVoterInfo(
-                                text,
-                                fileName,
-                                p
-                            );
-
-
-                        if(voter){
-
-                            voterIndex.push(
-                                voter
-                            );
-
-                        }
-
-                    }
-
-
-                }
-                catch(pdfError){
-
-                    console.error(
-                        "PDF Error:",
-                        fileName,
-                        pdfError
-                    );
-
-                }
-
-
-                /* Browser responsive রাখার জন্য */
-
-                await new Promise(
-                    resolve =>
-                        setTimeout(
-                            resolve,
-                            10
-                        )
-                );
-
-            }
-
-
-            saveIndex();
-
-
-            progressFill.style.width =
-                "100%";
-
-
-            progressText.innerText =
-                `সম্পন্ন হয়েছে। মোট ${voterIndex.length}টি রেকর্ড পাওয়া গেছে।`;
-
-
-            resultInfo.innerText =
-                `Index তৈরি হয়েছে — ${voterIndex.length}টি রেকর্ড।`;
-
-
-            alert(
-                `PDF Index সফলভাবে তৈরি হয়েছে।\n\nমোট রেকর্ড: ${voterIndex.length}`
-            );
-
-
-        }
-        catch(error){
-
-            console.error(
-                "Index Build Error:",
-                error
-            );
-
-
-            alert(
-                "Index তৈরি করতে সমস্যা হয়েছে। Console দেখুন।"
-            );
-
-        }
-        finally{
-
-            buildIndexBtn.disabled =
-                false;
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-searchBtn.addEventListener(
-    "click",
-    performSearch
-);
-
-
-nameSearch.addEventListener(
-    "keydown",
-    function(event){
-
-        if(event.key === "Enter"){
-
-            performSearch();
-
-        }
-
-    }
-);
-
-
-dobSearch.addEventListener(
-    "keydown",
-    function(event){
-
-        if(event.key === "Enter"){
-
-            performSearch();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   SEARCH FUNCTION
-========================================================= */
-
-function performSearch(){
-
-    const name =
-        normalizeText(
-            nameSearch.value
-        );
-
-    const dob =
-        normalizeDate(
-            dobSearch.value
-        );
-
-
-    if(!name && !dob){
-
-        resultInfo.innerText =
-            "নাম অথবা জন্ম তারিখ লিখুন।";
-
-        results.innerHTML =
-            "";
-
+function performSearch() {
+    const name = document.getElementById('voterName').value;
+    const id = document.getElementById('voterId').value;
+    const statusDiv = document.getElementById('status');
+    const resultBody = document.getElementById('resultBody');
+
+    if(!name && !id) {
+        statusDiv.className = 'error';
+        statusDiv.style.display = 'block';
+        statusDiv.innerText = 'অনুগ্রহ করে অনুসন্ধানের জন্য নাম অথবা আইডি নম্বর দিন।';
         return;
-
     }
 
+    statusDiv.className = 'success';
+    statusDiv.style.display = 'block';
+    statusDiv.innerText = 'অনুসন্ধান সম্পন্ন হয়েছে!';
 
-    if(!voterIndex.length){
-
-        resultInfo.innerText =
-            "Search Index পাওয়া যায়নি।";
-
-        results.innerHTML = `
-
-            <div class="noResult">
-
-                <h3>⚠️ Index পাওয়া যায়নি</h3>
-
-                <p>
-                    Admin হলে
-                    <b>PDF Index পুনরায় তৈরি করুন</b>
-                    বাটনে ক্লিক করুন।
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const matched =
-        voterIndex.filter(
-            voter => {
-
-                const nameMatch =
-                    name
-                    ? voter.nameNormalized.includes(name)
-                    : true;
-
-
-                const dobMatch =
-                    dob
-                    ? normalizeDate(voter.dob) === dob
-                    : true;
-
-
-                return (
-                    nameMatch &&
-                    dobMatch
-                );
-
-            }
-        );
-
-
-    displayResults(
-        matched
-    );
-
+    resultBody.innerHTML = `
+        <div style="padding: 10px; border-left: 4px solid #2563eb; background: #f8fafc;">
+            <p><strong>নাম:</strong> ${name || 'প্রযোজ্য নয়'}</p>
+            <p><strong>আইডি নম্বর:</strong> ${id || 'প্রযোজ্য নয়'}</p>
+            <p><strong>ওয়ার্ড:</strong> ৩ নং পাঁচলাইশ ওয়ার্ড</p>
+        </div>
+    `;
 }
 
-
-/* =========================================================
-   DISPLAY RESULTS
-========================================================= */
-
-function displayResults(
-    matched
-){
-
-    results.innerHTML =
-        "";
-
-
-    resultInfo.innerText =
-        `মোট ${matched.length}টি ফলাফল পাওয়া গেছে।`;
-
-
-    if(!matched.length){
-
-        results.innerHTML = `
-
-            <div class="noResult">
-
-                <div style="font-size:45px;">
-                    🔍
-                </div>
-
-                <h3>
-                    কোনো তথ্য পাওয়া যায়নি
-                </h3>
-
-                <p>
-                    নাম অথবা জন্ম তারিখ সঠিকভাবে লিখে আবার চেষ্টা করুন।
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    matched
-    .slice(0,200)
-    .forEach(
-        function(voter){
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-            card.className =
-                "resultCard";
-
-
-            card.innerHTML = `
-
-                <div class="resultName">
-                    ${escapeHtml(voter.name || "নাম পাওয়া যায়নি")}
-                </div>
-
-                <div class="resultDetails">
-
-                    <div>
-                        <b>জন্ম তারিখ:</b>
-                        ${escapeHtml(voter.dob || "-")}
-                    </div>
-
-                    <div>
-                        <b>NID:</b>
-                        ${escapeHtml(voter.nid || "-")}
-                    </div>
-
-                    <div>
-                        <b>পিতা:</b>
-                        ${escapeHtml(voter.father || "-")}
-                    </div>
-
-                    <div>
-                        <b>মাতা:</b>
-                        ${escapeHtml(voter.mother || "-")}
-                    </div>
-
-                    <div>
-                        <b>PDF:</b>
-                        ${escapeHtml(voter.file || "-")}
-                    </div>
-
-                    <div>
-                        <b>পৃষ্ঠা:</b>
-                        ${escapeHtml(String(voter.page || "-"))}
-                    </div>
-
-                </div>
-
-                <button
-                    class="viewPdfBtn"
-                    data-file="${encodeURIComponent(voter.file)}"
-                    data-page="${voter.page || 1}"
-                >
-                    📄 PDF দেখুন
-                </button>
-
-            `;
-
-
-            const btn =
-                card.querySelector(
-                    ".viewPdfBtn"
-                );
-
-
-            btn.addEventListener(
-                "click",
-                function(){
-
-                    const file =
-                        decodeURIComponent(
-                            btn.dataset.file
-                        );
-
-                    const page =
-                        Number(
-                            btn.dataset.page
-                        ) || 1;
-
-
-                    openPdf(
-                        file,
-                        page
-                    );
-
-                }
-            );
-
-
-            results.appendChild(
-                card
-            );
-
-        }
-    );
-
+function clearFields() {
+    document.getElementById('voterName').value = '';
+    document.getElementById('voterId').value = '';
+    document.getElementById('status').style.display = 'none';
+    document.getElementById('resultBody').innerHTML = '<p style="color: #64748b;">উপরে তথ্য প্রবেশ করিয়ে অনুসন্ধান করুন।</p>';
 }
-
-
-/* =========================================================
-   HTML ESCAPE
-========================================================= */
-
-function escapeHtml(value){
-
-    return String(value || "")
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-/* =========================================================
-   CLEAR SEARCH
-========================================================= */
-
-clearBtn.addEventListener(
-    "click",
-    function(){
-
-        nameSearch.value =
-            "";
-
-        dobSearch.value =
-            "";
-
-        results.innerHTML =
-            "";
-
-        resultInfo.innerText =
-            voterIndex.length
-            ? `Index প্রস্তুত আছে — ${voterIndex.length}টি রেকর্ড।`
-            : "অনুসন্ধানের জন্য নাম অথবা জন্ম তারিখ লিখুন।";
-
-    }
-);
-
-
-/* =========================================================
-   OPEN PDF
-========================================================= */
-
-async function openPdf(
-    fileName,
-    pageNumber
-){
-
-    pdfModal.style.display =
-        "block";
-
-    document.body.style.overflow =
-        "hidden";
-
-
-    currentPage =
-        pageNumber || 1;
-
-
-    currentScale =
-        1.25;
-
-
-    const url =
-        "./pdf/" +
-        fileName;
-
-
-    try{
-
-        const loadingTask =
-            pdfjsLib.getDocument({
-                url:url
-            });
-
-
-        currentPdf =
-            await loadingTask.promise;
-
-
-        pageCount.innerText =
-            currentPdf.numPages;
-
-
-        await renderPdfPage(
-            currentPage
-        );
-
-
-    }
-    catch(error){
-
-        console.error(
-            "Open PDF Error:",
-            error
-        );
-
-
-        alert(
-            "PDF খুলতে সমস্যা হয়েছে।\n\n" +
-            "ফাইলটি ঠিক আছে কিনা এবং pdf ফোল্ডারে আছে কিনা দেখুন।"
-        );
-
-        closePdfViewer();
-
-    }
-
-}
-
-
-/* =========================================================
-   RENDER PDF PAGE
-========================================================= */
-
-async function renderPdfPage(
-    pageNumber
-){
-
-    if(!currentPdf) return;
-
-
-    if(
-        pageNumber < 1
-    ){
-
-        pageNumber = 1;
-
-    }
-
-
-    if(
-        pageNumber >
-        currentPdf.numPages
-    ){
-
-        pageNumber =
-            currentPdf.numPages;
-
-    }
-
-
-    currentPage =
-        pageNumber;
-
-
-    pageNum.innerText =
-        currentPage;
-
-
-    const page =
-        await currentPdf.getPage(
-            currentPage
-        );
-
-
-    const viewport =
-        page.getViewport({
-            scale:currentScale
-        });
-
-
-    const context =
-        pdfCanvas.getContext(
-            "2d"
-        );
-
-
-    pdfCanvas.width =
-        viewport.width;
-
-    pdfCanvas.height =
-        viewport.height;
-
-
-    await page.render({
-
-        canvasContext:
-            context,
-
-        viewport:
-            viewport
-
-    }).promise;
-
-}
-
-
-/* =========================================================
-   PDF NEXT PAGE
-========================================================= */
-
-nextPage.addEventListener(
-    "click",
-    async function(){
-
-        if(
-            currentPdf &&
-            currentPage <
-            currentPdf.numPages
-        ){
-
-            await renderPdfPage(
-                currentPage + 1
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   PDF PREVIOUS PAGE
-========================================================= */
-
-prevPage.addEventListener(
-    "click",
-    async function(){
-
-        if(
-            currentPdf &&
-            currentPage > 1
-        ){
-
-            await renderPdfPage(
-                currentPage - 1
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   ZOOM IN
-========================================================= */
-
-zoomIn.addEventListener(
-    "click",
-    async function(){
-
-        if(!currentPdf) return;
-
-        currentScale +=
-            0.20;
-
-        await renderPdfPage(
-            currentPage
-        );
-
-    }
-);
-
-
-/* =========================================================
-   ZOOM OUT
-========================================================= */
-
-zoomOut.addEventListener(
-    "click",
-    async function(){
-
-        if(!currentPdf) return;
-
-        currentScale =
-            Math.max(
-                0.60,
-                currentScale - 0.20
-            );
-
-        await renderPdfPage(
-            currentPage
-        );
-
-    }
-);
-
-
-/* =========================================================
-   CLOSE PDF
-========================================================= */
-
-closePdf.addEventListener(
-    "click",
-    closePdfViewer
-);
-
-
-pdfModal.addEventListener(
-    "click",
-    function(event){
-
-        if(
-            event.target ===
-            pdfModal
-        ){
-
-            closePdfViewer();
-
-        }
-
-    }
-);
-
-
-function closePdfViewer(){
-
-    pdfModal.style.display =
-        "none";
-
-    document.body.style.overflow =
-        "";
-
-    currentPdf =
-        null;
-
-    const context =
-        pdfCanvas.getContext(
-            "2d"
-        );
-
-    context.clearRect(
-        0,
-        0,
-        pdfCanvas.width,
-        pdfCanvas.height
-    );
-
-}
-
-
-/* =========================================================
-   KEYBOARD PDF CONTROL
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    async function(event){
-
-        if(
-            pdfModal.style.display !==
-            "block"
-        ){
-
-            return;
-
-        }
-
-
-        if(event.key === "Escape"){
-
-            closePdfViewer();
-
-        }
-
-
-        if(
-            event.key === "ArrowRight" ||
-            event.key === "PageDown"
-        ){
-
-            if(
-                currentPdf &&
-                currentPage <
-                currentPdf.numPages
-            ){
-
-                await renderPdfPage(
-                    currentPage + 1
-                );
-
-            }
-
-        }
-
-
-        if(
-            event.key === "ArrowLeft" ||
-            event.key === "PageUp"
-        ){
-
-            if(
-                currentPdf &&
-                currentPage > 1
-            ){
-
-                await renderPdfPage(
-                    currentPage - 1
-                );
-
-            }
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   INITIAL MESSAGE
-========================================================= */
-
-resultInfo.innerText =
-    "অনুসন্ধানের জন্য নাম অথবা জন্ম তারিখ লিখুন।";
-
-
 </script>
 
 </body>
