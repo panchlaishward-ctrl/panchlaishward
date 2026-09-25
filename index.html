@@ -1,423 +1,2742 @@
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
 <title>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</title>
 
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
-
-<!-- PDF.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
 <style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
 *{
     box-sizing:border-box;
 }
 
 body{
     margin:0;
-    font-family:"Noto Sans Bengali","Noto Sans",Arial,sans-serif;
+    font-family:
+        "Noto Sans Bengali",
+        "Noto Sans",
+        Arial,
+        sans-serif;
+
     background:#f1f5f9;
     color:#1e293b;
 }
 
-/* LOGIN OVERLAY */
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
 #loginOverlay{
+
     position:fixed;
+
     inset:0;
-    background:linear-gradient(135deg,#0f172a,#1e3a8a,#0f766e);
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #1e3a8a,
+            #0f766e
+        );
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
     padding:20px;
+
     z-index:99999;
 }
 
+
 .loginBox{
+
     width:100%;
+
     max-width:420px;
-    background:white;
+
+    background:#fff;
+
     border-radius:20px;
+
     padding:30px;
-    box-shadow:0 20px 60px rgba(0,0,0,.30);
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.30);
 }
 
+
 .loginLogo{
+
     text-align:center;
+
     font-size:42px;
+
     margin-bottom:8px;
 }
 
+
 .loginBox h2{
+
     text-align:center;
+
     margin:0;
+
     color:#0f172a;
 }
 
+
 .loginBox p{
+
     text-align:center;
+
     color:#64748b;
+
     margin-top:8px;
 }
 
+
 .formGroup{
-    margin-top:18px;
+
+    margin-top:20px;
 }
 
+
 .formGroup label{
+
     display:block;
+
     font-weight:bold;
+
     margin-bottom:7px;
 }
 
+
 .formGroup input{
+
     width:100%;
+
     padding:13px;
-    border:1px solid #cbd5e1;
+
+    border:
+        1px solid
+        #cbd5e1;
+
     border-radius:10px;
+
     font-size:16px;
+
     outline:none;
 }
 
+
 .formGroup input:focus{
+
     border-color:#2563eb;
-    box-shadow:0 0 0 3px rgba(37,99,235,.10);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37,99,235,.10);
 }
 
+
 #loginBtn{
+
     width:100%;
+
     margin-top:22px;
+
     padding:14px;
+
     border:0;
+
     border-radius:10px;
+
     background:#2563eb;
+
     color:white;
+
     font-size:17px;
+
     font-weight:bold;
+
     cursor:pointer;
 }
 
+
 #loginBtn:hover{
+
     background:#1d4ed8;
 }
 
+
+#loginBtn:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+}
+
+
 #loginError{
+
     margin-top:15px;
+
     padding:10px;
+
     border-radius:8px;
+
     background:#fee2e2;
+
     color:#b91c1c;
+
     display:none;
+
     text-align:center;
 }
 
-/* MAIN APP */
+
+/* =====================================================
+   MAIN APP
+===================================================== */
+
 #app{
+
     display:none;
+
     min-height:100vh;
 }
 
+
 header{
-    background:linear-gradient(135deg,#0f172a,#1e3a8a);
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #1e3a8a
+        );
+
     color:white;
+
     padding:15px 20px;
-    box-shadow:0 3px 15px rgba(0,0,0,.15);
+
+    box-shadow:
+        0 3px 15px
+        rgba(0,0,0,.15);
 }
 
+
 .headerInner{
+
     max-width:1200px;
+
     margin:auto;
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
+
     gap:15px;
 }
 
+
 .headerTitle{
+
     font-size:21px;
+
     font-weight:bold;
 }
 
+
 .headerSub{
+
     font-size:13px;
+
     opacity:.85;
+
     margin-top:4px;
 }
 
+
 .userArea{
+
     display:flex;
+
     align-items:center;
-    gap:8px;
-    flex-wrap:wrap;
-    justify-content:flex-end;
+
+    gap:10px;
 }
+
 
 #loggedUserName{
+
     font-weight:bold;
 }
 
-#roleBadge{
-    background:#22c55e;
-    color:white;
-    padding:5px 10px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:bold;
-}
 
 #logoutBtn{
+
     border:0;
+
     background:#ef4444;
+
     color:white;
+
     padding:8px 13px;
+
     border-radius:8px;
+
     cursor:pointer;
+
     font-weight:bold;
 }
 
+
 #logoutBtn:hover{
+
     background:#dc2626;
 }
 
-/* CONTAINER */
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
 .container{
+
     width:100%;
+
     max-width:1200px;
+
     margin:auto;
+
     padding:20px;
 }
 
-/* SEARCH CARD */
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
 .searchCard{
+
     background:white;
+
     border-radius:16px;
+
     padding:22px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
+
+    box-shadow:
+        0 5px 20px
+        rgba(0,0,0,.08);
 }
 
+
 .searchCard h3{
+
     margin-top:0;
 }
 
+
 .searchGrid{
+
     display:grid;
-    grid-template-columns:1fr 1fr auto auto;
+
+    grid-template-columns:
+        1fr
+        1fr
+        auto
+        auto;
+
     gap:12px;
+
     align-items:end;
 }
 
-@media(max-width:768px){
-    .searchGrid{
-        grid-template-columns:1fr;
-    }
-}
 
 .inputBox label{
+
     display:block;
+
     font-weight:bold;
+
     margin-bottom:6px;
 }
 
+
 .inputBox input{
+
     width:100%;
+
     padding:12px;
-    border:1px solid #cbd5e1;
+
+    border:
+        1px solid
+        #cbd5e1;
+
     border-radius:9px;
+
     font-size:16px;
 }
 
+
 .btn{
+
     padding:12px 18px;
+
     border:0;
+
     border-radius:9px;
+
     cursor:pointer;
+
     font-size:15px;
+
     font-weight:bold;
 }
 
+
 #searchBtn{
+
     background:#2563eb;
+
     color:white;
 }
 
-#clearBtn{
-    background:#e2e8f0;
-    color:#0f172a;
-}
 
 #searchBtn:hover{
+
     background:#1d4ed8;
 }
 
+
+#clearBtn{
+
+    background:#e2e8f0;
+
+    color:#0f172a;
+}
+
+
 #clearBtn:hover{
+
     background:#cbd5e1;
 }
 
-/* STATUS */
+
+/* =====================================================
+   STATUS
+===================================================== */
+
 #status{
+
     margin-top:15px;
+
     padding:12px;
+
     background:#eff6ff;
+
     color:#1d4ed8;
+
     border-radius:10px;
+
     display:none;
 }
 
+
 #status.success{
+
     background:#dcfce7;
+
     color:#166534;
 }
 
+
 #status.error{
+
     background:#fee2e2;
+
     color:#991b1b;
 }
 
-/* RESULT CARD */
+
+/* =====================================================
+   RESULT
+===================================================== */
+
 .resultCard{
+
     margin-top:20px;
+
     background:white;
+
     border-radius:16px;
+
     padding:20px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
+
+    box-shadow:
+        0 5px 20px
+        rgba(0,0,0,.08);
 }
+
 
 #resultHeader{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     margin-bottom:15px;
 }
+
+
+#resultCount{
+
+    background:#dbeafe;
+
+    color:#1d4ed8;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    font-weight:bold;
+}
+
+
+.resultItem{
+
+    border:
+        1px solid
+        #e2e8f0;
+
+    border-radius:12px;
+
+    padding:15px;
+
+    margin-bottom:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:15px;
+}
+
+
+.resultInfo{
+
+    flex:1;
+}
+
+
+.resultName{
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    color:#0f172a;
+}
+
+
+.resultDetails{
+
+    margin-top:6px;
+
+    color:#64748b;
+
+    font-size:14px;
+}
+
+
+.viewPdfBtn{
+
+    background:#16a34a;
+
+    color:white;
+
+    border:0;
+
+    padding:10px 15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+}
+
+
+.viewPdfBtn:hover{
+
+    background:#15803d;
+}
+
+
+/* =====================================================
+   PDF WINDOW
+===================================================== */
+
+.pdf-window{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+        rgba(0,0,0,.88);
+
+    z-index:9999;
+
+    display:none;
+
+    flex-direction:column;
+}
+
+
+.pdfHeader{
+
+    min-height:60px;
+
+    background:#0f172a;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:10px 15px;
+
+    gap:10px;
+}
+
+
+.pdfHeaderLeft{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    min-width:0;
+}
+
+
+#pdfTitle{
+
+    font-weight:bold;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+}
+
+
+.pdfActions{
+
+    display:flex;
+
+    gap:8px;
+
+    flex-shrink:0;
+}
+
+
+#printPdf{
+
+    background:#16a34a;
+
+    border:0;
+
+    color:white;
+
+    padding:9px 15px;
+
+    border-radius:7px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+}
+
+
+#printPdf:hover{
+
+    background:#15803d;
+}
+
+
+#closePdf{
+
+    background:#ef4444;
+
+    border:0;
+
+    color:white;
+
+    padding:9px 15px;
+
+    border-radius:7px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+}
+
+
+#closePdf:hover{
+
+    background:#dc2626;
+}
+
+
+#pdfBody{
+
+    flex:1;
+
+    overflow:auto;
+
+    padding:15px;
+
+    text-align:center;
+}
+
+
+.pdfPage{
+
+    position:relative;
+
+    display:inline-block;
+
+    margin:
+        0 auto
+        20px auto;
+
+    background:white;
+
+    box-shadow:
+        0 3px 15px
+        rgba(0,0,0,.4);
+}
+
+
+.pdfPage canvas{
+
+    display:block;
+
+    max-width:100%;
+
+    height:auto;
+}
+
+
+/* =====================================================
+   WATERMARK
+===================================================== */
+
+.watermark{
+
+    position:absolute;
+
+    left:50%;
+
+    top:50%;
+
+    transform:
+        translate(-50%,-50%)
+        rotate(-30deg);
+
+    color:
+        rgba(30,64,175,.18);
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    white-space:nowrap;
+
+    pointer-events:none;
+
+    user-select:none;
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading{
+
+    padding:30px;
+
+    color:#64748b;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:800px){
+
+    .headerInner{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+
+    .searchGrid{
+
+        grid-template-columns:1fr;
+    }
+
+
+    .resultItem{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+
+    .viewPdfBtn{
+
+        width:100%;
+    }
+
+
+    .container{
+
+        padding:12px;
+    }
+
+
+    .searchCard,
+    .resultCard{
+
+        padding:15px;
+    }
+
+
+    .pdfHeader{
+
+        padding:8px;
+    }
+
+
+    .pdfActions{
+
+        gap:5px;
+    }
+
+
+    #printPdf,
+    #closePdf{
+
+        padding:8px 10px;
+
+        font-size:13px;
+    }
+
+
+    .watermark{
+
+        font-size:20px;
+    }
+
+}
+
+
+/* =====================================================
+   PRINT
+===================================================== */
+
+@media print{
+
+    body{
+
+        margin:0;
+
+        padding:0;
+
+        background:white;
+    }
+
+}
+
 </style>
+
 </head>
+
+
 <body>
 
-<!-- LOGIN OVERLAY -->
+
+<!-- =====================================================
+     LOGIN
+===================================================== -->
+
 <div id="loginOverlay">
+
     <div class="loginBox">
-        <div class="loginLogo">🗳️</div>
-        <h2>স্বাগতম</h2>
-        <p>ভোটার তথ্য অনুসন্ধানে লগইন করুন</p>
-        <div class="formGroup">
-            <label for="username">ব্যবহারকারীর নাম</label>
-            <input type="text" id="username" placeholder="ইউজারনেম লিখুন">
+
+        <div class="loginLogo">
+            🗳️
         </div>
+
+
+        <h2>
+            ভোটার তথ্য অনুসন্ধান
+        </h2>
+
+
+        <p>
+            ৩ নং পাঁচলাইশ ওয়ার্ড
+        </p>
+
+
         <div class="formGroup">
-            <label for="password">পাসওয়ার্ড</label>
-            <input type="password" id="password" placeholder="পাসওয়ার্ড লিখুন">
+
+            <label for="userIdInput">
+                User ID
+            </label>
+
+            <input
+                type="text"
+                id="userIdInput"
+                placeholder="User ID লিখুন"
+                autocomplete="username"
+            >
+
         </div>
-        <button id="loginBtn" onclick="handleLogin()">লগইন করুন</button>
-        <div id="loginError">ভুল তথ্য প্রদান করা হয়েছে!</div>
+
+
+        <button
+            id="loginBtn"
+        >
+            লগইন
+        </button>
+
+
+        <div id="loginError"></div>
+
     </div>
+
 </div>
 
-<!-- MAIN APP -->
+
+
+<!-- =====================================================
+     MAIN APP
+===================================================== -->
+
 <div id="app">
-    <header>
-        <div class="headerInner">
-            <div>
-                <div class="headerTitle">৩ নং পাঁচলাইশ ওয়ার্ড</div>
-                <div class="headerSub">ভোটার তথ্য অনুসন্ধান পোর্টালে আপনাকে স্বাগতম</div>
-            </div>
-            <div class="userArea">
-                <span id="loggedUserName">এডমিন</span>
-                <span id="roleBadge">সক্রিয়</span>
-                <button id="logoutBtn" onclick="handleLogout()">লগআউট</button>
-            </div>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="searchCard">
-            <h3>ভোটার খুঁজুন</h3>
-            <div class="searchGrid">
-                <div class="inputBox">
-                    <label for="voterName">ভোটারের নাম</label>
-                    <input type="text" id="voterName" placeholder="নাম দিয়ে খুঁজুন...">
-                </div>
-                <div class="inputBox">
-                    <label for="voterId">ভোটার আইডি / NID</label>
-                    <input type="text" id="voterId" placeholder="আইডি নম্বর দিয়ে খুঁজুন...">
-                </div>
-                <button class="btn" id="searchBtn" onclick="performSearch()">খুঁজুন</button>
-                <button class="btn" id="clearBtn" onclick="clearFields()">মুছে ফেলুন</button>
+
+<header>
+
+    <div class="headerInner">
+
+
+        <div>
+
+            <div class="headerTitle">
+                ৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান
             </div>
-            <div id="status"></div>
+
+
+            <div class="headerSub">
+                ভোটার নাম ও জন্মতারিখ দিয়ে তথ্য অনুসন্ধান
+            </div>
+
         </div>
 
-        <div class="resultCard">
-            <div id="resultHeader">
-                <h3>অনুসন্ধান ফলাফল</h3>
-            </div>
-            <div id="resultBody">
-                <p style="color: #64748b;">উপরে তথ্য প্রবেশ করিয়ে অনুসন্ধান করুন।</p>
-            </div>
+
+        <div class="userArea">
+
+            <span id="loggedUserName">
+                ব্যবহারকারী
+            </span>
+
+
+            <button id="logoutBtn">
+                Logout
+            </button>
+
         </div>
+
+
     </div>
+
+</header>
+
+
+
+<div class="container">
+
+
+    <!-- =================================================
+         SEARCH CARD
+    ================================================= -->
+
+    <div class="searchCard">
+
+        <h3>
+            🔎 ভোটার তথ্য অনুসন্ধান
+        </h3>
+
+
+        <div class="searchGrid">
+
+
+            <div class="inputBox">
+
+                <label for="nameInput">
+                    ভোটারের নাম
+                </label>
+
+
+                <input
+                    type="text"
+                    id="nameInput"
+                    placeholder="ভোটারের নাম লিখুন"
+                >
+
+            </div>
+
+
+
+            <div class="inputBox">
+
+                <label for="dobInput">
+                    জন্ম তারিখ
+                </label>
+
+
+                <input
+                    type="text"
+                    id="dobInput"
+                    placeholder="দিন/মাস/বছর"
+                >
+
+            </div>
+
+
+
+            <button
+                class="btn"
+                id="searchBtn"
+            >
+                🔍 অনুসন্ধান
+            </button>
+
+
+
+            <button
+                class="btn"
+                id="clearBtn"
+            >
+                ✕ Clear
+            </button>
+
+
+        </div>
+
+
+        <div id="status"></div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         RESULTS
+    ================================================= -->
+
+    <div class="resultCard">
+
+
+        <div id="resultHeader">
+
+            <h3>
+                📋 অনুসন্ধানের ফলাফল
+            </h3>
+
+
+            <span id="resultCount">
+                0
+            </span>
+
+        </div>
+
+
+        <div id="results">
+
+            <div class="loading">
+                অনুসন্ধানের জন্য নাম অথবা জন্মতারিখ লিখুন।
+            </div>
+
+        </div>
+
+
+    </div>
+
+
 </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     PDF VIEWER
+===================================================== -->
+
+<div
+    class="pdf-window"
+    id="pdf-window"
+>
+
+
+    <div class="pdfHeader">
+
+
+        <div class="pdfHeaderLeft">
+
+            <div id="pdfTitle">
+                PDF Viewer
+            </div>
+
+        </div>
+
+
+        <div class="pdfActions">
+
+
+            <button
+                id="printPdf"
+            >
+                🖨️ প্রিন্ট
+            </button>
+
+
+            <button
+                id="closePdf"
+            >
+                ✕ বন্ধ
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div id="pdfBody"></div>
+
+
+</div>
+
+
 
 <script>
-function handleLogin() {
-    const user = document.getElementById('username').value;
-    const pass = document.getElementById('password').value;
-    const errorDiv = document.getElementById('loginError');
 
-    // ডামি লগইন চেক (প্রয়োজন অনুযায়ী পরিবর্তন করতে পারেন)
-    if(user !== '' && pass !== '') {
-        document.getElementById('loginOverlay').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-        document.getElementById('loggedUserName').innerText = user;
-        errorDiv.style.display = 'none';
-    } else {
-        errorDiv.style.display = 'block';
-        errorDiv.innerText = 'ইউজারনেম এবং পাসওয়ার্ড দিন!';
+/* =====================================================
+   PDF.JS WORKER
+===================================================== */
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+
+/* =====================================================
+   USER LIST
+===================================================== */
+
+/*
+   এখানে শুধু User ID থাকবে।
+
+   Password নেই।
+   Admin নেই।
+   Role নেই।
+
+   নতুন User ID চাইলে নিচে যোগ করুন।
+*/
+
+const LOGIN_USERS = {
+
+    "ALI001": "আলী ইসলাম",
+
+    "OP001": "অপারেটর"
+
+};
+
+
+/* =====================================================
+   PDF FILE LIST
+===================================================== */
+
+const PDF_FILES = [
+
+    "1.pdf",
+    "2.pdf",
+    "3.pdf",
+    "4.pdf",
+    "5.pdf",
+    "6.pdf",
+    "7.pdf",
+    "8.pdf",
+    "9.pdf",
+    "10.pdf",
+    "11.pdf",
+    "12.pdf",
+    "13.pdf",
+    "14.pdf",
+    "15.pdf",
+    "16.pdf",
+    "17.pdf",
+    "18.pdf",
+    "19.pdf",
+    "20.pdf",
+    "21.pdf",
+    "22.pdf",
+    "23.pdf",
+    "24.pdf",
+    "25.pdf",
+    "26.pdf",
+    "27.pdf",
+    "28.pdf",
+    "29.pdf",
+    "30.pdf",
+    "31.pdf",
+    "32.pdf",
+    "33.pdf",
+    "34.pdf",
+    "35.pdf",
+    "36.pdf",
+    "37.pdf",
+    "38.pdf",
+    "39.pdf",
+    "40.pdf",
+    "41.pdf",
+    "42.pdf",
+    "43.pdf",
+    "44.pdf",
+    "45.pdf",
+    "46.pdf",
+    "47.pdf",
+    "48.pdf",
+    "49.pdf",
+    "50.pdf",
+    "51.pdf",
+    "52.pdf",
+    "53.pdf",
+    "54.pdf",
+    "55.pdf",
+    "56.pdf"
+
+];
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const loginOverlay =
+    document.getElementById(
+        "loginOverlay"
+    );
+
+
+const userIdInput =
+    document.getElementById(
+        "userIdInput"
+    );
+
+
+const loginBtn =
+    document.getElementById(
+        "loginBtn"
+    );
+
+
+const loginError =
+    document.getElementById(
+        "loginError"
+    );
+
+
+const app =
+    document.getElementById(
+        "app"
+    );
+
+
+const loggedUserName =
+    document.getElementById(
+        "loggedUserName"
+    );
+
+
+const logoutBtn =
+    document.getElementById(
+        "logoutBtn"
+    );
+
+
+const nameInput =
+    document.getElementById(
+        "nameInput"
+    );
+
+
+const dobInput =
+    document.getElementById(
+        "dobInput"
+    );
+
+
+const searchBtn =
+    document.getElementById(
+        "searchBtn"
+    );
+
+
+const clearBtn =
+    document.getElementById(
+        "clearBtn"
+    );
+
+
+const statusBox =
+    document.getElementById(
+        "status"
+    );
+
+
+const results =
+    document.getElementById(
+        "results"
+    );
+
+
+const resultCount =
+    document.getElementById(
+        "resultCount"
+    );
+
+
+const pdfWindow =
+    document.getElementById(
+        "pdf-window"
+    );
+
+
+const pdfTitle =
+    document.getElementById(
+        "pdfTitle"
+    );
+
+
+const pdfBody =
+    document.getElementById(
+        "pdfBody"
+    );
+
+
+const printPdfBtn =
+    document.getElementById(
+        "printPdf"
+    );
+
+
+const closePdf =
+    document.getElementById(
+        "closePdf"
+    );
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let currentUser = null;
+
+let voterIndex = [];
+
+let currentPdfFilename = "";
+
+
+/* =====================================================
+   NORMALIZE
+===================================================== */
+
+function normalizeText(text){
+
+    if(!text){
+
+        return "";
+
     }
+
+
+    return String(text)
+
+        .toLowerCase()
+
+        .trim()
+
+        .replace(/\s+/g," ");
+
 }
 
-function handleLogout() {
-    document.getElementById('app').style.display = 'none';
-    document.getElementById('loginOverlay').style.display = 'flex';
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
+
+/* =====================================================
+   BANGLA NUMBER TO ENGLISH
+===================================================== */
+
+function banglaToEnglishNumber(text){
+
+    if(!text){
+
+        return "";
+
+    }
+
+
+    const bangla =
+        "০১২৩৪৫৬৭৮৯";
+
+
+    const english =
+        "0123456789";
+
+
+    let result = "";
+
+
+    for(
+        const char of String(text)
+    ){
+
+        const index =
+            bangla.indexOf(char);
+
+
+        if(index !== -1){
+
+            result +=
+                english[index];
+
+        }
+
+        else{
+
+            result +=
+                char;
+
+        }
+
+    }
+
+
+    return result;
+
 }
 
-function performSearch() {
-    const name = document.getElementById('voterName').value;
-    const id = document.getElementById('voterId').value;
-    const statusDiv = document.getElementById('status');
-    const resultBody = document.getElementById('resultBody');
 
-    if(!name && !id) {
-        statusDiv.className = 'error';
-        statusDiv.style.display = 'block';
-        statusDiv.innerText = 'অনুগ্রহ করে অনুসন্ধানের জন্য নাম অথবা আইডি নম্বর দিন।';
+/* =====================================================
+   SHOW LOGIN ERROR
+===================================================== */
+
+function showLoginError(message){
+
+    loginError.textContent =
+        message;
+
+    loginError.style.display =
+        "block";
+
+}
+
+
+/* =====================================================
+   HIDE LOGIN ERROR
+===================================================== */
+
+function hideLoginError(){
+
+    loginError.textContent =
+        "";
+
+    loginError.style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function loginUser(){
+
+    hideLoginError();
+
+
+    const userId =
+        userIdInput.value
+            .trim()
+            .toUpperCase();
+
+
+    if(!userId){
+
+        showLoginError(
+            "User ID লিখুন।"
+        );
+
         return;
+
     }
 
-    statusDiv.className = 'success';
-    statusDiv.style.display = 'block';
-    statusDiv.innerText = 'অনুসন্ধান সম্পন্ন হয়েছে!';
 
-    resultBody.innerHTML = `
-        <div style="padding: 10px; border-left: 4px solid #2563eb; background: #f8fafc;">
-            <p><strong>নাম:</strong> ${name || 'প্রযোজ্য নয়'}</p>
-            <p><strong>আইডি নম্বর:</strong> ${id || 'প্রযোজ্য নয়'}</p>
-            <p><strong>ওয়ার্ড:</strong> ৩ নং পাঁচলাইশ ওয়ার্ড</p>
+    if(!LOGIN_USERS[userId]){
+
+        showLoginError(
+            "এই User ID সঠিক নয়।"
+        );
+
+        return;
+
+    }
+
+
+    currentUser =
+        userId;
+
+
+    loggedUserName.textContent =
+        LOGIN_USERS[userId];
+
+
+    loginOverlay.style.display =
+        "none";
+
+
+    app.style.display =
+        "block";
+
+
+    sessionStorage.setItem(
+        "panchlaishUser",
+        userId
+    );
+
+
+    loadIndex();
+
+}
+
+
+/* =====================================================
+   LOGIN BUTTON
+===================================================== */
+
+loginBtn.addEventListener(
+    "click",
+    loginUser
+);
+
+
+/* =====================================================
+   ENTER LOGIN
+===================================================== */
+
+userIdInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key ===
+            "Enter"
+        ){
+
+            loginUser();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+logoutBtn.addEventListener(
+    "click",
+    function(){
+
+        currentUser =
+            null;
+
+
+        sessionStorage.removeItem(
+            "panchlaishUser"
+        );
+
+
+        app.style.display =
+            "none";
+
+
+        loginOverlay.style.display =
+            "flex";
+
+
+        userIdInput.value =
+            "";
+
+
+        nameInput.value =
+            "";
+
+
+        dobInput.value =
+            "";
+
+
+        results.innerHTML = `
+
+            <div class="loading">
+                অনুসন্ধানের জন্য নাম অথবা জন্মতারিখ লিখুন।
+            </div>
+
+        `;
+
+
+        resultCount.textContent =
+            "0";
+
+    }
+);
+
+
+/* =====================================================
+   AUTO LOGIN FROM SESSION
+===================================================== */
+
+(function(){
+
+    const savedUser =
+        sessionStorage.getItem(
+            "panchlaishUser"
+        );
+
+
+    if(
+        savedUser &&
+        LOGIN_USERS[savedUser]
+    ){
+
+        currentUser =
+            savedUser;
+
+
+        loggedUserName.textContent =
+            LOGIN_USERS[savedUser];
+
+
+        loginOverlay.style.display =
+            "none";
+
+
+        app.style.display =
+            "block";
+
+
+        loadIndex();
+
+    }
+
+})();
+
+
+/* =====================================================
+   LOAD INDEX
+===================================================== */
+
+function loadIndex(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(
+                "panchlaishVoterIndex"
+            );
+
+
+        if(saved){
+
+            voterIndex =
+                JSON.parse(saved);
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        voterIndex = [];
+
+    }
+
+
+    /*
+       Index না থাকলে
+       নিজে থেকেই তৈরি করবে।
+    */
+
+    if(
+        voterIndex.length === 0
+    ){
+
+        rebuildIndexAutomatically();
+
+    }
+
+}
+
+
+/* =====================================================
+   SAVE INDEX
+===================================================== */
+
+function saveIndex(){
+
+    localStorage.setItem(
+        "panchlaishVoterIndex",
+        JSON.stringify(
+            voterIndex
+        )
+    );
+
+}
+
+
+/* =====================================================
+   PDF URL
+===================================================== */
+
+function getPdfUrl(filename){
+
+    return filename;
+
+}
+
+
+/* =====================================================
+   EXTRACT PDF TEXT
+===================================================== */
+
+async function extractPdfText(
+    filename
+){
+
+    const loadingTask =
+        pdfjsLib.getDocument(
+            getPdfUrl(filename)
+        );
+
+
+    const pdf =
+        await loadingTask.promise;
+
+
+    let fullText = "";
+
+
+    for(
+        let pageNumber = 1;
+
+        pageNumber <=
+        pdf.numPages;
+
+        pageNumber++
+    ){
+
+        const page =
+            await pdf.getPage(
+                pageNumber
+            );
+
+
+        const content =
+            await page.getTextContent();
+
+
+        const pageText =
+            content.items
+
+                .map(
+                    item =>
+                        item.str
+                )
+
+                .join(" ");
+
+
+        fullText +=
+            pageText +
+            "\n";
+
+    }
+
+
+    return fullText;
+
+}
+
+
+/* =====================================================
+   AUTOMATIC INDEX
+===================================================== */
+
+async function rebuildIndexAutomatically(){
+
+    statusBox.style.display =
+        "block";
+
+
+    statusBox.className =
+        "";
+
+
+    voterIndex = [];
+
+
+    for(
+        let i = 0;
+
+        i < PDF_FILES.length;
+
+        i++
+    ){
+
+        const filename =
+            PDF_FILES[i];
+
+
+        statusBox.textContent =
+            `তথ্য প্রস্তুত হচ্ছে... ${i + 1}/${PDF_FILES.length}`;
+
+
+        try{
+
+            const text =
+                await extractPdfText(
+                    filename
+                );
+
+
+            voterIndex.push({
+
+                filename:
+                    filename,
+
+                text:
+                    normalizeText(
+                        banglaToEnglishNumber(
+                            text
+                        )
+                    )
+
+            });
+
+        }
+
+        catch(error){
+
+            console.error(
+                "PDF Error:",
+                filename,
+                error
+            );
+
+        }
+
+    }
+
+
+    saveIndex();
+
+
+    statusBox.className =
+        "success";
+
+
+    statusBox.textContent =
+        `তথ্য প্রস্তুত সম্পন্ন। ${voterIndex.length}টি PDF প্রস্তুত হয়েছে।`;
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function searchVoter(){
+
+    const name =
+        normalizeText(
+            nameInput.value
+        );
+
+
+    const dob =
+        normalizeText(
+            banglaToEnglishNumber(
+                dobInput.value
+            )
+        );
+
+
+    if(
+        !name &&
+        !dob
+    ){
+
+        statusBox.style.display =
+            "block";
+
+
+        statusBox.className =
+            "error";
+
+
+        statusBox.textContent =
+            "নাম অথবা জন্মতারিখ লিখুন।";
+
+
+        return;
+
+    }
+
+
+    if(
+        voterIndex.length ===
+        0
+    ){
+
+        statusBox.style.display =
+            "block";
+
+
+        statusBox.className =
+            "error";
+
+
+        statusBox.textContent =
+            "PDF Index এখনো তৈরি হয়নি। কিছুক্ষণ অপেক্ষা করে আবার চেষ্টা করুন।";
+
+
+        return;
+
+    }
+
+
+    const found =
+        voterIndex.filter(
+            function(item){
+
+                const text =
+                    item.text;
+
+
+                if(
+                    name &&
+                    dob
+                ){
+
+                    return (
+                        text.includes(name) &&
+                        text.includes(dob)
+                    );
+
+                }
+
+
+                if(name){
+
+                    return text.includes(
+                        name
+                    );
+
+                }
+
+
+                if(dob){
+
+                    return text.includes(
+                        dob
+                    );
+
+                }
+
+
+                return false;
+
+            }
+        );
+
+
+    displayResults(found);
+
+}
+
+
+/* =====================================================
+   DISPLAY RESULTS
+===================================================== */
+
+function displayResults(found){
+
+    resultCount.textContent =
+        found.length;
+
+
+    results.innerHTML =
+        "";
+
+
+    statusBox.style.display =
+        "block";
+
+
+    if(
+        found.length ===
+        0
+    ){
+
+        statusBox.className =
+            "error";
+
+
+        statusBox.textContent =
+            "কোনো PDF-এ মিল পাওয়া যায়নি.";
+
+
+        results.innerHTML = `
+
+            <div class="loading">
+
+                😔 কোনো ফলাফল পাওয়া যায়নি।
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    statusBox.className =
+        "success";
+
+
+    statusBox.textContent =
+        `${found.length}টি PDF-এ তথ্য পাওয়া গেছে।`;
+
+
+    found.forEach(
+        function(item){
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "resultItem";
+
+
+            div.innerHTML = `
+
+                <div class="resultInfo">
+
+                    <div class="resultName">
+                        📄 ${escapeHtml(item.filename)}
+                    </div>
+
+                    <div class="resultDetails">
+                        অনুসন্ধানের সাথে মিল পাওয়া গেছে।
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="viewPdfBtn"
+                >
+                    👁️ PDF দেখুন
+                </button>
+
+            `;
+
+
+            const button =
+                div.querySelector(
+                    ".viewPdfBtn"
+                );
+
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    openPdf(
+                        item.filename
+                    );
+
+                }
+            );
+
+
+            results.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(text){
+
+    return String(text)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   SEARCH BUTTON
+===================================================== */
+
+searchBtn.addEventListener(
+    "click",
+    searchVoter
+);
+
+
+/* =====================================================
+   ENTER SEARCH
+===================================================== */
+
+nameInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key ===
+            "Enter"
+        ){
+
+            searchVoter();
+
+        }
+
+    }
+);
+
+
+dobInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key ===
+            "Enter"
+        ){
+
+            searchVoter();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   CLEAR
+===================================================== */
+
+clearBtn.addEventListener(
+    "click",
+    function(){
+
+        nameInput.value =
+            "";
+
+
+        dobInput.value =
+            "";
+
+
+        resultCount.textContent =
+            "0";
+
+
+        results.innerHTML = `
+
+            <div class="loading">
+                অনুসন্ধানের জন্য নাম অথবা জন্মতারিখ লিখুন।
+            </div>
+
+        `;
+
+
+        statusBox.style.display =
+            "none";
+
+    }
+);
+
+
+/* =====================================================
+   OPEN PDF
+===================================================== */
+
+async function openPdf(filename){
+
+    currentPdfFilename =
+        filename;
+
+
+    pdfWindow.style.display =
+        "flex";
+
+
+    pdfTitle.textContent =
+        filename;
+
+
+    pdfBody.innerHTML = `
+
+        <div class="loading">
+            PDF লোড হচ্ছে...
         </div>
+
     `;
+
+
+    try{
+
+        const pdf =
+            await pdfjsLib
+                .getDocument(
+                    getPdfUrl(filename)
+                )
+                .promise;
+
+
+        pdfBody.innerHTML =
+            "";
+
+
+        for(
+            let pageNumber = 1;
+
+            pageNumber <=
+            pdf.numPages;
+
+            pageNumber++
+        ){
+
+            const page =
+                await pdf.getPage(
+                    pageNumber
+                );
+
+
+            /*
+               1.5 scale
+               ভালো মানের PDF preview
+            */
+
+            const viewport =
+                page.getViewport({
+                    scale:1.5
+                });
+
+
+            const pageDiv =
+                document.createElement(
+                    "div"
+                );
+
+
+            pageDiv.className =
+                "pdfPage";
+
+
+            const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            canvas.width =
+                viewport.width;
+
+
+            canvas.height =
+                viewport.height;
+
+
+            pageDiv.appendChild(
+                canvas
+            );
+
+
+            /*
+               Watermark
+            */
+
+            const watermark =
+                document.createElement(
+                    "div"
+                );
+
+
+            watermark.className =
+                "watermark";
+
+
+            watermark.innerHTML = `
+                আলী ইসলাম<br>
+                উদ্যোক্তা<br>
+                ০৩ নং পাঁচলাইশ ওয়ার্ড
+            `;
+
+
+            pageDiv.appendChild(
+                watermark
+            );
+
+
+            pdfBody.appendChild(
+                pageDiv
+            );
+
+
+            const context =
+                canvas.getContext(
+                    "2d"
+                );
+
+
+            await page.render({
+
+                canvasContext:
+                    context,
+
+                viewport:
+                    viewport
+
+            }).promise;
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+
+        pdfBody.innerHTML = `
+
+            <div class="loading">
+
+                ❌ PDF লোড করা যাচ্ছে না।
+
+                <br><br>
+
+                ফাইলের নাম অথবা PDF path পরীক্ষা করুন।
+
+            </div>
+
+        `;
+
+    }
+
 }
 
-function clearFields() {
-    document.getElementById('voterName').value = '';
-    document.getElementById('voterId').value = '';
-    document.getElementById('status').style.display = 'none';
-    document.getElementById('resultBody').innerHTML = '<p style="color: #64748b;">উপরে তথ্য প্রবেশ করিয়ে অনুসন্ধান করুন।</p>';
+
+/* =====================================================
+   PRINT PDF
+===================================================== */
+
+function printCurrentPdf(){
+
+    const pages =
+        document.querySelectorAll(
+            "#pdfBody .pdfPage"
+        );
+
+
+    if(
+        pages.length === 0
+    ){
+
+        alert(
+            "প্রথমে PDF সম্পূর্ণ লোড হতে দিন।"
+        );
+
+        return;
+
+    }
+
+
+    const printWindow =
+        window.open(
+            "",
+            "_blank"
+        );
+
+
+    if(!printWindow){
+
+        alert(
+            "Print window খুলতে পারেনি। Browser popup অনুমতি দিন।"
+        );
+
+        return;
+
+    }
+
+
+    printWindow.document.open();
+
+
+    printWindow.document.write(`
+
+<!DOCTYPE html>
+
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+    ${escapeHtml(currentPdfFilename)}
+</title>
+
+<style>
+
+@page{
+
+    size:A4;
+
+    margin:0;
+
 }
+
+
+html,
+body{
+
+    margin:0;
+
+    padding:0;
+
+    background:white;
+
+}
+
+
+.printPage{
+
+    width:210mm;
+
+    min-height:297mm;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+    page-break-after:always;
+
+    overflow:hidden;
+
+    position:relative;
+
+}
+
+
+.printPage img{
+
+    display:block;
+
+    width:100%;
+
+    height:auto;
+
+}
+
+
+@media print{
+
+    .printPage{
+
+        page-break-after:always;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+`);
+
+
+    pages.forEach(
+        function(page){
+
+            const canvas =
+                page.querySelector(
+                    "canvas"
+                );
+
+
+            if(!canvas){
+
+                return;
+
+            }
+
+
+            const image =
+                canvas.toDataURL(
+                    "image/png"
+                );
+
+
+            printWindow.document.write(`
+
+                <div class="printPage">
+
+                    <img
+                        src="${image}"
+                    >
+
+                </div>
+
+            `);
+
+        }
+    );
+
+
+    printWindow.document.write(`
+
+</body>
+
+</html>
+
+`);
+
+
+    printWindow.document.close();
+
+
+    /*
+       Browser-কে images load করার
+       সময় দেওয়া হচ্ছে।
+    */
+
+    setTimeout(
+        function(){
+
+            printWindow.focus();
+
+            printWindow.print();
+
+        },
+        1000
+    );
+
+}
+
+
+/* =====================================================
+   PRINT BUTTON
+===================================================== */
+
+printPdfBtn.addEventListener(
+    "click",
+    printCurrentPdf
+);
+
+
+/* =====================================================
+   CLOSE PDF
+===================================================== */
+
+function closePdfViewer(){
+
+    pdfWindow.style.display =
+        "none";
+
+
+    pdfBody.innerHTML =
+        "";
+
+
+    currentPdfFilename =
+        "";
+
+}
+
+
+closePdf.addEventListener(
+    "click",
+    closePdfViewer
+);
+
+
+/* =====================================================
+   ESC CLOSE
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key ===
+            "Escape"
+        ){
+
+            if(
+                pdfWindow.style.display ===
+                "flex"
+            ){
+
+                closePdfViewer();
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   PREVENT EMPTY ENTER
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key ===
+            "Enter" &&
+            event.target.tagName ===
+            "INPUT"
+        ){
+
+            /*
+               আলাদা input listener
+               কাজ করবে।
+            */
+
+        }
+
+    }
+);
+
 </script>
 
 </body>
+
 </html>
