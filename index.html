@@ -10,6 +10,7 @@
 
 <title>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</title>
 
+<!-- PDF.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
 <style>
@@ -22,8 +23,13 @@
     box-sizing:border-box;
 }
 
+html,
 body{
     margin:0;
+    padding:0;
+}
+
+body{
     font-family:
         "Noto Sans Bengali",
         "Noto Sans",
@@ -31,6 +37,7 @@ body{
         sans-serif;
 
     background:#f1f5f9;
+
     color:#1e293b;
 }
 
@@ -45,13 +52,7 @@ body{
 
     inset:0;
 
-    background:
-        linear-gradient(
-            135deg,
-            #0f172a,
-            #1e3a8a,
-            #0f766e
-        );
+    z-index:99999;
 
     display:flex;
 
@@ -61,7 +62,13 @@ body{
 
     padding:20px;
 
-    z-index:99999;
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #1e3a8a,
+            #0f766e
+        );
 }
 
 
@@ -73,9 +80,9 @@ body{
 
     background:#fff;
 
-    border-radius:20px;
-
     padding:30px;
+
+    border-radius:20px;
 
     box-shadow:
         0 20px 60px
@@ -123,9 +130,9 @@ body{
 
     display:block;
 
-    font-weight:bold;
-
     margin-bottom:7px;
+
+    font-weight:bold;
 }
 
 
@@ -171,7 +178,7 @@ body{
 
     background:#2563eb;
 
-    color:white;
+    color:#fff;
 
     font-size:17px;
 
@@ -187,15 +194,9 @@ body{
 }
 
 
-#loginBtn:disabled{
-
-    opacity:.6;
-
-    cursor:not-allowed;
-}
-
-
 #loginError{
+
+    display:none;
 
     margin-top:15px;
 
@@ -206,8 +207,6 @@ body{
     background:#fee2e2;
 
     color:#b91c1c;
-
-    display:none;
 
     text-align:center;
 }
@@ -234,7 +233,7 @@ header{
             #1e3a8a
         );
 
-    color:white;
+    color:#fff;
 
     padding:15px 20px;
 
@@ -245,6 +244,8 @@ header{
 
 
 .headerInner{
+
+    width:100%;
 
     max-width:1200px;
 
@@ -270,11 +271,11 @@ header{
 
 .headerSub{
 
+    margin-top:4px;
+
     font-size:13px;
 
     opacity:.85;
-
-    margin-top:4px;
 }
 
 
@@ -300,7 +301,7 @@ header{
 
     background:#ef4444;
 
-    color:white;
+    color:#fff;
 
     padding:8px 13px;
 
@@ -335,16 +336,16 @@ header{
 
 
 /* =====================================================
-   SEARCH
+   SEARCH CARD
 ===================================================== */
 
 .searchCard{
 
-    background:white;
-
-    border-radius:16px;
+    background:#fff;
 
     padding:22px;
+
+    border-radius:16px;
 
     box-shadow:
         0 5px 20px
@@ -378,9 +379,9 @@ header{
 
     display:block;
 
-    font-weight:bold;
-
     margin-bottom:6px;
+
+    font-weight:bold;
 }
 
 
@@ -397,6 +398,18 @@ header{
     border-radius:9px;
 
     font-size:16px;
+
+    outline:none;
+}
+
+
+.inputBox input:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37,99,235,.10);
 }
 
 
@@ -420,13 +433,21 @@ header{
 
     background:#2563eb;
 
-    color:white;
+    color:#fff;
 }
 
 
 #searchBtn:hover{
 
     background:#1d4ed8;
+}
+
+
+#searchBtn:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
 }
 
 
@@ -450,17 +471,19 @@ header{
 
 #status{
 
+    display:none;
+
     margin-top:15px;
 
     padding:12px;
+
+    border-radius:10px;
 
     background:#eff6ff;
 
     color:#1d4ed8;
 
-    border-radius:10px;
-
-    display:none;
+    line-height:1.6;
 }
 
 
@@ -481,18 +504,53 @@ header{
 
 
 /* =====================================================
-   RESULT
+   PROGRESS
+===================================================== */
+
+.progressWrap{
+
+    display:none;
+
+    margin-top:12px;
+
+    width:100%;
+
+    height:10px;
+
+    overflow:hidden;
+
+    background:#e2e8f0;
+
+    border-radius:20px;
+}
+
+
+.progressBar{
+
+    width:0%;
+
+    height:100%;
+
+    background:#2563eb;
+
+    transition:
+        width .2s ease;
+}
+
+
+/* =====================================================
+   RESULTS
 ===================================================== */
 
 .resultCard{
 
     margin-top:20px;
 
-    background:white;
-
-    border-radius:16px;
+    background:#fff;
 
     padding:20px;
+
+    border-radius:16px;
 
     box-shadow:
         0 5px 20px
@@ -512,6 +570,12 @@ header{
 }
 
 
+#resultHeader h3{
+
+    margin:0;
+}
+
+
 #resultCount{
 
     background:#dbeafe;
@@ -528,16 +592,6 @@ header{
 
 .resultItem{
 
-    border:
-        1px solid
-        #e2e8f0;
-
-    border-radius:12px;
-
-    padding:15px;
-
-    margin-bottom:12px;
-
     display:flex;
 
     align-items:center;
@@ -545,22 +599,36 @@ header{
     justify-content:space-between;
 
     gap:15px;
+
+    padding:15px;
+
+    margin-bottom:12px;
+
+    border:
+        1px solid
+        #e2e8f0;
+
+    border-radius:12px;
 }
 
 
 .resultInfo{
 
     flex:1;
+
+    min-width:0;
 }
 
 
 .resultName{
 
-    font-size:18px;
+    font-size:17px;
 
     font-weight:bold;
 
     color:#0f172a;
+
+    word-break:break-word;
 }
 
 
@@ -576,11 +644,13 @@ header{
 
 .viewPdfBtn{
 
-    background:#16a34a;
-
-    color:white;
+    flex-shrink:0;
 
     border:0;
+
+    background:#16a34a;
+
+    color:#fff;
 
     padding:10px 15px;
 
@@ -598,8 +668,18 @@ header{
 }
 
 
+.loading{
+
+    padding:30px;
+
+    text-align:center;
+
+    color:#64748b;
+}
+
+
 /* =====================================================
-   PDF WINDOW
+   PDF VIEWER
 ===================================================== */
 
 .pdf-window{
@@ -608,14 +688,14 @@ header{
 
     inset:0;
 
-    background:
-        rgba(0,0,0,.88);
-
     z-index:9999;
 
     display:none;
 
     flex-direction:column;
+
+    background:
+        rgba(0,0,0,.88);
 }
 
 
@@ -623,9 +703,11 @@ header{
 
     min-height:60px;
 
+    padding:10px 15px;
+
     background:#0f172a;
 
-    color:white;
+    color:#fff;
 
     display:flex;
 
@@ -633,33 +715,23 @@ header{
 
     justify-content:space-between;
 
-    padding:10px 15px;
-
     gap:10px;
 }
 
 
-.pdfHeaderLeft{
+.pdfTitle{
 
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
+    flex:1;
 
     min-width:0;
-}
-
-
-#pdfTitle{
-
-    font-weight:bold;
 
     overflow:hidden;
 
     text-overflow:ellipsis;
 
     white-space:nowrap;
+
+    font-weight:bold;
 }
 
 
@@ -675,11 +747,11 @@ header{
 
 #printPdf{
 
-    background:#16a34a;
-
     border:0;
 
-    color:white;
+    background:#16a34a;
+
+    color:#fff;
 
     padding:9px 15px;
 
@@ -699,11 +771,11 @@ header{
 
 #closePdf{
 
-    background:#ef4444;
-
     border:0;
 
-    color:white;
+    background:#ef4444;
+
+    color:#fff;
 
     padding:9px 15px;
 
@@ -743,7 +815,7 @@ header{
         0 auto
         20px auto;
 
-    background:white;
+    background:#fff;
 
     box-shadow:
         0 3px 15px
@@ -760,10 +832,6 @@ header{
     height:auto;
 }
 
-
-/* =====================================================
-   WATERMARK
-===================================================== */
 
 .watermark{
 
@@ -789,18 +857,6 @@ header{
     pointer-events:none;
 
     user-select:none;
-}
-
-
-/* =====================================================
-   LOADING
-===================================================== */
-
-.loading{
-
-    padding:30px;
-
-    color:#64748b;
 }
 
 
@@ -851,15 +907,15 @@ header{
     }
 
 
-    .pdfHeader{
+    .watermark{
 
-        padding:8px;
+        font-size:20px;
     }
 
 
-    .pdfActions{
+    .pdfHeader{
 
-        gap:5px;
+        padding:8px;
     }
 
 
@@ -869,12 +925,6 @@ header{
         padding:8px 10px;
 
         font-size:13px;
-    }
-
-
-    .watermark{
-
-        font-size:20px;
     }
 
 }
@@ -888,11 +938,7 @@ header{
 
     body{
 
-        margin:0;
-
-        padding:0;
-
-        background:white;
+        background:#fff;
     }
 
 }
@@ -933,6 +979,7 @@ header{
             <label for="userIdInput">
                 User ID
             </label>
+
 
             <input
                 type="text"
@@ -1009,10 +1056,11 @@ header{
 
 
     <!-- =================================================
-         SEARCH CARD
+         SEARCH
     ================================================= -->
 
     <div class="searchCard">
+
 
         <h3>
             🔎 ভোটার তথ্য অনুসন্ধান
@@ -1059,8 +1107,9 @@ header{
             <button
                 class="btn"
                 id="searchBtn"
+                disabled
             >
-                🔍 অনুসন্ধান
+                🔄 তথ্য প্রস্তুত হচ্ছে...
             </button>
 
 
@@ -1077,6 +1126,20 @@ header{
 
 
         <div id="status"></div>
+
+
+        <div
+            class="progressWrap"
+            id="progressWrap"
+        >
+
+            <div
+                class="progressBar"
+                id="progressBar"
+            ></div>
+
+        </div>
+
 
     </div>
 
@@ -1106,7 +1169,7 @@ header{
         <div id="results">
 
             <div class="loading">
-                অনুসন্ধানের জন্য নাম অথবা জন্মতারিখ লিখুন।
+                তথ্য প্রস্তুত হওয়ার পর অনুসন্ধান করুন।
             </div>
 
         </div>
@@ -1127,19 +1190,18 @@ header{
 
 <div
     class="pdf-window"
-    id="pdf-window"
+    id="pdfWindow"
 >
 
 
     <div class="pdfHeader">
 
 
-        <div class="pdfHeaderLeft">
-
-            <div id="pdfTitle">
-                PDF Viewer
-            </div>
-
+        <div
+            class="pdfTitle"
+            id="pdfTitle"
+        >
+            PDF Viewer
         </div>
 
 
@@ -1176,7 +1238,7 @@ header{
 <script>
 
 /* =====================================================
-   PDF.JS WORKER
+   PDF.JS
 ===================================================== */
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -1184,92 +1246,155 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 
 /* =====================================================
-   USER LIST
+   LOGIN USER LIST
 ===================================================== */
-
-/*
-   এখানে শুধু User ID থাকবে।
-
-   Password নেই।
-   Admin নেই।
-   Role নেই।
-
-   নতুন User ID চাইলে নিচে যোগ করুন।
-*/
 
 const LOGIN_USERS = {
 
-    "ALI001": "আলী ইসলাম",
+    "ALI001":
+        "আলী ইসলাম",
 
-    "OP001": "অপারেটর"
+    "OP001":
+        "অপারেটর"
 
 };
 
 
 /* =====================================================
-   PDF FILE LIST
+   GITHUB INFORMATION
+===================================================== */
+
+const GITHUB_OWNER =
+    "panchlaishward-ctrl";
+
+const GITHUB_REPO =
+    "panchlaishward";
+
+const GITHUB_BRANCH =
+    "main";
+
+
+const GITHUB_RAW_BASE =
+    "https://raw.githubusercontent.com/" +
+    GITHUB_OWNER +
+    "/" +
+    GITHUB_REPO +
+    "/" +
+    GITHUB_BRANCH +
+    "/";
+
+
+/* =====================================================
+   ACTUAL PDF FILES FROM GITHUB
 ===================================================== */
 
 const PDF_FILES = [
 
-    "1.pdf",
-    "2.pdf",
-    "3.pdf",
-    "4.pdf",
-    "5.pdf",
-    "6.pdf",
-    "7.pdf",
-    "8.pdf",
-    "9.pdf",
-    "10.pdf",
-    "11.pdf",
-    "12.pdf",
-    "13.pdf",
-    "14.pdf",
-    "15.pdf",
-    "16.pdf",
-    "17.pdf",
-    "18.pdf",
-    "19.pdf",
-    "20.pdf",
-    "21.pdf",
-    "22.pdf",
-    "23.pdf",
-    "24.pdf",
-    "25.pdf",
-    "26.pdf",
-    "27.pdf",
-    "28.pdf",
-    "29.pdf",
-    "30.pdf",
-    "31.pdf",
-    "32.pdf",
-    "33.pdf",
-    "34.pdf",
-    "35.pdf",
-    "36.pdf",
-    "37.pdf",
-    "38.pdf",
-    "39.pdf",
-    "40.pdf",
-    "41.pdf",
-    "42.pdf",
-    "43.pdf",
-    "44.pdf",
-    "45.pdf",
-    "46.pdf",
-    "47.pdf",
-    "48.pdf",
-    "49.pdf",
-    "50.pdf",
-    "51.pdf",
-    "52.pdf",
-    "53.pdf",
-    "54.pdf",
-    "55.pdf",
-    "56.pdf"
+    "151686_com_1443_female.pdf",
+    "151686_com_1526_male.pdf",
+
+    "151687_com_34_female.pdf",
+    "151687_com_57_male.pdf",
+
+    "151688_com_251_female.pdf",
+    "151688_com_296_male.pdf",
+
+    "151690_com_1217_female.pdf",
+    "151690_com_1305_male.pdf",
+
+    "151691_com_436_male.pdf",
+    "151691_com_443_female.pdf",
+
+    "151692_com_237_female.pdf",
+    "151692_com_269_male.pdf",
+
+    "151693_com_1888_male.pdf",
+    "151693_com_1926_female.pdf",
+
+    "151694_com_3519_male.pdf",
+    "151694_com_3839_female.pdf",
+
+    "151695_com_117_male.pdf",
+    "151695_com_87_female.pdf",
+
+    "151696_com_380_female.pdf",
+    "151696_com_444_male.pdf",
+
+    "151697_com_623_female.pdf",
+    "151697_com_643_male.pdf",
+
+    "151698_com_397_female.pdf",
+    "151698_com_432_male.pdf",
+
+    "151699_com_366_female.pdf",
+    "151699_com_398_male.pdf",
+
+    "151700_com_2199_female.pdf",
+    "151700_com_2199_male.pdf",
+
+    "151701_com_1606_female.pdf",
+    "151701_com_1675_male.pdf",
+
+    "151702_com_466_female.pdf",
+    "151702_com_865_male.pdf",
+
+    "151703_com_1591_male.pdf",
+    "151703_com_1816_female.pdf",
+
+    "151704_com_335_male.pdf",
+    "151704_com_415_female.pdf",
+
+    "151705_com_1370_male.pdf",
+    "151705_com_1427_female.pdf",
+
+    "151706_com_582_female.pdf",
+    "151706_com_654_male.pdf",
+
+    "151707_com_262_female.pdf",
+    "151707_com_286_male.pdf",
+
+    "151708_com_373_female.pdf",
+    "151708_com_426_male.pdf",
+
+    "151709_com_384_female.pdf",
+    "151709_com_414_male.pdf",
+
+    "151710_com_255_female.pdf",
+    "151710_com_296_male.pdf",
+
+    "151711_com_1188_female.pdf",
+    "151711_com_984_male.pdf",
+
+    "151712_com_1123_female.pdf",
+    "151712_com_1160_male.pdf",
+
+    "151713_com_345_female.pdf",
+    "151713_com_385_male.pdf",
+
+    "151714_com_441_male.pdf",
+    "151714_com_562_female.pdf"
 
 ];
+
+
+/* =====================================================
+   INDEX VERSION
+===================================================== */
+
+/*
+   PDF list পরিবর্তন হলে এই version বাড়িয়ে দিবেন।
+
+   বর্তমান version:
+   2026-09-25-v2
+*/
+
+const INDEX_VERSION =
+    "2026-09-25-v2";
+
+
+const INDEX_STORAGE_KEY =
+    "panchlaishward_voter_index_" +
+    INDEX_VERSION;
 
 
 /* =====================================================
@@ -1348,6 +1473,18 @@ const statusBox =
     );
 
 
+const progressWrap =
+    document.getElementById(
+        "progressWrap"
+    );
+
+
+const progressBar =
+    document.getElementById(
+        "progressBar"
+    );
+
+
 const results =
     document.getElementById(
         "results"
@@ -1362,7 +1499,7 @@ const resultCount =
 
 const pdfWindow =
     document.getElementById(
-        "pdf-window"
+        "pdfWindow"
     );
 
 
@@ -1394,15 +1531,28 @@ const closePdf =
    VARIABLES
 ===================================================== */
 
-let currentUser = null;
+let currentUser =
+    null;
 
-let voterIndex = [];
 
-let currentPdfFilename = "";
+let voterIndex =
+    [];
+
+
+let indexReady =
+    false;
+
+
+let indexBuilding =
+    false;
+
+
+let currentPdfFilename =
+    "";
 
 
 /* =====================================================
-   NORMALIZE
+   NORMALIZE TEXT
 ===================================================== */
 
 function normalizeText(text){
@@ -1480,7 +1630,7 @@ function banglaToEnglishNumber(text){
 
 
 /* =====================================================
-   SHOW LOGIN ERROR
+   LOGIN ERROR
 ===================================================== */
 
 function showLoginError(message){
@@ -1493,10 +1643,6 @@ function showLoginError(message){
 
 }
 
-
-/* =====================================================
-   HIDE LOGIN ERROR
-===================================================== */
 
 function hideLoginError(){
 
@@ -1563,12 +1709,17 @@ function loginUser(){
 
 
     sessionStorage.setItem(
-        "panchlaishUser",
+        "panchlaish_user",
         userId
     );
 
 
-    loadIndex();
+    /*
+       Login-এর পর
+       Index শুরু হবে।
+    */
+
+    startIndexProcess();
 
 }
 
@@ -1605,67 +1756,14 @@ userIdInput.addEventListener(
 
 
 /* =====================================================
-   LOGOUT
-===================================================== */
-
-logoutBtn.addEventListener(
-    "click",
-    function(){
-
-        currentUser =
-            null;
-
-
-        sessionStorage.removeItem(
-            "panchlaishUser"
-        );
-
-
-        app.style.display =
-            "none";
-
-
-        loginOverlay.style.display =
-            "flex";
-
-
-        userIdInput.value =
-            "";
-
-
-        nameInput.value =
-            "";
-
-
-        dobInput.value =
-            "";
-
-
-        results.innerHTML = `
-
-            <div class="loading">
-                অনুসন্ধানের জন্য নাম অথবা জন্মতারিখ লিখুন।
-            </div>
-
-        `;
-
-
-        resultCount.textContent =
-            "0";
-
-    }
-);
-
-
-/* =====================================================
-   AUTO LOGIN FROM SESSION
+   AUTO LOGIN
 ===================================================== */
 
 (function(){
 
     const savedUser =
         sessionStorage.getItem(
-            "panchlaishUser"
+            "panchlaish_user"
         );
 
 
@@ -1690,7 +1788,7 @@ logoutBtn.addEventListener(
             "block";
 
 
-        loadIndex();
+        startIndexProcess();
 
     }
 
@@ -1698,47 +1796,156 @@ logoutBtn.addEventListener(
 
 
 /* =====================================================
-   LOAD INDEX
+   LOGOUT
 ===================================================== */
 
-function loadIndex(){
+logoutBtn.addEventListener(
+    "click",
+    function(){
+
+        sessionStorage.removeItem(
+            "panchlaish_user"
+        );
+
+
+        currentUser =
+            null;
+
+
+        indexReady =
+            false;
+
+
+        app.style.display =
+            "none";
+
+
+        loginOverlay.style.display =
+            "flex";
+
+
+        userIdInput.value =
+            "";
+
+
+        nameInput.value =
+            "";
+
+
+        dobInput.value =
+            "";
+
+
+        resultCount.textContent =
+            "0";
+
+
+        results.innerHTML = `
+
+            <div class="loading">
+                লগইন করার পর অনুসন্ধান করুন।
+            </div>
+
+        `;
+
+    }
+);
+
+
+/* =====================================================
+   GET PDF URL
+===================================================== */
+
+function getPdfUrl(filename){
+
+    return (
+        GITHUB_RAW_BASE +
+        encodeURIComponent(filename)
+    );
+
+}
+
+
+/* =====================================================
+   LOAD SAVED INDEX
+===================================================== */
+
+function loadSavedIndex(){
 
     try{
 
         const saved =
             localStorage.getItem(
-                "panchlaishVoterIndex"
+                INDEX_STORAGE_KEY
             );
 
 
-        if(saved){
+        if(!saved){
 
-            voterIndex =
-                JSON.parse(saved);
+            return false;
 
         }
+
+
+        const parsed =
+            JSON.parse(saved);
+
+
+        if(
+            !Array.isArray(parsed)
+        ){
+
+            return false;
+
+        }
+
+
+        /*
+           Index-এর PDF list অবশ্যই
+           বর্তমান PDF_FILES-এর সাথে
+           মিলে যেতে হবে।
+        */
+
+        const indexedNames =
+            parsed.map(
+                item =>
+                    item.filename
+            );
+
+
+        const allPresent =
+            PDF_FILES.every(
+                filename =>
+                    indexedNames.includes(
+                        filename
+                    )
+            );
+
+
+        if(!allPresent){
+
+            return false;
+
+        }
+
+
+        voterIndex =
+            parsed;
+
+
+        return voterIndex.length > 0;
 
     }
 
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Saved index error:",
+            error
+        );
 
-        voterIndex = [];
 
-    }
-
-
-    /*
-       Index না থাকলে
-       নিজে থেকেই তৈরি করবে।
-    */
-
-    if(
-        voterIndex.length === 0
-    ){
-
-        rebuildIndexAutomatically();
+        return false;
 
     }
 
@@ -1752,22 +1959,88 @@ function loadIndex(){
 function saveIndex(){
 
     localStorage.setItem(
-        "panchlaishVoterIndex",
+
+        INDEX_STORAGE_KEY,
+
         JSON.stringify(
             voterIndex
         )
+
     );
 
 }
 
 
 /* =====================================================
-   PDF URL
+   START INDEX PROCESS
 ===================================================== */
 
-function getPdfUrl(filename){
+async function startIndexProcess(){
 
-    return filename;
+    if(indexBuilding){
+
+        return;
+
+    }
+
+
+    indexReady =
+        false;
+
+
+    searchBtn.disabled =
+        true;
+
+
+    searchBtn.textContent =
+        "🔄 তথ্য প্রস্তুত হচ্ছে...";
+
+
+    /*
+       প্রথমে saved index দেখি।
+    */
+
+    const saved =
+        loadSavedIndex();
+
+
+    if(saved){
+
+        indexReady =
+            true;
+
+
+        searchBtn.disabled =
+            false;
+
+
+        searchBtn.textContent =
+            "🔍 অনুসন্ধান";
+
+
+        statusBox.style.display =
+            "block";
+
+
+        statusBox.className =
+            "success";
+
+
+        statusBox.textContent =
+            `✓ ${voterIndex.length}টি PDF-এর Index প্রস্তুত আছে।`;
+
+
+        return;
+
+    }
+
+
+    /*
+       Saved index নেই।
+       নতুন Index তৈরি।
+    */
+
+    await rebuildIndex();
 
 }
 
@@ -1780,17 +2053,28 @@ async function extractPdfText(
     filename
 ){
 
+    const url =
+        getPdfUrl(filename);
+
+
     const loadingTask =
-        pdfjsLib.getDocument(
-            getPdfUrl(filename)
-        );
+        pdfjsLib.getDocument({
+
+            url:url,
+
+            disableAutoFetch:false,
+
+            disableStream:false
+
+        });
 
 
     const pdf =
         await loadingTask.promise;
 
 
-    let fullText = "";
+    let fullText =
+        "";
 
 
     for(
@@ -1817,7 +2101,7 @@ async function extractPdfText(
 
                 .map(
                     item =>
-                        item.str
+                        item.str || ""
                 )
 
                 .join(" ");
@@ -1836,20 +2120,52 @@ async function extractPdfText(
 
 
 /* =====================================================
-   AUTOMATIC INDEX
+   REBUILD INDEX
 ===================================================== */
 
-async function rebuildIndexAutomatically(){
+async function rebuildIndex(){
 
-    statusBox.style.display =
+    if(indexBuilding){
+
+        return;
+
+    }
+
+
+    indexBuilding =
+        true;
+
+
+    indexReady =
+        false;
+
+
+    searchBtn.disabled =
+        true;
+
+
+    searchBtn.textContent =
+        "🔄 তথ্য প্রস্তুত হচ্ছে...";
+
+
+    progressWrap.style.display =
         "block";
 
 
-    statusBox.className =
-        "";
+    progressBar.style.width =
+        "0%";
 
 
-    voterIndex = [];
+    voterIndex =
+        [];
+
+
+    let successCount =
+        0;
+
+
+    let failedCount =
+        0;
 
 
     for(
@@ -1864,8 +2180,29 @@ async function rebuildIndexAutomatically(){
             PDF_FILES[i];
 
 
+        const percent =
+            Math.round(
+                (
+                    i /
+                    PDF_FILES.length
+                ) * 100
+            );
+
+
+        progressBar.style.width =
+            percent + "%";
+
+
+        statusBox.style.display =
+            "block";
+
+
+        statusBox.className =
+            "";
+
+
         statusBox.textContent =
-            `তথ্য প্রস্তুত হচ্ছে... ${i + 1}/${PDF_FILES.length}`;
+            `PDF পড়া হচ্ছে ${i + 1}/${PDF_FILES.length} — ${filename}`;
 
 
         try{
@@ -1876,26 +2213,36 @@ async function rebuildIndexAutomatically(){
                 );
 
 
+            const normalized =
+                normalizeText(
+                    banglaToEnglishNumber(
+                        text
+                    )
+                );
+
+
             voterIndex.push({
 
                 filename:
                     filename,
 
                 text:
-                    normalizeText(
-                        banglaToEnglishNumber(
-                            text
-                        )
-                    )
+                    normalized
 
             });
+
+
+            successCount++;
 
         }
 
         catch(error){
 
+            failedCount++;
+
+
             console.error(
-                "PDF Error:",
+                "PDF read error:",
                 filename,
                 error
             );
@@ -1905,15 +2252,92 @@ async function rebuildIndexAutomatically(){
     }
 
 
+    progressBar.style.width =
+        "100%";
+
+
+    /*
+       Index save
+    */
+
     saveIndex();
 
 
-    statusBox.className =
-        "success";
+    indexBuilding =
+        false;
 
 
-    statusBox.textContent =
-        `তথ্য প্রস্তুত সম্পন্ন। ${voterIndex.length}টি PDF প্রস্তুত হয়েছে।`;
+    if(
+        voterIndex.length > 0
+    ){
+
+        indexReady =
+            true;
+
+
+        searchBtn.disabled =
+            false;
+
+
+        searchBtn.textContent =
+            "🔍 অনুসন্ধান";
+
+
+        statusBox.className =
+            "success";
+
+
+        statusBox.textContent =
+            `✓ Index তৈরি সম্পন্ন। ${successCount}টি PDF প্রস্তুত হয়েছে।`;
+
+
+        if(failedCount > 0){
+
+            statusBox.textContent +=
+                ` ${failedCount}টি PDF পড়া যায়নি।`;
+
+        }
+
+    }
+
+    else{
+
+        indexReady =
+            false;
+
+
+        searchBtn.disabled =
+            true;
+
+
+        searchBtn.textContent =
+            "❌ Index তৈরি হয়নি";
+
+
+        statusBox.className =
+            "error";
+
+
+        statusBox.textContent =
+            "কোনো PDF পড়া যায়নি। GitHub PDF filename/path পরীক্ষা করুন।";
+
+    }
+
+
+    /*
+       Progress কিছুক্ষণ দেখিয়ে
+       তারপর hide করা হবে।
+    */
+
+    setTimeout(
+        function(){
+
+            progressWrap.style.display =
+                "none";
+
+        },
+        1200
+    );
 
 }
 
@@ -1923,6 +2347,25 @@ async function rebuildIndexAutomatically(){
 ===================================================== */
 
 function searchVoter(){
+
+    if(!indexReady){
+
+        statusBox.style.display =
+            "block";
+
+
+        statusBox.className =
+            "error";
+
+
+        statusBox.textContent =
+            "তথ্য এখনো প্রস্তুত হচ্ছে। প্রস্তুত হওয়া পর্যন্ত অপেক্ষা করুন।";
+
+
+        return;
+
+    }
+
 
     const name =
         normalizeText(
@@ -1952,7 +2395,7 @@ function searchVoter(){
 
 
         statusBox.textContent =
-            "নাম অথবা জন্মতারিখ লিখুন।";
+            "ভোটারের নাম অথবা জন্মতারিখ লিখুন।";
 
 
         return;
@@ -1960,27 +2403,9 @@ function searchVoter(){
     }
 
 
-    if(
-        voterIndex.length ===
-        0
-    ){
-
-        statusBox.style.display =
-            "block";
-
-
-        statusBox.className =
-            "error";
-
-
-        statusBox.textContent =
-            "PDF Index এখনো তৈরি হয়নি। কিছুক্ষণ অপেক্ষা করে আবার চেষ্টা করুন।";
-
-
-        return;
-
-    }
-
+    /*
+       Search
+    */
 
     const found =
         voterIndex.filter(
@@ -2060,7 +2485,7 @@ function displayResults(found){
 
 
         statusBox.textContent =
-            "কোনো PDF-এ মিল পাওয়া যায়নি.";
+            "কোনো PDF-এ মিল পাওয়া যায়নি।";
 
 
         results.innerHTML = `
@@ -2068,6 +2493,10 @@ function displayResults(found){
             <div class="loading">
 
                 😔 কোনো ফলাফল পাওয়া যায়নি।
+
+                <br><br>
+
+                নাম ও জন্মতারিখ ঠিকভাবে লিখে আবার চেষ্টা করুন।
 
             </div>
 
@@ -2084,7 +2513,7 @@ function displayResults(found){
 
 
     statusBox.textContent =
-        `${found.length}টি PDF-এ তথ্য পাওয়া গেছে।`;
+        `${found.length}টি PDF-এ মিল পাওয়া গেছে।`;
 
 
     found.forEach(
@@ -2109,7 +2538,7 @@ function displayResults(found){
                     </div>
 
                     <div class="resultDetails">
-                        অনুসন্ধানের সাথে মিল পাওয়া গেছে।
+                        নাম/জন্মতারিখের সাথে মিল পাওয়া গেছে।
                     </div>
 
                 </div>
@@ -2328,11 +2757,6 @@ async function openPdf(filename){
                 );
 
 
-            /*
-               1.5 scale
-               ভালো মানের PDF preview
-            */
-
             const viewport =
                 page.getViewport({
                     scale:1.5
@@ -2367,10 +2791,6 @@ async function openPdf(filename){
                 canvas
             );
 
-
-            /*
-               Watermark
-            */
 
             const watermark =
                 document.createElement(
@@ -2421,7 +2841,10 @@ async function openPdf(filename){
 
     catch(error){
 
-        console.error(error);
+        console.error(
+            "PDF viewer error:",
+            error
+        );
 
 
         pdfBody.innerHTML = `
@@ -2432,7 +2855,9 @@ async function openPdf(filename){
 
                 <br><br>
 
-                ফাইলের নাম অথবা PDF path পরীক্ষা করুন।
+                ${escapeHtml(
+                    filename
+                )}
 
             </div>
 
@@ -2444,7 +2869,7 @@ async function openPdf(filename){
 
 
 /* =====================================================
-   PRINT PDF
+   PRINT
 ===================================================== */
 
 function printCurrentPdf(){
@@ -2460,7 +2885,7 @@ function printCurrentPdf(){
     ){
 
         alert(
-            "প্রথমে PDF সম্পূর্ণ লোড হতে দিন।"
+            "PDF সম্পূর্ণ লোড হওয়ার পর প্রিন্ট করুন।"
         );
 
         return;
@@ -2500,7 +2925,7 @@ function printCurrentPdf(){
 <meta charset="UTF-8">
 
 <title>
-    ${escapeHtml(currentPdfFilename)}
+${escapeHtml(currentPdfFilename)}
 </title>
 
 <style>
@@ -2521,12 +2946,13 @@ body{
 
     padding:0;
 
-    background:white;
-
+    background:#fff;
 }
 
 
 .printPage{
+
+    position:relative;
 
     width:210mm;
 
@@ -2534,16 +2960,15 @@ body{
 
     display:flex;
 
-    justify-content:center;
-
     align-items:flex-start;
 
-    page-break-after:always;
+    justify-content:center;
 
     overflow:hidden;
 
-    position:relative;
+    page-break-after:always;
 
+    background:#fff;
 }
 
 
@@ -2558,15 +2983,37 @@ body{
 }
 
 
-@media print{
+.printWatermark{
 
-    .printPage{
+    position:absolute;
 
-        page-break-after:always;
+    left:50%;
 
-    }
+    top:50%;
 
+    transform:
+        translate(-50%,-50%)
+        rotate(-30deg);
+
+    color:
+        rgba(30,64,175,.18);
+
+    font-family:
+        "Noto Sans Bengali",
+        Arial,
+        sans-serif;
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+    white-space:nowrap;
+
+    pointer-events:none;
 }
+
 
 </style>
 
@@ -2607,6 +3054,15 @@ body{
                         src="${image}"
                     >
 
+
+                    <div class="printWatermark">
+
+                        আলী ইসলাম<br>
+                        উদ্যোক্তা<br>
+                        ০৩ নং পাঁচলাইশ ওয়ার্ড
+
+                    </div>
+
                 </div>
 
             `);
@@ -2627,11 +3083,6 @@ body{
     printWindow.document.close();
 
 
-    /*
-       Browser-কে images load করার
-       সময় দেওয়া হচ্ছে।
-    */
-
     setTimeout(
         function(){
 
@@ -2640,7 +3091,7 @@ body{
             printWindow.print();
 
         },
-        1000
+        1200
     );
 
 }
@@ -2703,32 +3154,6 @@ document.addEventListener(
                 closePdfViewer();
 
             }
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   PREVENT EMPTY ENTER
-===================================================== */
-
-document.addEventListener(
-    "keydown",
-    function(event){
-
-        if(
-            event.key ===
-            "Enter" &&
-            event.target.tagName ===
-            "INPUT"
-        ){
-
-            /*
-               আলাদা input listener
-               কাজ করবে।
-            */
 
         }
 
