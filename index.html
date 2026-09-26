@@ -690,8 +690,12 @@ PDF লোড হচ্ছে...
    PDF.JS
 ===================================================== */
 
+if(window.pdfjsLib){
+
 pdfjsLib.GlobalWorkerOptions.workerSrc =
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+}
 
 
 /* =====================================================
@@ -1099,62 +1103,18 @@ banglaToEnglishDigits(
 String(text || "")
 );
 
-const digits =
-raw.replace(
-/\D/g,
-""
-);
+/* Require the full date to be a distinct sequence, not digits
+   assembled from unrelated numbers elsewhere on the page. */
+const datePattern = target
+.split("")
+.map(function(digit){
+return digit;
+})
+.join("\\D{0,3}");
 
-if(
-digits.includes(target)
-){
-
-return true;
-
-}
-
-
-/*
-DD/MM/YYYY
-*/
-
-if(
-target.length===8
-){
-
-const d =
-target.substring(0,2);
-
-const m =
-target.substring(2,4);
-
-const y =
-target.substring(4,8);
-
-const variants=[
-
-d+"/"+m+"/"+y,
-
-d+"-"+m+"-"+y,
-
-d+"."+m+"."+y,
-
-d+" "+m+" "+y
-
-];
-
-for(
-const v of variants
-){
-
-if(raw.includes(v))
-return true;
-
-}
-
-}
-
-return false;
+return new RegExp(
+"(?:^|\\D)" + datePattern + "(?:$|\\D)"
+).test(raw);
 
 }
 
@@ -1444,8 +1404,9 @@ filename,
 
 
 if(
-data.totalCharacters<10
-){
+data.pages.some(function(page){
+return page.text.length<10;
+})){
 
 SCANNED_FILES.push(
 filename
@@ -1590,6 +1551,10 @@ Scanned:
 ===================================================== */
 
 async function createOCRWorker(){
+
+if(!window.Tesseract){
+throw new Error("OCR লাইব্রেরি লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করুন।");
+}
 
 if(
 OCR_READY &&
@@ -1894,19 +1859,24 @@ PDF_TIMEOUT,
 );
 
 
-const total =
-pdf.numPages;
+const pagesToScan =
+pdfData.pages.filter(function(page){
+return page.text.length<10;
+});
 
+const total = pagesToScan.length;
 
 for(
-let i=1;
-i<=total;
+let i=0;
+i<total;
 i++
 ){
 
+const pageNumber = pagesToScan[i].page;
+
 const percent =
 Math.round(
-(i/total)*100
+((i+1)/total)*100
 );
 
 
@@ -1915,13 +1885,13 @@ percent+"%";
 
 
 label.innerText=
-`OCR: ${i}/${total}`;
+`OCR: ${i+1}/${total}`;
 
 
 status.innerHTML=
 `<strong>OCR চলছে...</strong><br>
 ${escapeHtml(pdfData.filename)}<br>
-পৃষ্ঠা ${i}/${total}`;
+পৃষ্ঠা ${pageNumber}`;
 
 
 try{
@@ -1930,7 +1900,7 @@ const page =
 await ocrPdfPage(
 pdf,
 pdfData,
-i
+pageNumber
 );
 
 pages.push(page);
@@ -1992,7 +1962,9 @@ const scanned =
 PDF_INDEX.filter(
 function(pdf){
 
-return pdf.totalCharacters<10;
+return pdf.pages.some(function(page){
+return page.text.length<10;
+});
 
 }
 );
@@ -3219,6 +3191,12 @@ viewerCurrentPage
 window.addEventListener(
 "load",
 function(){
+
+if(!window.pdfjsLib){
+document.getElementById("status").innerHTML=
+`<div class="error">PDF লাইব্রেরি লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করে পৃষ্ঠাটি আবার খুলুন।</div>`;
+return;
+}
 
 buildIndex();
 
