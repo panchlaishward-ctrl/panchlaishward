@@ -8,7 +8,6 @@
 <title>ভোটার তথ্য অনুসন্ধান | ০৩ নং পাঁচলাইশ ওয়ার্ড</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
 
@@ -844,6 +843,8 @@ const PDF_TIMEOUT = 15000;
 
 const PAGE_TIMEOUT = 10000;
 
+const PDF_LOAD_CONCURRENCY = 4;
+
 
 /* =====================================================
    PDF URL
@@ -1375,58 +1376,43 @@ SCANNED_FILES=[];
 FAILED_FILES=[];
 
 
-for(
-let i=0;
-i<PDF_FILES.length;
-i++
-){
+let nextFileIndex=0;
+let completedFiles=0;
 
-const filename =
-PDF_FILES[i];
+async function loadPdfWorker(){
 
+while(true){
+
+const index=nextFileIndex++;
+
+if(index>=PDF_FILES.length){
+return;
+}
+
+const filename=PDF_FILES[index];
 
 status.innerHTML=
-`PDF পড়া হচ্ছে ${i+1}/${PDF_FILES.length}<br>
+`একসঙ্গে ${PDF_LOAD_CONCURRENCY}টি PDF পড়া হচ্ছে<br>
 <strong>${escapeHtml(filename)}</strong>`;
-
-
-progressText.innerText=
-`${i}/${PDF_FILES.length} সম্পন্ন`;
-
 
 try{
 
-const data =
+const data=
 await extractPdfWithRetry(
 filename,
 2
 );
-
 
 if(
 data.pages.some(function(page){
 return page.text.length<10;
 })){
 
-SCANNED_FILES.push(
-filename
-);
+SCANNED_FILES.push(filename);
 
 }
 
-PDF_INDEX.push(data);
-
-
-progressBar.style.width=
-Math.round(
-((i+1)/
-PDF_FILES.length)*100
-)+"%";
-
-
-progressText.innerText=
-`${i+1}/${PDF_FILES.length} সম্পন্ন`;
-
+PDF_INDEX[index]=data;
 
 }catch(error){
 
@@ -1436,34 +1422,42 @@ filename,
 error
 );
 
-
 FAILED_FILES.push({
-
 filename:filename,
-
-error:
-error.message ||
-"Unknown error"
-
+error:error.message || "Unknown error"
 });
 
+}
+
+completedFiles++;
 
 progressBar.style.width=
 Math.round(
-((i+1)/
-PDF_FILES.length)*100
+(completedFiles/PDF_FILES.length)*100
 )+"%";
 
-
 progressText.innerText=
-`${i+1}/${PDF_FILES.length} সম্পন্ন — সমস্যা থাকলে বাদ দেওয়া হয়েছে`;
+`${completedFiles}/${PDF_FILES.length} সম্পন্ন`;
+
+await yieldToBrowser(20);
 
 }
 
-
-await yieldToBrowser(30);
-
 }
+
+const workerCount=Math.min(
+PDF_LOAD_CONCURRENCY,
+PDF_FILES.length
+);
+
+await Promise.all(
+Array.from(
+{length:workerCount},
+loadPdfWorker
+)
+);
+
+PDF_INDEX=PDF_INDEX.filter(Boolean);
 
 
 INDEX_READY=true;
@@ -1547,14 +1541,49 @@ Scanned:
 
 
 /* =====================================================
-   OCR WORKER
+   OCR LIBRARY (LOAD ONLY WHEN NEEDED)
 ===================================================== */
 
-async function createOCRWorker(){
+let OCR_LIBRARY_PROMISE=null;
+
+async function loadOCRLibrary(){
+
+if(window.Tesseract){
+return;
+}
+
+if(!OCR_LIBRARY_PROMISE){
+
+OCR_LIBRARY_PROMISE=new Promise(function(resolve,reject){
+
+const script=document.createElement("script");
+script.src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
+script.onload=resolve;
+script.onerror=function(){
+OCR_LIBRARY_PROMISE=null;
+reject(new Error("OCR লাইব্রেরি লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করুন।"));
+};
+
+document.head.appendChild(script);
+
+});
+
+}
+
+await OCR_LIBRARY_PROMISE;
 
 if(!window.Tesseract){
 throw new Error("OCR লাইব্রেরি লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করুন।");
 }
+
+}
+
+
+/* =====================================================
+   OCR WORKER
+===================================================== */
+
+async function createOCRWorker(){
 
 if(
 OCR_READY &&
@@ -1590,6 +1619,7 @@ document.getElementById(
 `<strong>বাংলা OCR প্রস্তুত হচ্ছে...</strong><br>
 প্রথমবার কিছুটা সময় লাগতে পারে।`;
 
+await loadOCRLibrary();
 
 OCR_WORKER =
 await Tesseract.createWorker(
