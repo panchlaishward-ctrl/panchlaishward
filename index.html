@@ -1,1238 +1,687 @@
 <!DOCTYPE html>
 <html lang="bn">
-
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<title>ভোটার তথ্য অনুসন্ধান | ০৩ নং পাঁচলাইশ ওয়ার্ড</title>
 
-<title>৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান</title>
-
-<!-- PDF.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
 
-/* =====================================================
-   GLOBAL
-===================================================== */
-
 *{
-    box-sizing:border-box;
+    box-sizing:border-box
 }
 
-html,
+html{
+    scroll-behavior:smooth
+}
+
 body{
     margin:0;
-    padding:0;
-}
-
-body{
+    background:#f3f6f9;
+    color:#222;
     font-family:
         "Noto Sans Bengali",
-        "Noto Sans",
+        "Segoe UI",
         Arial,
-        sans-serif;
-
-    background:#f1f5f9;
-
-    color:#1e293b;
+        sans-serif
 }
 
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-#loginOverlay{
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:99999;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    padding:20px;
-
+.header{
     background:
         linear-gradient(
             135deg,
-            #0f172a,
-            #1e3a8a,
-            #0f766e
+            #006a4e,
+            #008f68
         );
-}
-
-
-.loginBox{
-
-    width:100%;
-
-    max-width:420px;
-
-    background:#fff;
-
-    padding:30px;
-
-    border-radius:20px;
-
-    box-shadow:
-        0 20px 60px
-        rgba(0,0,0,.30);
-}
-
-
-.loginLogo{
-
+    color:#fff;
     text-align:center;
-
-    font-size:42px;
-
-    margin-bottom:8px;
+    padding:22px 15px;
+    box-shadow:0 3px 12px rgba(0,0,0,.15)
 }
 
-
-.loginBox h2{
-
-    text-align:center;
-
+.header h1{
     margin:0;
-
-    color:#0f172a;
+    font-size:25px
 }
 
-
-.loginBox p{
-
-    text-align:center;
-
-    color:#64748b;
-
-    margin-top:8px;
+.header p{
+    margin:7px 0 0;
+    font-size:15px
 }
-
-
-.formGroup{
-
-    margin-top:20px;
-}
-
-
-.formGroup label{
-
-    display:block;
-
-    margin-bottom:7px;
-
-    font-weight:bold;
-}
-
-
-.formGroup input{
-
-    width:100%;
-
-    padding:13px;
-
-    border:
-        1px solid
-        #cbd5e1;
-
-    border-radius:10px;
-
-    font-size:16px;
-
-    outline:none;
-}
-
-
-.formGroup input:focus{
-
-    border-color:#2563eb;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(37,99,235,.10);
-}
-
-
-#loginBtn{
-
-    width:100%;
-
-    margin-top:22px;
-
-    padding:14px;
-
-    border:0;
-
-    border-radius:10px;
-
-    background:#2563eb;
-
-    color:#fff;
-
-    font-size:17px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-}
-
-
-#loginBtn:hover{
-
-    background:#1d4ed8;
-}
-
-
-#loginError{
-
-    display:none;
-
-    margin-top:15px;
-
-    padding:10px;
-
-    border-radius:8px;
-
-    background:#fee2e2;
-
-    color:#b91c1c;
-
-    text-align:center;
-}
-
-
-/* =====================================================
-   MAIN APP
-===================================================== */
-
-#app{
-
-    display:none;
-
-    min-height:100vh;
-}
-
-
-header{
-
-    background:
-        linear-gradient(
-            135deg,
-            #0f172a,
-            #1e3a8a
-        );
-
-    color:#fff;
-
-    padding:15px 20px;
-
-    box-shadow:
-        0 3px 15px
-        rgba(0,0,0,.15);
-}
-
-
-.headerInner{
-
-    width:100%;
-
-    max-width:1200px;
-
-    margin:auto;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    gap:15px;
-}
-
-
-.headerTitle{
-
-    font-size:21px;
-
-    font-weight:bold;
-}
-
-
-.headerSub{
-
-    margin-top:4px;
-
-    font-size:13px;
-
-    opacity:.85;
-}
-
-
-.userArea{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-}
-
-
-#loggedUserName{
-
-    font-weight:bold;
-}
-
-
-#logoutBtn{
-
-    border:0;
-
-    background:#ef4444;
-
-    color:#fff;
-
-    padding:8px 13px;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
-    font-weight:bold;
-}
-
-
-#logoutBtn:hover{
-
-    background:#dc2626;
-}
-
-
-/* =====================================================
-   CONTAINER
-===================================================== */
 
 .container{
-
-    width:100%;
-
-    max-width:1200px;
-
-    margin:auto;
-
-    padding:20px;
+    width:95%;
+    max-width:1100px;
+    margin:25px auto
 }
 
-
-/* =====================================================
-   SEARCH CARD
-===================================================== */
-
-.searchCard{
-
+.card{
     background:#fff;
-
+    border-radius:14px;
     padding:22px;
-
-    border-radius:16px;
-
-    box-shadow:
-        0 5px 20px
-        rgba(0,0,0,.08);
+    margin-bottom:20px;
+    box-shadow:0 3px 15px rgba(0,0,0,.08)
 }
 
-
-.searchCard h3{
-
-    margin-top:0;
+.search-title,
+.result-title{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:18px
 }
 
-
-.searchGrid{
-
+.form-grid{
     display:grid;
-
-    grid-template-columns:
-        1fr
-        1fr
-        auto
-        auto;
-
+    grid-template-columns:1fr 1fr auto;
     gap:12px;
-
-    align-items:end;
+    align-items:end
 }
 
-
-.inputBox label{
-
+label{
     display:block;
-
-    margin-bottom:6px;
-
     font-weight:bold;
+    margin-bottom:6px
 }
 
-
-.inputBox input{
-
+input{
     width:100%;
-
-    padding:12px;
-
-    border:
-        1px solid
-        #cbd5e1;
-
-    border-radius:9px;
-
-    font-size:16px;
-
-    outline:none;
-}
-
-
-.inputBox input:focus{
-
-    border-color:#2563eb;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(37,99,235,.10);
-}
-
-
-.btn{
-
-    padding:12px 18px;
-
-    border:0;
-
-    border-radius:9px;
-
-    cursor:pointer;
-
-    font-size:15px;
-
-    font-weight:bold;
-}
-
-
-#searchBtn{
-
-    background:#2563eb;
-
-    color:#fff;
-}
-
-
-#searchBtn:hover{
-
-    background:#1d4ed8;
-}
-
-
-#searchBtn:disabled{
-
-    opacity:.6;
-
-    cursor:not-allowed;
-}
-
-
-#clearBtn{
-
-    background:#e2e8f0;
-
-    color:#0f172a;
-}
-
-
-#clearBtn:hover{
-
-    background:#cbd5e1;
-}
-
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-#status{
-
-    display:none;
-
-    margin-top:15px;
-
-    padding:12px;
-
-    border-radius:10px;
-
-    background:#eff6ff;
-
-    color:#1d4ed8;
-
-    line-height:1.6;
-}
-
-
-#status.success{
-
-    background:#dcfce7;
-
-    color:#166534;
-}
-
-
-#status.error{
-
-    background:#fee2e2;
-
-    color:#991b1b;
-}
-
-
-/* =====================================================
-   PROGRESS
-===================================================== */
-
-.progressWrap{
-
-    display:none;
-
-    margin-top:12px;
-
-    width:100%;
-
-    height:10px;
-
-    overflow:hidden;
-
-    background:#e2e8f0;
-
-    border-radius:20px;
-}
-
-
-.progressBar{
-
-    width:0%;
-
-    height:100%;
-
-    background:#2563eb;
-
-    transition:
-        width .2s ease;
-}
-
-
-/* =====================================================
-   RESULTS
-===================================================== */
-
-.resultCard{
-
-    margin-top:20px;
-
-    background:#fff;
-
-    padding:20px;
-
-    border-radius:16px;
-
-    box-shadow:
-        0 5px 20px
-        rgba(0,0,0,.08);
-}
-
-
-#resultHeader{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:15px;
-}
-
-
-#resultHeader h3{
-
-    margin:0;
-}
-
-
-#resultCount{
-
-    background:#dbeafe;
-
-    color:#1d4ed8;
-
-    padding:6px 12px;
-
-    border-radius:20px;
-
-    font-weight:bold;
-}
-
-
-.resultItem{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    gap:15px;
-
-    padding:15px;
-
-    margin-bottom:12px;
-
-    border:
-        1px solid
-        #e2e8f0;
-
-    border-radius:12px;
-}
-
-
-.resultInfo{
-
-    flex:1;
-
-    min-width:0;
-}
-
-
-.resultName{
-
-    font-size:17px;
-
-    font-weight:bold;
-
-    color:#0f172a;
-
-    word-break:break-word;
-}
-
-
-.resultDetails{
-
-    margin-top:6px;
-
-    color:#64748b;
-
-    font-size:14px;
-}
-
-
-.viewPdfBtn{
-
-    flex-shrink:0;
-
-    border:0;
-
-    background:#16a34a;
-
-    color:#fff;
-
-    padding:10px 15px;
-
+    padding:13px 14px;
+    border:1px solid #ccd3d8;
     border-radius:8px;
+    font-size:16px;
+    outline:none;
+    font-family:inherit
+}
 
+input:focus{
+    border-color:#008f68;
+    box-shadow:0 0 0 3px rgba(0,143,104,.12)
+}
+
+button{
+    border:0;
+    border-radius:8px;
+    padding:13px 18px;
+    font-size:15px;
     cursor:pointer;
-
-    font-weight:bold;
+    font-family:inherit;
+    transition:.15s
 }
 
-
-.viewPdfBtn:hover{
-
-    background:#15803d;
+button:active{
+    transform:scale(.98)
 }
 
-
-.loading{
-
-    padding:30px;
-
-    text-align:center;
-
-    color:#64748b;
+.search-btn{
+    background:#008f68;
+    color:#fff
 }
 
+.search-btn:hover{
+    background:#006f52
+}
 
-/* =====================================================
-   PDF VIEWER
-===================================================== */
+.search-btn:disabled{
+    background:#999;
+    cursor:not-allowed
+}
 
-.pdf-window{
+.clear-btn{
+    background:#e9ecef;
+    margin-left:5px
+}
 
-    position:fixed;
+.status{
+    margin-top:15px;
+    padding:13px;
+    background:#f1f8f5;
+    border-left:4px solid #008f68;
+    border-radius:6px;
+    line-height:1.7;
+    word-break:break-word
+}
 
-    inset:0;
+.status strong{
+    color:#006a4e
+}
 
-    z-index:9999;
-
+.progress-wrap,
+.ocr-progress{
     display:none;
-
-    flex-direction:column;
-
-    background:
-        rgba(0,0,0,.88);
+    margin-top:15px
 }
 
+.progress{
+    width:100%;
+    height:12px;
+    background:#e5e5e5;
+    border-radius:10px;
+    overflow:hidden
+}
 
-.pdfHeader{
+.progress-bar{
+    width:0;
+    height:100%;
+    background:#008f68;
+    transition:.2s
+}
 
-    min-height:60px;
+.progress-text{
+    margin-top:7px;
+    font-size:14px;
+    text-align:center
+}
 
-    padding:10px 15px;
+.ocr-progress-label{
+    font-size:14px;
+    margin-bottom:5px
+}
 
-    background:#0f172a;
+.ocr-progress-bar{
+    width:100%;
+    height:10px;
+    background:#ddd;
+    border-radius:10px;
+    overflow:hidden
+}
 
-    color:#fff;
+.ocr-progress-fill{
+    width:0;
+    height:100%;
+    background:#008f68;
+    transition:.15s
+}
 
+.stats{
     display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
     gap:10px;
+    flex-wrap:wrap;
+    margin-top:12px
 }
 
-
-.pdfTitle{
-
-    flex:1;
-
-    min-width:0;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-    white-space:nowrap;
-
-    font-weight:bold;
+.stat{
+    background:#f5f7f8;
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:14px
 }
 
-
-.pdfActions{
-
-    display:flex;
-
-    gap:8px;
-
-    flex-shrink:0;
-}
-
-
-#printPdf{
-
-    border:0;
-
-    background:#16a34a;
-
-    color:#fff;
-
-    padding:9px 15px;
-
-    border-radius:7px;
-
-    cursor:pointer;
-
-    font-weight:bold;
-}
-
-
-#printPdf:hover{
-
-    background:#15803d;
-}
-
-
-#closePdf{
-
-    border:0;
-
-    background:#ef4444;
-
-    color:#fff;
-
-    padding:9px 15px;
-
-    border-radius:7px;
-
-    cursor:pointer;
-
-    font-weight:bold;
-}
-
-
-#closePdf:hover{
-
-    background:#dc2626;
-}
-
-
-#pdfBody{
-
-    flex:1;
-
-    overflow:auto;
-
+.result{
+    border:1px solid #ddd;
+    border-radius:10px;
     padding:15px;
-
-    text-align:center;
+    margin-bottom:12px;
+    background:#fff
 }
 
+.result:hover{
+    box-shadow:0 3px 12px rgba(0,0,0,.08)
+}
 
-.pdfPage{
+.result-file{
+    font-weight:bold;
+    color:#006a4e;
+    word-break:break-all
+}
 
-    position:relative;
+.result-pages{
+    margin-top:6px;
+    color:#555;
+    font-size:14px
+}
 
+.result-actions{
+    margin-top:12px
+}
+
+.view-btn{
+    background:#006a4e;
+    color:#fff
+}
+
+.open-btn{
+    background:#555;
+    color:#fff;
+    margin-left:5px
+}
+
+.ocr-badge{
     display:inline-block;
+    background:#fff3cd;
+    color:#856404;
+    padding:3px 7px;
+    border-radius:5px;
+    margin-left:5px;
+    font-size:12px
+}
 
-    margin:
-        0 auto
-        20px auto;
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#777
+}
 
+.warning{
+    background:#fff8e1;
+    border-left:4px solid #ffb300;
+    padding:12px;
+    border-radius:6px;
+    line-height:1.7
+}
+
+.error{
+    background:#ffebee;
+    border-left:4px solid #d32f2f;
+    padding:12px;
+    border-radius:6px;
+    line-height:1.7
+}
+
+.viewer{
+    display:none
+}
+
+.viewer-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px
+}
+
+.viewer-title{
+    font-size:18px;
+    font-weight:bold;
+    word-break:break-all
+}
+
+.close-btn{
+    background:#d32f2f;
+    color:#fff
+}
+
+.pdf-navigation{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
+    padding:12px;
+    background:#f5f7f8;
+    border-radius:10px
+}
+
+.pdf-navigation button{
+    min-width:90px
+}
+
+.nav-btn{
+    background:#006a4e;
+    color:#fff
+}
+
+.nav-btn:disabled{
+    background:#aaa;
+    cursor:not-allowed
+}
+
+.page-counter{
+    min-width:120px;
+    text-align:center;
+    font-weight:bold;
+    padding:8px 10px;
     background:#fff;
-
-    box-shadow:
-        0 3px 15px
-        rgba(0,0,0,.4);
+    border-radius:7px;
+    border:1px solid #ddd
 }
 
-
-.pdfPage canvas{
-
-    display:block;
-
+.pdf-page{
+    position:relative;
+    width:max-content;
     max-width:100%;
-
-    height:auto;
+    margin:0 auto 20px;
+    background:#fff;
+    box-shadow:0 2px 12px rgba(0,0,0,.15);
+    overflow:hidden
 }
 
+.pdf-page canvas{
+    display:block;
+    max-width:100%;
+    height:auto
+}
 
 .watermark{
-
     position:absolute;
-
     left:50%;
-
     top:50%;
-
     transform:
         translate(-50%,-50%)
-        rotate(-30deg);
-
-    color:
-        rgba(30,64,175,.18);
-
+        rotate(-35deg);
+    color:rgba(0,80,60,.13);
     font-size:30px;
-
     font-weight:bold;
-
     white-space:nowrap;
-
     pointer-events:none;
-
-    user-select:none;
+    text-align:center;
+    line-height:1.5;
+    z-index:5
 }
 
+.watermark small{
+    display:block;
+    font-size:18px
+}
 
-/* =====================================================
-   MOBILE
-===================================================== */
+.viewer-loading{
+    text-align:center;
+    padding:30px;
+    color:#666
+}
 
-@media(max-width:800px){
+.footer{
+    text-align:center;
+    padding:25px 10px;
+    color:#777;
+    font-size:14px
+}
 
-    .headerInner{
+@media(max-width:700px){
 
+    .header h1{
+        font-size:20px
+    }
+
+    .header p{
+        font-size:13px
+    }
+
+    .form-grid{
+        grid-template-columns:1fr
+    }
+
+    .clear-btn{
+        margin-left:0;
+        margin-top:5px
+    }
+
+    .card{
+        padding:16px
+    }
+
+    .viewer-header{
         flex-direction:column;
-
-        align-items:flex-start;
+        align-items:flex-start
     }
 
-
-    .searchGrid{
-
-        grid-template-columns:1fr;
+    .viewer-title{
+        width:100%
     }
-
-
-    .resultItem{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-    }
-
-
-    .viewPdfBtn{
-
-        width:100%;
-    }
-
-
-    .container{
-
-        padding:12px;
-    }
-
-
-    .searchCard,
-    .resultCard{
-
-        padding:15px;
-    }
-
 
     .watermark{
-
-        font-size:20px;
+        font-size:20px
     }
 
-
-    .pdfHeader{
-
-        padding:8px;
+    .watermark small{
+        font-size:13px
     }
 
-
-    #printPdf,
-    #closePdf{
-
-        padding:8px 10px;
-
-        font-size:13px;
+    .open-btn{
+        margin-left:0;
+        margin-top:5px
     }
 
-}
+    .pdf-navigation{
+        gap:5px
+    }
 
+    .pdf-navigation button{
+        min-width:80px;
+        padding:10px 12px
+    }
 
-/* =====================================================
-   PRINT
-===================================================== */
-
-@media print{
-
-    body{
-
-        background:#fff;
+    .page-counter{
+        min-width:100px
     }
 
 }
 
 </style>
-
 </head>
-
 
 <body>
 
+<header class="header">
 
-<!-- =====================================================
-     LOGIN
-===================================================== -->
+<h1>ভোটার তথ্য অনুসন্ধান</h1>
 
-<div id="loginOverlay">
-
-    <div class="loginBox">
-
-        <div class="loginLogo">
-            🗳️
-        </div>
-
-
-        <h2>
-            ভোটার তথ্য অনুসন্ধান
-        </h2>
-
-
-        <p>
-            ৩ নং পাঁচলাইশ ওয়ার্ড
-        </p>
-
-
-        <div class="formGroup">
-
-            <label for="userIdInput">
-                User ID
-            </label>
-
-
-            <input
-                type="text"
-                id="userIdInput"
-                placeholder="User ID লিখুন"
-                autocomplete="username"
-            >
-
-        </div>
-
-
-        <button
-            id="loginBtn"
-        >
-            লগইন
-        </button>
-
-
-        <div id="loginError"></div>
-
-    </div>
-
-</div>
-
-
-
-<!-- =====================================================
-     MAIN APP
-===================================================== -->
-
-<div id="app">
-
-
-<header>
-
-    <div class="headerInner">
-
-
-        <div>
-
-            <div class="headerTitle">
-                ৩ নং পাঁচলাইশ ওয়ার্ড - ভোটার তথ্য অনুসন্ধান
-            </div>
-
-
-            <div class="headerSub">
-                ভোটার নাম ও জন্মতারিখ দিয়ে তথ্য অনুসন্ধান
-            </div>
-
-        </div>
-
-
-        <div class="userArea">
-
-            <span id="loggedUserName">
-                ব্যবহারকারী
-            </span>
-
-
-            <button id="logoutBtn">
-                Logout
-            </button>
-
-        </div>
-
-
-    </div>
+<p>
+০৩ নং পাঁচলাইশ ওয়ার্ড, চট্টগ্রাম সিটি কর্পোরেশন
+</p>
 
 </header>
 
 
-
 <div class="container">
 
+<section class="card">
 
-    <!-- =================================================
-         SEARCH
-    ================================================= -->
-
-    <div class="searchCard">
-
-
-        <h3>
-            🔎 ভোটার তথ্য অনুসন্ধান
-        </h3>
-
-
-        <div class="searchGrid">
-
-
-            <div class="inputBox">
-
-                <label for="nameInput">
-                    ভোটারের নাম
-                </label>
-
-
-                <input
-                    type="text"
-                    id="nameInput"
-                    placeholder="ভোটারের নাম লিখুন"
-                >
-
-            </div>
-
-
-
-            <div class="inputBox">
-
-                <label for="dobInput">
-                    জন্ম তারিখ
-                </label>
-
-
-                <input
-                    type="text"
-                    id="dobInput"
-                    placeholder="দিন/মাস/বছর"
-                >
-
-            </div>
-
-
-
-            <button
-                class="btn"
-                id="searchBtn"
-                disabled
-            >
-                🔄 তথ্য প্রস্তুত হচ্ছে...
-            </button>
-
-
-
-            <button
-                class="btn"
-                id="clearBtn"
-            >
-                ✕ Clear
-            </button>
-
-
-        </div>
-
-
-        <div id="status"></div>
-
-
-        <div
-            class="progressWrap"
-            id="progressWrap"
-        >
-
-            <div
-                class="progressBar"
-                id="progressBar"
-            ></div>
-
-        </div>
-
-
-    </div>
-
-
-
-    <!-- =================================================
-         RESULTS
-    ================================================= -->
-
-    <div class="resultCard">
-
-
-        <div id="resultHeader">
-
-            <h3>
-                📋 অনুসন্ধানের ফলাফল
-            </h3>
-
-
-            <span id="resultCount">
-                0
-            </span>
-
-        </div>
-
-
-        <div id="results">
-
-            <div class="loading">
-                তথ্য প্রস্তুত হওয়ার পর অনুসন্ধান করুন।
-            </div>
-
-        </div>
-
-
-    </div>
-
-
+<div class="search-title">
+ভোটার তথ্য অনুসন্ধান
 </div>
 
-</div>
+<div class="form-grid">
 
+<div>
 
+<label for="name">
+নাম
+</label>
 
-<!-- =====================================================
-     PDF VIEWER
-===================================================== -->
-
-<div
-    class="pdf-window"
-    id="pdfWindow"
+<input
+type="text"
+id="name"
+autocomplete="off"
+placeholder="ভোটারের নাম লিখুন"
 >
 
-
-    <div class="pdfHeader">
-
-
-        <div
-            class="pdfTitle"
-            id="pdfTitle"
-        >
-            PDF Viewer
-        </div>
+</div>
 
 
-        <div class="pdfActions">
+<div>
 
+<label for="dob">
+জন্ম তারিখ
+</label>
 
-            <button
-                id="printPdf"
-            >
-                🖨️ প্রিন্ট
-            </button>
-
-
-            <button
-                id="closePdf"
-            >
-                ✕ বন্ধ
-            </button>
-
-
-        </div>
-
-
-    </div>
-
-
-    <div id="pdfBody"></div>
-
+<input
+type="text"
+id="dob"
+autocomplete="off"
+inputmode="numeric"
+placeholder="দিন/মাস/বছর"
+>
 
 </div>
 
+
+<div>
+
+<button
+class="search-btn"
+id="searchBtn"
+onclick="searchVoter()"
+disabled
+>
+অনুসন্ধান
+</button>
+
+<button
+class="clear-btn"
+onclick="clearSearch()"
+>
+পরিষ্কার
+</button>
+
+</div>
+
+</div>
+
+
+<div id="status" class="status">
+PDF তথ্য প্রস্তুত হচ্ছে...
+</div>
+
+
+<div
+class="progress-wrap"
+id="progressWrap"
+>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+id="progressBar"
+></div>
+
+</div>
+
+<div
+class="progress-text"
+id="progressText"
+>
+প্রস্তুতি চলছে...
+</div>
+
+</div>
+
+
+<div
+class="ocr-progress"
+id="ocrProgress"
+>
+
+<div
+class="ocr-progress-label"
+id="ocrProgressLabel"
+>
+OCR প্রস্তুতি...
+</div>
+
+<div class="ocr-progress-bar">
+
+<div
+class="ocr-progress-fill"
+id="ocrProgressFill"
+></div>
+
+</div>
+
+</div>
+
+
+<div
+id="stats"
+class="stats"
+></div>
+
+</section>
+
+
+<section class="card">
+
+<div class="result-title">
+অনুসন্ধানের ফলাফল
+</div>
+
+<div id="results">
+
+<div class="empty">
+নাম অথবা জন্ম তারিখ দিয়ে অনুসন্ধান করুন।
+</div>
+
+</div>
+
+</section>
+
+
+<section
+class="card viewer"
+id="viewerSection"
+>
+
+<div class="viewer-header">
+
+<div
+class="viewer-title"
+id="viewerTitle"
+></div>
+
+<button
+class="close-btn"
+onclick="closeViewer()"
+>
+বন্ধ করুন
+</button>
+
+</div>
+
+
+<div
+class="pdf-navigation"
+>
+
+<button
+class="nav-btn"
+id="prevPageBtn"
+onclick="previousPdfPage()"
+>
+← আগের
+</button>
+
+<div
+class="page-counter"
+id="pageCounter"
+>
+পৃষ্ঠা 0 / 0
+</div>
+
+<button
+class="nav-btn"
+id="nextPageBtn"
+onclick="nextPdfPage()"
+>
+পরের →
+</button>
+
+</div>
+
+
+<div id="pdfViewer">
+
+<div class="viewer-loading">
+PDF লোড হচ্ছে...
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<footer class="footer">
+
+© ০৩ নং পাঁচলাইশ ওয়ার্ড, চট্টগ্রাম সিটি কর্পোরেশন
+
+</footer>
 
 
 <script>
@@ -1242,1102 +691,1418 @@ header{
 ===================================================== */
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
 
 
 /* =====================================================
-   LOGIN USER LIST
+   GITHUB PDF
 ===================================================== */
 
-const LOGIN_USERS = {
-
-    "ALI001":
-        "আলী ইসলাম",
-
-    "OP001":
-        "অপারেটর"
-
-};
+const PDF_BASE_URL =
+"https://raw.githubusercontent.com/panchlaishward-ctrl/panchlaishward/main/";
 
 
 /* =====================================================
-   GITHUB INFORMATION
-===================================================== */
-
-const GITHUB_OWNER =
-    "panchlaishward-ctrl";
-
-const GITHUB_REPO =
-    "panchlaishward";
-
-const GITHUB_BRANCH =
-    "main";
-
-
-const GITHUB_RAW_BASE =
-    "https://raw.githubusercontent.com/" +
-    GITHUB_OWNER +
-    "/" +
-    GITHUB_REPO +
-    "/" +
-    GITHUB_BRANCH +
-    "/";
-
-
-/* =====================================================
-   ACTUAL PDF FILES FROM GITHUB
+   56 PDF
 ===================================================== */
 
 const PDF_FILES = [
 
-    "151686_com_1443_female.pdf",
-    "151686_com_1526_male.pdf",
+"151686_com_1443_female.pdf",
+"151686_com_1526_male.pdf",
 
-    "151687_com_34_female.pdf",
-    "151687_com_57_male.pdf",
+"151687_com_34_female.pdf",
+"151687_com_57_male.pdf",
 
-    "151688_com_251_female.pdf",
-    "151688_com_296_male.pdf",
+"151688_com_251_female.pdf",
+"151688_com_296_male.pdf",
 
-    "151690_com_1217_female.pdf",
-    "151690_com_1305_male.pdf",
+"151690_com_1217_female.pdf",
+"151690_com_1305_male.pdf",
 
-    "151691_com_436_male.pdf",
-    "151691_com_443_female.pdf",
+"151691_com_436_male.pdf",
+"151691_com_443_female.pdf",
 
-    "151692_com_237_female.pdf",
-    "151692_com_269_male.pdf",
+"151692_com_237_female.pdf",
+"151692_com_269_male.pdf",
 
-    "151693_com_1888_male.pdf",
-    "151693_com_1926_female.pdf",
+"151693_com_1888_male.pdf",
+"151693_com_1926_female.pdf",
 
-    "151694_com_3519_male.pdf",
-    "151694_com_3839_female.pdf",
+"151694_com_3519_male.pdf",
+"151694_com_3839_female.pdf",
 
-    "151695_com_117_male.pdf",
-    "151695_com_87_female.pdf",
+"151695_com_117_male.pdf",
+"151695_com_87_female.pdf",
 
-    "151696_com_380_female.pdf",
-    "151696_com_444_male.pdf",
+"151696_com_380_female.pdf",
+"151696_com_444_male.pdf",
 
-    "151697_com_623_female.pdf",
-    "151697_com_643_male.pdf",
+"151697_com_623_female.pdf",
+"151697_com_643_male.pdf",
 
-    "151698_com_397_female.pdf",
-    "151698_com_432_male.pdf",
+"151698_com_397_female.pdf",
+"151698_com_432_male.pdf",
 
-    "151699_com_366_female.pdf",
-    "151699_com_398_male.pdf",
+"151699_com_366_female.pdf",
+"151699_com_398_male.pdf",
 
-    "151700_com_2199_female.pdf",
-    "151700_com_2199_male.pdf",
+"151700_com_2199_female.pdf",
+"151700_com_2199_male.pdf",
 
-    "151701_com_1606_female.pdf",
-    "151701_com_1675_male.pdf",
+"151701_com_1606_female.pdf",
+"151701_com_1675_male.pdf",
 
-    "151702_com_466_female.pdf",
-    "151702_com_865_male.pdf",
+"151702_com_466_female.pdf",
+"151702_com_865_male.pdf",
 
-    "151703_com_1591_male.pdf",
-    "151703_com_1816_female.pdf",
+"151703_com_1591_male.pdf",
+"151703_com_1816_female.pdf",
 
-    "151704_com_335_male.pdf",
-    "151704_com_415_female.pdf",
+"151704_com_335_male.pdf",
+"151704_com_415_female.pdf",
 
-    "151705_com_1370_male.pdf",
-    "151705_com_1427_female.pdf",
+"151705_com_1370_male.pdf",
+"151705_com_1427_female.pdf",
 
-    "151706_com_582_female.pdf",
-    "151706_com_654_male.pdf",
+"151706_com_582_female.pdf",
+"151706_com_654_male.pdf",
 
-    "151707_com_262_female.pdf",
-    "151707_com_286_male.pdf",
+"151707_com_262_female.pdf",
+"151707_com_286_male.pdf",
 
-    "151708_com_373_female.pdf",
-    "151708_com_426_male.pdf",
+"151708_com_373_female.pdf",
+"151708_com_426_male.pdf",
 
-    "151709_com_384_female.pdf",
-    "151709_com_414_male.pdf",
+"151709_com_384_female.pdf",
+"151709_com_414_male.pdf",
 
-    "151710_com_255_female.pdf",
-    "151710_com_296_male.pdf",
+"151710_com_255_female.pdf",
+"151710_com_296_male.pdf",
 
-    "151711_com_1188_female.pdf",
-    "151711_com_984_male.pdf",
+"151711_com_1188_female.pdf",
+"151711_com_984_male.pdf",
 
-    "151712_com_1123_female.pdf",
-    "151712_com_1160_male.pdf",
+"151712_com_1123_female.pdf",
+"151712_com_1160_male.pdf",
 
-    "151713_com_345_female.pdf",
-    "151713_com_385_male.pdf",
+"151713_com_345_female.pdf",
+"151713_com_385_male.pdf",
 
-    "151714_com_441_male.pdf",
-    "151714_com_562_female.pdf"
+"151714_com_441_male.pdf",
+"151714_com_562_female.pdf"
 
 ];
 
 
 /* =====================================================
-   INDEX VERSION
+   GLOBAL
 ===================================================== */
 
-/*
-   PDF list পরিবর্তন হলে এই version বাড়িয়ে দিবেন।
+let PDF_INDEX = [];
 
-   বর্তমান version:
-   2026-09-25-v2
-*/
+let INDEX_READY = false;
 
-const INDEX_VERSION =
-    "2026-09-25-v2";
+let SCANNED_FILES = [];
 
+let FAILED_FILES = [];
 
-const INDEX_STORAGE_KEY =
-    "panchlaishward_voter_index_" +
-    INDEX_VERSION;
+let SEARCH_RUNNING = false;
+
+let OCR_WORKER = null;
+
+let OCR_READY = false;
+
+let OCR_LOADING = false;
+
+const OCR_CACHE = new Map();
+
+const OCR_CACHE_LIMIT = 120;
+
+let viewerPdfDocument = null;
+
+let viewerFilename = "";
+
+let viewerCurrentPage = 1;
+
+let viewerTotalPages = 0;
+
+let viewerRendering = false;
+
+let viewerRenderToken = 0;
 
 
 /* =====================================================
-   ELEMENTS
+   TIMEOUT
 ===================================================== */
 
-const loginOverlay =
-    document.getElementById(
-        "loginOverlay"
-    );
+const PDF_TIMEOUT = 15000;
 
-
-const userIdInput =
-    document.getElementById(
-        "userIdInput"
-    );
-
-
-const loginBtn =
-    document.getElementById(
-        "loginBtn"
-    );
-
-
-const loginError =
-    document.getElementById(
-        "loginError"
-    );
-
-
-const app =
-    document.getElementById(
-        "app"
-    );
-
-
-const loggedUserName =
-    document.getElementById(
-        "loggedUserName"
-    );
-
-
-const logoutBtn =
-    document.getElementById(
-        "logoutBtn"
-    );
-
-
-const nameInput =
-    document.getElementById(
-        "nameInput"
-    );
-
-
-const dobInput =
-    document.getElementById(
-        "dobInput"
-    );
-
-
-const searchBtn =
-    document.getElementById(
-        "searchBtn"
-    );
-
-
-const clearBtn =
-    document.getElementById(
-        "clearBtn"
-    );
-
-
-const statusBox =
-    document.getElementById(
-        "status"
-    );
-
-
-const progressWrap =
-    document.getElementById(
-        "progressWrap"
-    );
-
-
-const progressBar =
-    document.getElementById(
-        "progressBar"
-    );
-
-
-const results =
-    document.getElementById(
-        "results"
-    );
-
-
-const resultCount =
-    document.getElementById(
-        "resultCount"
-    );
-
-
-const pdfWindow =
-    document.getElementById(
-        "pdfWindow"
-    );
-
-
-const pdfTitle =
-    document.getElementById(
-        "pdfTitle"
-    );
-
-
-const pdfBody =
-    document.getElementById(
-        "pdfBody"
-    );
-
-
-const printPdfBtn =
-    document.getElementById(
-        "printPdf"
-    );
-
-
-const closePdf =
-    document.getElementById(
-        "closePdf"
-    );
+const PAGE_TIMEOUT = 10000;
 
 
 /* =====================================================
-   VARIABLES
-===================================================== */
-
-let currentUser =
-    null;
-
-
-let voterIndex =
-    [];
-
-
-let indexReady =
-    false;
-
-
-let indexBuilding =
-    false;
-
-
-let currentPdfFilename =
-    "";
-
-
-/* =====================================================
-   NORMALIZE TEXT
-===================================================== */
-
-function normalizeText(text){
-
-    if(!text){
-
-        return "";
-
-    }
-
-
-    return String(text)
-
-        .toLowerCase()
-
-        .trim()
-
-        .replace(/\s+/g," ");
-
-}
-
-
-/* =====================================================
-   BANGLA NUMBER TO ENGLISH
-===================================================== */
-
-function banglaToEnglishNumber(text){
-
-    if(!text){
-
-        return "";
-
-    }
-
-
-    const bangla =
-        "০১২৩৪৫৬৭৮৯";
-
-
-    const english =
-        "0123456789";
-
-
-    let result = "";
-
-
-    for(
-        const char of String(text)
-    ){
-
-        const index =
-            bangla.indexOf(char);
-
-
-        if(index !== -1){
-
-            result +=
-                english[index];
-
-        }
-
-        else{
-
-            result +=
-                char;
-
-        }
-
-    }
-
-
-    return result;
-
-}
-
-
-/* =====================================================
-   LOGIN ERROR
-===================================================== */
-
-function showLoginError(message){
-
-    loginError.textContent =
-        message;
-
-    loginError.style.display =
-        "block";
-
-}
-
-
-function hideLoginError(){
-
-    loginError.textContent =
-        "";
-
-    loginError.style.display =
-        "none";
-
-}
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-function loginUser(){
-
-    hideLoginError();
-
-
-    const userId =
-        userIdInput.value
-            .trim()
-            .toUpperCase();
-
-
-    if(!userId){
-
-        showLoginError(
-            "User ID লিখুন।"
-        );
-
-        return;
-
-    }
-
-
-    if(!LOGIN_USERS[userId]){
-
-        showLoginError(
-            "এই User ID সঠিক নয়।"
-        );
-
-        return;
-
-    }
-
-
-    currentUser =
-        userId;
-
-
-    loggedUserName.textContent =
-        LOGIN_USERS[userId];
-
-
-    loginOverlay.style.display =
-        "none";
-
-
-    app.style.display =
-        "block";
-
-
-    sessionStorage.setItem(
-        "panchlaish_user",
-        userId
-    );
-
-
-    /*
-       Login-এর পর
-       Index শুরু হবে।
-    */
-
-    startIndexProcess();
-
-}
-
-
-/* =====================================================
-   LOGIN BUTTON
-===================================================== */
-
-loginBtn.addEventListener(
-    "click",
-    loginUser
-);
-
-
-/* =====================================================
-   ENTER LOGIN
-===================================================== */
-
-userIdInput.addEventListener(
-    "keydown",
-    function(event){
-
-        if(
-            event.key ===
-            "Enter"
-        ){
-
-            loginUser();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   AUTO LOGIN
-===================================================== */
-
-(function(){
-
-    const savedUser =
-        sessionStorage.getItem(
-            "panchlaish_user"
-        );
-
-
-    if(
-        savedUser &&
-        LOGIN_USERS[savedUser]
-    ){
-
-        currentUser =
-            savedUser;
-
-
-        loggedUserName.textContent =
-            LOGIN_USERS[savedUser];
-
-
-        loginOverlay.style.display =
-            "none";
-
-
-        app.style.display =
-            "block";
-
-
-        startIndexProcess();
-
-    }
-
-})();
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-logoutBtn.addEventListener(
-    "click",
-    function(){
-
-        sessionStorage.removeItem(
-            "panchlaish_user"
-        );
-
-
-        currentUser =
-            null;
-
-
-        indexReady =
-            false;
-
-
-        app.style.display =
-            "none";
-
-
-        loginOverlay.style.display =
-            "flex";
-
-
-        userIdInput.value =
-            "";
-
-
-        nameInput.value =
-            "";
-
-
-        dobInput.value =
-            "";
-
-
-        resultCount.textContent =
-            "0";
-
-
-        results.innerHTML = `
-
-            <div class="loading">
-                লগইন করার পর অনুসন্ধান করুন।
-            </div>
-
-        `;
-
-    }
-);
-
-
-/* =====================================================
-   GET PDF URL
+   PDF URL
 ===================================================== */
 
 function getPdfUrl(filename){
 
-    return (
-        GITHUB_RAW_BASE +
-        encodeURIComponent(filename)
-    );
+return PDF_BASE_URL +
+encodeURIComponent(filename);
 
 }
 
 
 /* =====================================================
-   LOAD SAVED INDEX
+   TIMEOUT WRAPPER
 ===================================================== */
 
-function loadSavedIndex(){
-
-    try{
-
-        const saved =
-            localStorage.getItem(
-                INDEX_STORAGE_KEY
-            );
-
-
-        if(!saved){
-
-            return false;
-
-        }
-
-
-        const parsed =
-            JSON.parse(saved);
-
-
-        if(
-            !Array.isArray(parsed)
-        ){
-
-            return false;
-
-        }
-
-
-        /*
-           Index-এর PDF list অবশ্যই
-           বর্তমান PDF_FILES-এর সাথে
-           মিলে যেতে হবে।
-        */
-
-        const indexedNames =
-            parsed.map(
-                item =>
-                    item.filename
-            );
-
-
-        const allPresent =
-            PDF_FILES.every(
-                filename =>
-                    indexedNames.includes(
-                        filename
-                    )
-            );
-
-
-        if(!allPresent){
-
-            return false;
-
-        }
-
-
-        voterIndex =
-            parsed;
-
-
-        return voterIndex.length > 0;
-
-    }
-
-    catch(error){
-
-        console.error(
-            "Saved index error:",
-            error
-        );
-
-
-        return false;
-
-    }
-
-}
-
-
-/* =====================================================
-   SAVE INDEX
-===================================================== */
-
-function saveIndex(){
-
-    localStorage.setItem(
-
-        INDEX_STORAGE_KEY,
-
-        JSON.stringify(
-            voterIndex
-        )
-
-    );
-
-}
-
-
-/* =====================================================
-   START INDEX PROCESS
-===================================================== */
-
-async function startIndexProcess(){
-
-    if(indexBuilding){
-
-        return;
-
-    }
-
-
-    indexReady =
-        false;
-
-
-    searchBtn.disabled =
-        true;
-
-
-    searchBtn.textContent =
-        "🔄 তথ্য প্রস্তুত হচ্ছে...";
-
-
-    /*
-       প্রথমে saved index দেখি।
-    */
-
-    const saved =
-        loadSavedIndex();
-
-
-    if(saved){
-
-        indexReady =
-            true;
-
-
-        searchBtn.disabled =
-            false;
-
-
-        searchBtn.textContent =
-            "🔍 অনুসন্ধান";
-
-
-        statusBox.style.display =
-            "block";
-
-
-        statusBox.className =
-            "success";
-
-
-        statusBox.textContent =
-            `✓ ${voterIndex.length}টি PDF-এর Index প্রস্তুত আছে।`;
-
-
-        return;
-
-    }
-
-
-    /*
-       Saved index নেই।
-       নতুন Index তৈরি।
-    */
-
-    await rebuildIndex();
-
-}
-
-
-/* =====================================================
-   EXTRACT PDF TEXT
-===================================================== */
-
-async function extractPdfText(
-    filename
+function withTimeout(
+promise,
+ms,
+label
 ){
 
-    const url =
-        getPdfUrl(filename);
+return new Promise(
+function(resolve,reject){
+
+let finished = false;
+
+const timer =
+setTimeout(
+function(){
+
+if(finished)return;
+
+finished = true;
+
+reject(
+new Error(
+label + " — timeout"
+)
+);
+
+},
+ms
+);
 
 
-    const loadingTask =
-        pdfjsLib.getDocument({
+promise.then(
+function(value){
 
-            url:url,
+if(finished)return;
 
-            disableAutoFetch:false,
+finished = true;
 
-            disableStream:false
+clearTimeout(timer);
 
-        });
+resolve(value);
 
+},
+function(error){
 
-    const pdf =
-        await loadingTask.promise;
+if(finished)return;
 
+finished = true;
 
-    let fullText =
-        "";
+clearTimeout(timer);
 
+reject(error);
 
-    for(
-        let pageNumber = 1;
+});
 
-        pageNumber <=
-        pdf.numPages;
-
-        pageNumber++
-    ){
-
-        const page =
-            await pdf.getPage(
-                pageNumber
-            );
-
-
-        const content =
-            await page.getTextContent();
-
-
-        const pageText =
-            content.items
-
-                .map(
-                    item =>
-                        item.str || ""
-                )
-
-                .join(" ");
-
-
-        fullText +=
-            pageText +
-            "\n";
-
-    }
-
-
-    return fullText;
+});
 
 }
 
 
 /* =====================================================
-   REBUILD INDEX
+   YIELD
 ===================================================== */
 
-async function rebuildIndex(){
+function yieldToBrowser(
+delay=20
+){
 
-    if(indexBuilding){
+return new Promise(
+function(resolve){
 
-        return;
+setTimeout(
+resolve,
+delay
+);
 
-    }
+});
 
+}
 
-    indexBuilding =
-        true;
 
+/* =====================================================
+   BANGLA DIGIT
+===================================================== */
 
-    indexReady =
-        false;
+function banglaToEnglishDigits(
+value
+){
 
+if(
+value===null ||
+value===undefined
+){
 
-    searchBtn.disabled =
-        true;
+return "";
 
+}
 
-    searchBtn.textContent =
-        "🔄 তথ্য প্রস্তুত হচ্ছে...";
+const bangla =
+"০১২৩৪৫৬৭৮৯";
 
+const english =
+"0123456789";
 
-    progressWrap.style.display =
-        "block";
+return String(value)
+.split("")
+.map(function(ch){
 
+const index =
+bangla.indexOf(ch);
 
-    progressBar.style.width =
-        "0%";
+return index>=0
+?english[index]
+:ch;
 
+})
+.join("");
 
-    voterIndex =
-        [];
+}
 
 
-    let successCount =
-        0;
+/* =====================================================
+   NORMALIZE
+===================================================== */
 
+function normalizeText(
+value
+){
 
-    let failedCount =
-        0;
+if(
+value===null ||
+value===undefined
+){
 
+return "";
 
-    for(
-        let i = 0;
+}
 
-        i < PDF_FILES.length;
+let text =
+banglaToEnglishDigits(
+String(value)
+);
 
-        i++
-    ){
+return text
+.toLowerCase()
+.replace(
+/[\u200B-\u200D\uFEFF]/g,
+""
+)
+.replace(
+/[।,;:!?()[\]{}"'`]/g,
+" "
+)
+.replace(
+/\s+/g,
+" "
+)
+.trim();
 
-        const filename =
-            PDF_FILES[i];
+}
 
 
-        const percent =
-            Math.round(
-                (
-                    i /
-                    PDF_FILES.length
-                ) * 100
-            );
+/* =====================================================
+   NAME
+===================================================== */
 
+function cleanNameInput(
+value
+){
 
-        progressBar.style.width =
-            percent + "%";
+return normalizeText(
+String(value || "")
+.replace(
+/\s+/g,
+" "
+)
+.trim()
+);
 
+}
 
-        statusBox.style.display =
-            "block";
 
+/* =====================================================
+   DOB
+===================================================== */
 
-        statusBox.className =
-            "";
+function cleanDobInput(
+value
+){
 
+return banglaToEnglishDigits(
+String(value || "")
+.replace(
+/\s+/g,
+" "
+)
+.trim()
+);
 
-        statusBox.textContent =
-            `PDF পড়া হচ্ছে ${i + 1}/${PDF_FILES.length} — ${filename}`;
+}
 
 
-        try{
+/* =====================================================
+   DATE DIGITS
+===================================================== */
 
-            const text =
-                await extractPdfText(
-                    filename
-                );
+function normalizeDateDigits(
+str
+){
 
+return banglaToEnglishDigits(
+String(str || "")
+).replace(
+/\D/g,
+""
+);
 
-            const normalized =
-                normalizeText(
-                    banglaToEnglishNumber(
-                        text
-                    )
-                );
+}
 
 
-            voterIndex.push({
+/* =====================================================
+   DATE CHECK
+===================================================== */
 
-                filename:
-                    filename,
+function dateExistsInText(
+text,
+searchDate
+){
 
-                text:
-                    normalized
+if(!searchDate)return true;
 
-            });
+const target =
+normalizeDateDigits(
+searchDate
+);
 
+if(!target)return false;
 
-            successCount++;
+const raw =
+banglaToEnglishDigits(
+String(text || "")
+);
 
-        }
+const digits =
+raw.replace(
+/\D/g,
+""
+);
 
-        catch(error){
+if(
+digits.includes(target)
+){
 
-            failedCount++;
+return true;
 
+}
 
-            console.error(
-                "PDF read error:",
-                filename,
-                error
-            );
 
-        }
+/*
+DD/MM/YYYY
+*/
 
-    }
+if(
+target.length===8
+){
 
+const d =
+target.substring(0,2);
 
-    progressBar.style.width =
-        "100%";
+const m =
+target.substring(2,4);
 
+const y =
+target.substring(4,8);
 
-    /*
-       Index save
-    */
+const variants=[
 
-    saveIndex();
+d+"/"+m+"/"+y,
 
+d+"-"+m+"-"+y,
 
-    indexBuilding =
-        false;
+d+"."+m+"."+y,
 
+d+" "+m+" "+y
 
-    if(
-        voterIndex.length > 0
-    ){
+];
 
-        indexReady =
-            true;
+for(
+const v of variants
+){
 
+if(raw.includes(v))
+return true;
 
-        searchBtn.disabled =
-            false;
+}
 
+}
 
-        searchBtn.textContent =
-            "🔍 অনুসন্ধান";
+return false;
 
+}
 
-        statusBox.className =
-            "success";
 
+/* =====================================================
+   NAME CHECK
+===================================================== */
 
-        statusBox.textContent =
-            `✓ Index তৈরি সম্পন্ন। ${successCount}টি PDF প্রস্তুত হয়েছে।`;
+function nameExistsInText(
+text,
+name
+){
 
+if(!name)return true;
 
-        if(failedCount > 0){
+const source =
+normalizeText(text);
 
-            statusBox.textContent +=
-                ` ${failedCount}টি PDF পড়া যায়নি।`;
+const target =
+normalizeText(name);
 
-        }
+if(
+source.includes(target)
+){
 
-    }
+return true;
 
-    else{
+}
 
-        indexReady =
-            false;
+return source
+.replace(/\s/g,"")
+.includes(
+target.replace(/\s/g,"")
+);
 
+}
 
-        searchBtn.disabled =
-            true;
 
+/* =====================================================
+   EXTRACT PDF
+===================================================== */
 
-        searchBtn.textContent =
-            "❌ Index তৈরি হয়নি";
+async function extractPdfPages(
+filename
+){
 
+const url =
+getPdfUrl(filename);
 
-        statusBox.className =
-            "error";
+let pdf = null;
 
+try{
 
-        statusBox.textContent =
-            "কোনো PDF পড়া যায়নি। GitHub PDF filename/path পরীক্ষা করুন।";
+pdf =
+await withTimeout(
+pdfjsLib.getDocument({
+url:url,
+disableAutoFetch:false,
+disableStream:false
+}).promise,
+PDF_TIMEOUT,
+"PDF লোড"
+);
 
-    }
 
+const pages=[];
 
-    /*
-       Progress কিছুক্ষণ দেখিয়ে
-       তারপর hide করা হবে।
-    */
+let totalCharacters=0;
 
-    setTimeout(
-        function(){
 
-            progressWrap.style.display =
-                "none";
+for(
+let pageNumber=1;
+pageNumber<=pdf.numPages;
+pageNumber++
+){
 
-        },
-        1200
-    );
+const page =
+await withTimeout(
+pdf.getPage(pageNumber),
+PAGE_TIMEOUT,
+"পৃষ্ঠা লোড"
+);
+
+
+const content =
+await withTimeout(
+page.getTextContent(),
+PAGE_TIMEOUT,
+"পৃষ্ঠা text পড়া"
+);
+
+
+const rawText =
+content.items
+.map(function(item){
+return item.str || "";
+})
+.join(" ");
+
+
+const text =
+normalizeText(rawText);
+
+
+totalCharacters +=
+text.length;
+
+
+pages.push({
+
+page:pageNumber,
+
+text:text
+
+});
+
+
+try{
+page.cleanup();
+}catch(e){}
+
+
+if(
+pageNumber%2===0
+){
+
+await yieldToBrowser();
+
+}
+
+}
+
+
+return{
+
+filename:filename,
+
+url:url,
+
+pageCount:pages.length,
+
+pages:pages,
+
+totalCharacters:
+totalCharacters
+
+};
+
+
+}finally{
+
+if(pdf){
+
+try{
+await pdf.destroy();
+}catch(e){}
+
+}
+
+}
+
+}
+
+
+/* =====================================================
+   RETRY PDF
+===================================================== */
+
+async function extractPdfWithRetry(
+filename,
+retry=2
+){
+
+let lastError=null;
+
+for(
+let attempt=1;
+attempt<=retry;
+attempt++
+){
+
+try{
+
+return await extractPdfPages(
+filename
+);
+
+}catch(error){
+
+lastError=error;
+
+console.warn(
+"PDF retry:",
+filename,
+attempt,
+error
+);
+
+await yieldToBrowser(
+500
+);
+
+}
+
+}
+
+throw lastError ||
+new Error(
+"PDF পড়া যায়নি"
+);
+
+}
+
+
+/* =====================================================
+   BUILD INDEX
+===================================================== */
+
+async function buildIndex(){
+
+const status =
+document.getElementById(
+"status"
+);
+
+const progressWrap =
+document.getElementById(
+"progressWrap"
+);
+
+const progressBar =
+document.getElementById(
+"progressBar"
+);
+
+const progressText =
+document.getElementById(
+"progressText"
+);
+
+const searchBtn =
+document.getElementById(
+"searchBtn"
+);
+
+
+INDEX_READY=false;
+
+searchBtn.disabled=true;
+
+progressWrap.style.display=
+"block";
+
+PDF_INDEX=[];
+
+SCANNED_FILES=[];
+
+FAILED_FILES=[];
+
+
+for(
+let i=0;
+i<PDF_FILES.length;
+i++
+){
+
+const filename =
+PDF_FILES[i];
+
+
+status.innerHTML=
+`PDF পড়া হচ্ছে ${i+1}/${PDF_FILES.length}<br>
+<strong>${escapeHtml(filename)}</strong>`;
+
+
+progressText.innerText=
+`${i}/${PDF_FILES.length} সম্পন্ন`;
+
+
+try{
+
+const data =
+await extractPdfWithRetry(
+filename,
+2
+);
+
+
+if(
+data.totalCharacters<10
+){
+
+SCANNED_FILES.push(
+filename
+);
+
+}
+
+PDF_INDEX.push(data);
+
+
+progressBar.style.width=
+Math.round(
+((i+1)/
+PDF_FILES.length)*100
+)+"%";
+
+
+progressText.innerText=
+`${i+1}/${PDF_FILES.length} সম্পন্ন`;
+
+
+}catch(error){
+
+console.error(
+"PDF FAILED:",
+filename,
+error
+);
+
+
+FAILED_FILES.push({
+
+filename:filename,
+
+error:
+error.message ||
+"Unknown error"
+
+});
+
+
+progressBar.style.width=
+Math.round(
+((i+1)/
+PDF_FILES.length)*100
+)+"%";
+
+
+progressText.innerText=
+`${i+1}/${PDF_FILES.length} সম্পন্ন — সমস্যা থাকলে বাদ দেওয়া হয়েছে`;
+
+}
+
+
+await yieldToBrowser(30);
+
+}
+
+
+INDEX_READY=true;
+
+searchBtn.disabled=false;
+
+progressBar.style.width="100%";
+
+progressText.innerText=
+"তথ্য প্রস্তুত সম্পন্ন হয়েছে।";
+
+
+updateStats();
+
+
+let msg=
+`মোট <b>${PDF_INDEX.length}</b> টি PDF প্রস্তুত হয়েছে।`;
+
+
+if(
+SCANNED_FILES.length
+){
+
+msg +=
+`<br>⚠️ <b>${SCANNED_FILES.length}</b> টি PDF scanned/image-only।`;
+
+}
+
+
+if(
+FAILED_FILES.length
+){
+
+msg +=
+`<br>❌ <b>${FAILED_FILES.length}</b> টি PDF timeout/সমস্যার কারণে বাদ গেছে।`;
+
+}
+
+
+status.innerHTML=msg;
+
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+function updateStats(){
+
+const stats =
+document.getElementById(
+"stats"
+);
+
+stats.innerHTML=`
+
+<div class="stat">
+মোট PDF:
+<b>${PDF_FILES.length}</b>
+</div>
+
+<div class="stat">
+পড়া হয়েছে:
+<b>${PDF_INDEX.length}</b>
+</div>
+
+<div class="stat">
+Scanned:
+<b>${SCANNED_FILES.length}</b>
+</div>
+
+<div class="stat">
+সমস্যা:
+<b>${FAILED_FILES.length}</b>
+</div>
+
+`;
+
+}
+
+
+/* =====================================================
+   OCR WORKER
+===================================================== */
+
+async function createOCRWorker(){
+
+if(
+OCR_READY &&
+OCR_WORKER
+){
+
+return OCR_WORKER;
+
+}
+
+
+if(OCR_LOADING){
+
+while(OCR_LOADING){
+
+await yieldToBrowser(100);
+
+}
+
+return OCR_WORKER;
+
+}
+
+
+OCR_LOADING=true;
+
+
+try{
+
+document.getElementById(
+"status"
+).innerHTML=
+`<strong>বাংলা OCR প্রস্তুত হচ্ছে...</strong><br>
+প্রথমবার কিছুটা সময় লাগতে পারে।`;
+
+
+OCR_WORKER =
+await Tesseract.createWorker(
+"ben+eng"
+);
+
+
+OCR_READY=true;
+
+return OCR_WORKER;
+
+
+}finally{
+
+OCR_LOADING=false;
+
+}
+
+}
+
+
+/* =====================================================
+   OCR CACHE
+===================================================== */
+
+function saveOCRCache(
+key,
+data
+){
+
+if(
+OCR_CACHE.size>=
+OCR_CACHE_LIMIT
+){
+
+const first =
+OCR_CACHE.keys()
+.next()
+.value;
+
+if(first){
+
+OCR_CACHE.delete(first);
+
+}
+
+}
+
+OCR_CACHE.set(
+key,
+data
+);
+
+}
+
+
+/* =====================================================
+   OCR PAGE
+===================================================== */
+
+async function ocrPdfPage(
+pdfDocument,
+pdfData,
+pageNumber
+){
+
+const cacheKey =
+pdfData.filename+
+"::"+
+pageNumber;
+
+
+if(
+OCR_CACHE.has(cacheKey)
+){
+
+return OCR_CACHE.get(
+cacheKey
+);
+
+}
+
+
+let page=null;
+
+let canvas=null;
+
+
+try{
+
+page =
+await withTimeout(
+pdfDocument.getPage(
+pageNumber
+),
+PAGE_TIMEOUT,
+"OCR page load"
+);
+
+
+const viewport =
+page.getViewport({
+scale:1.5
+});
+
+
+canvas =
+document.createElement(
+"canvas"
+);
+
+
+const context =
+canvas.getContext(
+"2d",
+{
+willReadFrequently:true
+}
+);
+
+
+canvas.width =
+Math.floor(
+viewport.width
+);
+
+canvas.height =
+Math.floor(
+viewport.height
+);
+
+
+await withTimeout(
+page.render({
+canvasContext:context,
+viewport:viewport
+}).promise,
+PAGE_TIMEOUT*2,
+"OCR render"
+);
+
+
+const worker =
+await createOCRWorker();
+
+
+const result =
+await worker.recognize(
+canvas
+);
+
+
+const text =
+normalizeText(
+result.data.text || ""
+);
+
+
+const data={
+
+page:pageNumber,
+
+text:text
+
+};
+
+
+saveOCRCache(
+cacheKey,
+data
+);
+
+
+return data;
+
+
+}finally{
+
+if(canvas){
+
+canvas.width=1;
+
+canvas.height=1;
+
+try{
+canvas.remove();
+}catch(e){}
+
+}
+
+
+if(page){
+
+try{
+page.cleanup();
+}catch(e){}
+
+}
+
+
+await yieldToBrowser(20);
+
+}
+
+}
+
+
+/* =====================================================
+   OCR WHOLE PDF
+===================================================== */
+
+async function runOCRForPdf(
+pdfData
+){
+
+if(
+pdfData.ocrPages
+){
+
+return pdfData.ocrPages;
+
+}
+
+
+const progress =
+document.getElementById(
+"ocrProgress"
+);
+
+const label =
+document.getElementById(
+"ocrProgressLabel"
+);
+
+const fill =
+document.getElementById(
+"ocrProgressFill"
+);
+
+const status =
+document.getElementById(
+"status"
+);
+
+
+progress.style.display=
+"block";
+
+
+fill.style.width="0%";
+
+
+let pdf=null;
+
+const pages=[];
+
+
+try{
+
+pdf =
+await withTimeout(
+pdfjsLib.getDocument({
+url:pdfData.url
+}).promise,
+PDF_TIMEOUT,
+"OCR PDF load"
+);
+
+
+const total =
+pdf.numPages;
+
+
+for(
+let i=1;
+i<=total;
+i++
+){
+
+const percent =
+Math.round(
+(i/total)*100
+);
+
+
+fill.style.width=
+percent+"%";
+
+
+label.innerText=
+`OCR: ${i}/${total}`;
+
+
+status.innerHTML=
+`<strong>OCR চলছে...</strong><br>
+${escapeHtml(pdfData.filename)}<br>
+পৃষ্ঠা ${i}/${total}`;
+
+
+try{
+
+const page =
+await ocrPdfPage(
+pdf,
+pdfData,
+i
+);
+
+pages.push(page);
+
+}catch(error){
+
+console.error(
+"OCR page error:",
+error
+);
+
+}
+
+
+await yieldToBrowser(40);
+
+}
+
+
+pdfData.ocrPages=pages;
+
+fill.style.width="100%";
+
+label.innerText=
+"OCR সম্পন্ন হয়েছে।";
+
+
+return pages;
+
+
+}finally{
+
+if(pdf){
+
+try{
+await pdf.destroy();
+}catch(e){}
+
+}
+
+}
+
+}
+
+
+/* =====================================================
+   SEARCH SCANNED
+===================================================== */
+
+async function searchScannedPdfs(
+name,
+dob
+){
+
+const found=[];
+
+
+const scanned =
+PDF_INDEX.filter(
+function(pdf){
+
+return pdf.totalCharacters<10;
+
+}
+);
+
+
+for(
+let i=0;
+i<scanned.length;
+i++
+){
+
+const pdf =
+scanned[i];
+
+
+document.getElementById(
+"status"
+).innerHTML=
+`<strong>OCR অনুসন্ধান চলছে...</strong><br>
+Scanned PDF ${i+1}/${scanned.length}<br>
+${escapeHtml(pdf.filename)}`;
+
+
+let pages;
+
+
+try{
+
+pages =
+await runOCRForPdf(pdf);
+
+}catch(error){
+
+console.error(
+"OCR error:",
+error
+);
+
+continue;
+
+}
+
+
+const matched=[];
+
+
+for(
+const page of pages
+){
+
+const nameMatch =
+name
+?nameExistsInText(
+page.text,
+name
+)
+:true;
+
+
+const dobMatch =
+dob
+?dateExistsInText(
+page.text,
+dob
+)
+:true;
+
+
+if(
+nameMatch &&
+dobMatch
+){
+
+matched.push(
+page.page
+);
+
+}
+
+
+await yieldToBrowser();
+
+}
+
+
+if(
+matched.length
+){
+
+found.push({
+
+filename:
+pdf.filename,
+
+url:
+pdf.url,
+
+pages:
+matched,
+
+ocr:true
+
+});
+
+}
+
+}
+
+
+return found;
 
 }
 
@@ -2346,822 +2111,1121 @@ async function rebuildIndex(){
    SEARCH
 ===================================================== */
 
-function searchVoter(){
+async function searchVoter(){
 
-    if(!indexReady){
+if(
+SEARCH_RUNNING
+){
 
-        statusBox.style.display =
-            "block";
+return;
 
-
-        statusBox.className =
-            "error";
-
-
-        statusBox.textContent =
-            "তথ্য এখনো প্রস্তুত হচ্ছে। প্রস্তুত হওয়া পর্যন্ত অপেক্ষা করুন।";
+}
 
 
-        return;
+if(
+!INDEX_READY
+){
 
-    }
+alert(
+"তথ্য প্রস্তুত হচ্ছে। একটু অপেক্ষা করুন।"
+);
 
+return;
 
-    const name =
-        normalizeText(
-            nameInput.value
-        );
-
-
-    const dob =
-        normalizeText(
-            banglaToEnglishNumber(
-                dobInput.value
-            )
-        );
+}
 
 
-    if(
-        !name &&
-        !dob
-    ){
-
-        statusBox.style.display =
-            "block";
-
-
-        statusBox.className =
-            "error";
+const name =
+cleanNameInput(
+document.getElementById(
+"name"
+).value
+);
 
 
-        statusBox.textContent =
-            "ভোটারের নাম অথবা জন্মতারিখ লিখুন।";
+const dob =
+cleanDobInput(
+document.getElementById(
+"dob"
+).value
+);
 
 
-        return;
-
-    }
-
-
-    /*
-       Search
-    */
-
-    const found =
-        voterIndex.filter(
-            function(item){
-
-                const text =
-                    item.text;
+const results =
+document.getElementById(
+"results"
+);
 
 
-                if(
-                    name &&
-                    dob
-                ){
+if(
+!name &&
+!dob
+){
 
-                    return (
-                        text.includes(name) &&
-                        text.includes(dob)
-                    );
+results.innerHTML=
+`<div class="warning">
+নাম অথবা জন্ম তারিখ লিখুন।
+</div>`;
 
-                }
+return;
 
-
-                if(name){
-
-                    return text.includes(
-                        name
-                    );
-
-                }
+}
 
 
-                if(dob){
+SEARCH_RUNNING=true;
 
-                    return text.includes(
-                        dob
-                    );
-
-                }
+document.getElementById(
+"searchBtn"
+).disabled=true;
 
 
-                return false;
+results.innerHTML=
+`<div class="empty">
+অনুসন্ধান চলছে...
+</div>`;
 
-            }
-        );
+
+const found=[];
 
 
-    displayResults(found);
+try{
+
+/*
+NORMAL TEXT PDF
+*/
+
+for(
+const pdf of PDF_INDEX
+){
+
+if(
+pdf.totalCharacters<10
+){
+
+continue;
+
+}
+
+
+const matched=[];
+
+
+for(
+const page of pdf.pages
+){
+
+const nameMatch =
+name
+?nameExistsInText(
+page.text,
+name
+)
+:true;
+
+
+const dobMatch =
+dob
+?dateExistsInText(
+page.text,
+dob
+)
+:true;
+
+
+if(
+nameMatch &&
+dobMatch
+){
+
+matched.push(
+page.page
+);
+
+}
+
+
+await yieldToBrowser();
+
+}
+
+
+if(
+matched.length
+){
+
+found.push({
+
+filename:
+pdf.filename,
+
+url:
+pdf.url,
+
+pages:
+matched,
+
+ocr:false
+
+});
+
+}
+
+}
+
+
+/*
+SCANNED PDF
+*/
+
+if(
+SCANNED_FILES.length
+){
+
+const ocrResults =
+await searchScannedPdfs(
+name,
+dob
+);
+
+found.push(
+...ocrResults
+);
+
+}
+
+
+displayResults(
+found
+);
+
+
+document.getElementById(
+"status"
+).innerHTML=
+`অনুসন্ধান সম্পন্ন।
+মোট <b>${found.length}</b>
+টি ফলাফল পাওয়া গেছে।`;
+
+
+}catch(error){
+
+console.error(
+"Search error:",
+error
+);
+
+
+results.innerHTML=
+`<div class="error">
+অনুসন্ধানের সময় সমস্যা হয়েছে।<br><br>
+${escapeHtml(
+error.message || ""
+)}
+</div>`;
+
+
+}finally{
+
+SEARCH_RUNNING=false;
+
+document.getElementById(
+"searchBtn"
+).disabled=false;
+
+}
 
 }
 
 
 /* =====================================================
-   DISPLAY RESULTS
+   RESULTS
 ===================================================== */
 
-function displayResults(found){
+function displayResults(
+found
+){
 
-    resultCount.textContent =
-        found.length;
-
-
-    results.innerHTML =
-        "";
-
-
-    statusBox.style.display =
-        "block";
+const results =
+document.getElementById(
+"results"
+);
 
 
-    if(
-        found.length ===
-        0
-    ){
+if(
+!found.length
+){
 
-        statusBox.className =
-            "error";
+results.innerHTML=
+`<div class="empty">
 
+<b>
+কোনো তথ্য পাওয়া যায়নি।
+</b>
 
-        statusBox.textContent =
-            "কোনো PDF-এ মিল পাওয়া যায়নি।";
+<br><br>
 
+নাম ও জন্ম তারিখ সঠিকভাবে
+লিখে আবার চেষ্টা করুন।
 
-        results.innerHTML = `
+</div>`;
 
-            <div class="loading">
+return;
 
-                😔 কোনো ফলাফল পাওয়া যায়নি।
-
-                <br><br>
-
-                নাম ও জন্মতারিখ ঠিকভাবে লিখে আবার চেষ্টা করুন।
-
-            </div>
-
-        `;
+}
 
 
-        return;
-
-    }
-
-
-    statusBox.className =
-        "success";
-
-
-    statusBox.textContent =
-        `${found.length}টি PDF-এ মিল পাওয়া গেছে।`;
+let html=
+`<div style="margin-bottom:15px">
+পাওয়া গেছে:
+<b>${found.length}</b>
+টি ফলাফল
+</div>`;
 
 
-    found.forEach(
-        function(item){
+found.forEach(
+function(item){
 
-            const div =
-                document.createElement(
-                    "div"
-                );
+const pages =
+item.pages.join(", ");
 
 
-            div.className =
-                "resultItem";
+const badge =
+item.ocr
+?`<span class="ocr-badge">OCR</span>`
+:"";
 
 
-            div.innerHTML = `
+html+=`
 
-                <div class="resultInfo">
+<div class="result">
 
-                    <div class="resultName">
-                        📄 ${escapeHtml(item.filename)}
-                    </div>
+<div class="result-file">
 
-                    <div class="resultDetails">
-                        নাম/জন্মতারিখের সাথে মিল পাওয়া গেছে।
-                    </div>
+${escapeHtml(
+item.filename
+)}
 
-                </div>
+${badge}
+
+</div>
+
+<div class="result-pages">
+
+পাওয়া গেছে পৃষ্ঠা:
+<b>${pages}</b>
+
+</div>
+
+<div class="result-actions">
+
+<button
+class="view-btn"
+onclick="viewPdf(
+'${escapeJs(
+item.filename
+)}',
+${item.pages[0]}
+)"
+>
+PDF দেখুন
+</button>
+
+<button
+class="open-btn"
+onclick="openPdf(
+'${escapeJs(
+item.filename
+)}'
+)"
+>
+নতুন ট্যাবে খুলুন
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+);
 
 
-                <button
-                    class="viewPdfBtn"
-                >
-                    👁️ PDF দেখুন
-                </button>
-
-            `;
-
-
-            const button =
-                div.querySelector(
-                    ".viewPdfBtn"
-                );
-
-
-            button.addEventListener(
-                "click",
-                function(){
-
-                    openPdf(
-                        item.filename
-                    );
-
-                }
-            );
-
-
-            results.appendChild(
-                div
-            );
-
-        }
-    );
+results.innerHTML=html;
 
 }
 
 
 /* =====================================================
-   ESCAPE HTML
+   ESCAPE
 ===================================================== */
 
-function escapeHtml(text){
+function escapeHtml(
+value
+){
 
-    return String(text)
+return String(value)
 
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 
 }
 
 
-/* =====================================================
-   SEARCH BUTTON
-===================================================== */
+function escapeJs(
+value
+){
 
-searchBtn.addEventListener(
-    "click",
-    searchVoter
-);
+return String(value)
 
+.replace(/\\/g,"\\\\")
+.replace(/'/g,"\\'")
+.replace(/"/g,'\\"')
+.replace(/\n/g,"\\n")
+.replace(/\r/g,"\\r");
 
-/* =====================================================
-   ENTER SEARCH
-===================================================== */
-
-nameInput.addEventListener(
-    "keydown",
-    function(event){
-
-        if(
-            event.key ===
-            "Enter"
-        ){
-
-            searchVoter();
-
-        }
-
-    }
-);
-
-
-dobInput.addEventListener(
-    "keydown",
-    function(event){
-
-        if(
-            event.key ===
-            "Enter"
-        ){
-
-            searchVoter();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   CLEAR
-===================================================== */
-
-clearBtn.addEventListener(
-    "click",
-    function(){
-
-        nameInput.value =
-            "";
-
-
-        dobInput.value =
-            "";
-
-
-        resultCount.textContent =
-            "0";
-
-
-        results.innerHTML = `
-
-            <div class="loading">
-                অনুসন্ধানের জন্য নাম অথবা জন্মতারিখ লিখুন।
-            </div>
-
-        `;
-
-
-        statusBox.style.display =
-            "none";
-
-    }
-);
+}
 
 
 /* =====================================================
    OPEN PDF
 ===================================================== */
 
-async function openPdf(filename){
+function openPdf(
+filename
+){
 
-    currentPdfFilename =
-        filename;
-
-
-    pdfWindow.style.display =
-        "flex";
-
-
-    pdfTitle.textContent =
-        filename;
-
-
-    pdfBody.innerHTML = `
-
-        <div class="loading">
-            PDF লোড হচ্ছে...
-        </div>
-
-    `;
-
-
-    try{
-
-        const pdf =
-            await pdfjsLib
-                .getDocument(
-                    getPdfUrl(filename)
-                )
-                .promise;
-
-
-        pdfBody.innerHTML =
-            "";
-
-
-        for(
-            let pageNumber = 1;
-
-            pageNumber <=
-            pdf.numPages;
-
-            pageNumber++
-        ){
-
-            const page =
-                await pdf.getPage(
-                    pageNumber
-                );
-
-
-            const viewport =
-                page.getViewport({
-                    scale:1.5
-                });
-
-
-            const pageDiv =
-                document.createElement(
-                    "div"
-                );
-
-
-            pageDiv.className =
-                "pdfPage";
-
-
-            const canvas =
-                document.createElement(
-                    "canvas"
-                );
-
-
-            canvas.width =
-                viewport.width;
-
-
-            canvas.height =
-                viewport.height;
-
-
-            pageDiv.appendChild(
-                canvas
-            );
-
-
-            const watermark =
-                document.createElement(
-                    "div"
-                );
-
-
-            watermark.className =
-                "watermark";
-
-
-            watermark.innerHTML = `
-                আলী ইসলাম<br>
-                উদ্যোক্তা<br>
-                ০৩ নং পাঁচলাইশ ওয়ার্ড
-            `;
-
-
-            pageDiv.appendChild(
-                watermark
-            );
-
-
-            pdfBody.appendChild(
-                pageDiv
-            );
-
-
-            const context =
-                canvas.getContext(
-                    "2d"
-                );
-
-
-            await page.render({
-
-                canvasContext:
-                    context,
-
-                viewport:
-                    viewport
-
-            }).promise;
-
-        }
-
-    }
-
-    catch(error){
-
-        console.error(
-            "PDF viewer error:",
-            error
-        );
-
-
-        pdfBody.innerHTML = `
-
-            <div class="loading">
-
-                ❌ PDF লোড করা যাচ্ছে না।
-
-                <br><br>
-
-                ${escapeHtml(
-                    filename
-                )}
-
-            </div>
-
-        `;
-
-    }
+window.open(
+getPdfUrl(filename),
+"_blank",
+"noopener,noreferrer"
+);
 
 }
 
 
 /* =====================================================
-   PRINT
+   VIEW PDF
 ===================================================== */
 
-function printCurrentPdf(){
+async function viewPdf(
+filename,
+startPage=1
+){
 
-    const pages =
-        document.querySelectorAll(
-            "#pdfBody .pdfPage"
-        );
+const section =
+document.getElementById(
+"viewerSection"
+);
 
+const title =
+document.getElementById(
+"viewerTitle"
+);
 
-    if(
-        pages.length === 0
-    ){
-
-        alert(
-            "PDF সম্পূর্ণ লোড হওয়ার পর প্রিন্ট করুন।"
-        );
-
-        return;
-
-    }
-
-
-    const printWindow =
-        window.open(
-            "",
-            "_blank"
-        );
+const viewer =
+document.getElementById(
+"pdfViewer"
+);
 
 
-    if(!printWindow){
+section.style.display="block";
 
-        alert(
-            "Print window খুলতে পারেনি। Browser popup অনুমতি দিন।"
-        );
+title.innerText=filename;
 
-        return;
-
-    }
-
-
-    printWindow.document.open();
+viewer.innerHTML=
+`<div class="viewer-loading">
+PDF লোড হচ্ছে...
+</div>`;
 
 
-    printWindow.document.write(`
-
-<!DOCTYPE html>
-
-<html lang="bn">
-
-<head>
-
-<meta charset="UTF-8">
-
-<title>
-${escapeHtml(currentPdfFilename)}
-</title>
-
-<style>
-
-@page{
-
-    size:A4;
-
-    margin:0;
-
-}
+section.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
 
 
-html,
-body{
-
-    margin:0;
-
-    padding:0;
-
-    background:#fff;
-}
+await destroyViewerPdf();
 
 
-.printPage{
+try{
 
-    position:relative;
-
-    width:210mm;
-
-    min-height:297mm;
-
-    display:flex;
-
-    align-items:flex-start;
-
-    justify-content:center;
-
-    overflow:hidden;
-
-    page-break-after:always;
-
-    background:#fff;
-}
+viewerPdfDocument =
+await withTimeout(
+pdfjsLib.getDocument({
+url:getPdfUrl(filename)
+}).promise,
+PDF_TIMEOUT,
+"Viewer PDF load"
+);
 
 
-.printPage img{
+viewerFilename=filename;
 
-    display:block;
+viewerTotalPages =
+viewerPdfDocument.numPages;
 
-    width:100%;
 
-    height:auto;
+viewerCurrentPage =
+Math.min(
+Math.max(
+parseInt(startPage)||1,
+1
+),
+viewerTotalPages
+);
+
+
+updateViewerButtons();
+
+await renderViewerPage(
+viewerCurrentPage
+);
+
+
+}catch(error){
+
+console.error(
+"Viewer error:",
+error
+);
+
+
+viewer.innerHTML=
+`<div class="error">
+PDF দেখানো যাচ্ছে না।<br><br>
+${escapeHtml(
+error.message || ""
+)}
+</div>`;
 
 }
-
-
-.printWatermark{
-
-    position:absolute;
-
-    left:50%;
-
-    top:50%;
-
-    transform:
-        translate(-50%,-50%)
-        rotate(-30deg);
-
-    color:
-        rgba(30,64,175,.18);
-
-    font-family:
-        "Noto Sans Bengali",
-        Arial,
-        sans-serif;
-
-    font-size:30px;
-
-    font-weight:bold;
-
-    text-align:center;
-
-    white-space:nowrap;
-
-    pointer-events:none;
-}
-
-
-</style>
-
-</head>
-
-<body>
-
-`);
-
-
-    pages.forEach(
-        function(page){
-
-            const canvas =
-                page.querySelector(
-                    "canvas"
-                );
-
-
-            if(!canvas){
-
-                return;
-
-            }
-
-
-            const image =
-                canvas.toDataURL(
-                    "image/png"
-                );
-
-
-            printWindow.document.write(`
-
-                <div class="printPage">
-
-                    <img
-                        src="${image}"
-                    >
-
-
-                    <div class="printWatermark">
-
-                        আলী ইসলাম<br>
-                        উদ্যোক্তা<br>
-                        ০৩ নং পাঁচলাইশ ওয়ার্ড
-
-                    </div>
-
-                </div>
-
-            `);
-
-        }
-    );
-
-
-    printWindow.document.write(`
-
-</body>
-
-</html>
-
-`);
-
-
-    printWindow.document.close();
-
-
-    setTimeout(
-        function(){
-
-            printWindow.focus();
-
-            printWindow.print();
-
-        },
-        1200
-    );
 
 }
 
 
 /* =====================================================
-   PRINT BUTTON
+   RENDER VIEWER
 ===================================================== */
 
-printPdfBtn.addEventListener(
-    "click",
-    printCurrentPdf
+async function renderViewerPage(
+pageNumber
+){
+
+if(
+!viewerPdfDocument ||
+viewerRendering
+){
+
+return;
+
+}
+
+
+viewerRendering=true;
+
+const token =
+++viewerRenderToken;
+
+
+const viewer =
+document.getElementById(
+"pdfViewer"
+);
+
+
+try{
+
+cleanupViewerCanvas();
+
+
+viewer.innerHTML=
+`<div class="viewer-loading">
+পৃষ্ঠা ${pageNumber}
+লোড হচ্ছে...
+</div>`;
+
+
+const page =
+await withTimeout(
+viewerPdfDocument.getPage(
+pageNumber
+),
+PAGE_TIMEOUT,
+"Viewer page"
+);
+
+
+if(
+token!==viewerRenderToken
+){
+
+try{
+page.cleanup();
+}catch(e){}
+
+return;
+
+}
+
+
+const base =
+page.getViewport({
+scale:1
+});
+
+
+const maxWidth =
+Math.min(
+window.innerWidth*.92,
+1000
+);
+
+
+let scale =
+maxWidth/base.width;
+
+
+if(scale>1.8)
+scale=1.8;
+
+
+if(scale<1)
+scale=1;
+
+
+const viewport =
+page.getViewport({
+scale:scale
+});
+
+
+const wrapper =
+document.createElement(
+"div"
+);
+
+wrapper.className=
+"pdf-page";
+
+
+const canvas =
+document.createElement(
+"canvas"
+);
+
+
+canvas.width =
+Math.floor(
+viewport.width
+);
+
+canvas.height =
+Math.floor(
+viewport.height
+);
+
+
+wrapper.appendChild(canvas);
+
+
+const watermark =
+document.createElement(
+"div"
+);
+
+watermark.className=
+"watermark";
+
+watermark.innerHTML=
+`আলী ইসলাম
+<small>
+উদ্যোক্তা<br>
+০৩ নং পাঁচলাইশ ওয়ার্ড
+</small>`;
+
+
+wrapper.appendChild(
+watermark
+);
+
+
+viewer.innerHTML="";
+
+viewer.appendChild(
+wrapper
+);
+
+
+const context =
+canvas.getContext(
+"2d"
+);
+
+
+await withTimeout(
+page.render({
+canvasContext:context,
+viewport:viewport
+}).promise,
+PAGE_TIMEOUT*2,
+"Viewer render"
+);
+
+
+try{
+page.cleanup();
+}catch(e){}
+
+
+await yieldToBrowser();
+
+
+}catch(error){
+
+console.error(
+"Render error:",
+error
+);
+
+
+viewer.innerHTML=
+`<div class="error">
+পৃষ্ঠা দেখানো যাচ্ছে না।<br><br>
+${escapeHtml(
+error.message || ""
+)}
+</div>`;
+
+
+}finally{
+
+viewerRendering=false;
+
+updateViewerButtons();
+
+}
+
+}
+
+
+/* =====================================================
+   CLEANUP
+===================================================== */
+
+function cleanupViewerCanvas(){
+
+const viewer =
+document.getElementById(
+"pdfViewer"
+);
+
+
+viewer
+.querySelectorAll(
+"canvas"
+)
+.forEach(
+function(canvas){
+
+try{
+
+const ctx =
+canvas.getContext(
+"2d"
+);
+
+if(ctx){
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+}
+
+}catch(e){}
+
+
+canvas.width=1;
+
+canvas.height=1;
+
+try{
+canvas.remove();
+}catch(e){}
+
+}
+);
+
+
+viewer.innerHTML="";
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+async function previousPdfPage(){
+
+if(
+!viewerPdfDocument ||
+viewerRendering ||
+viewerCurrentPage<=1
+){
+
+return;
+
+}
+
+
+viewerCurrentPage--;
+
+updateViewerButtons();
+
+await renderViewerPage(
+viewerCurrentPage
+);
+
+}
+
+
+async function nextPdfPage(){
+
+if(
+!viewerPdfDocument ||
+viewerRendering ||
+viewerCurrentPage>=viewerTotalPages
+){
+
+return;
+
+}
+
+
+viewerCurrentPage++;
+
+updateViewerButtons();
+
+await renderViewerPage(
+viewerCurrentPage
+);
+
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+function updateViewerButtons(){
+
+const prev =
+document.getElementById(
+"prevPageBtn"
+);
+
+const next =
+document.getElementById(
+"nextPageBtn"
+);
+
+const counter =
+document.getElementById(
+"pageCounter"
+);
+
+
+prev.disabled =
+!viewerPdfDocument ||
+viewerCurrentPage<=1 ||
+viewerRendering;
+
+
+next.disabled =
+!viewerPdfDocument ||
+viewerCurrentPage>=viewerTotalPages ||
+viewerRendering;
+
+
+counter.innerText=
+`পৃষ্ঠা ${
+viewerCurrentPage||0
+} / ${
+viewerTotalPages||0
+}`;
+
+}
+
+
+/* =====================================================
+   DESTROY VIEWER
+===================================================== */
+
+async function destroyViewerPdf(){
+
+viewerRenderToken++;
+
+cleanupViewerCanvas();
+
+
+if(
+viewerPdfDocument
+){
+
+try{
+
+await viewerPdfDocument.destroy();
+
+}catch(e){
+
+console.log(e);
+
+}
+
+}
+
+
+viewerPdfDocument=null;
+
+viewerFilename="";
+
+viewerCurrentPage=1;
+
+viewerTotalPages=0;
+
+viewerRendering=false;
+
+updateViewerButtons();
+
+}
+
+
+/* =====================================================
+   CLOSE
+===================================================== */
+
+async function closeViewer(){
+
+document.getElementById(
+"viewerSection"
+).style.display="none";
+
+await destroyViewerPdf();
+
+}
+
+
+/* =====================================================
+   CLEAR
+===================================================== */
+
+function clearSearch(){
+
+document.getElementById(
+"name"
+).value="";
+
+document.getElementById(
+"dob"
+).value="";
+
+
+document.getElementById(
+"results"
+).innerHTML=
+`<div class="empty">
+নাম অথবা জন্ম তারিখ দিয়ে
+অনুসন্ধান করুন।
+</div>`;
+
+
+document.getElementById(
+"status"
+).innerHTML=
+INDEX_READY
+?
+"PDF তথ্য প্রস্তুত আছে। অনুসন্ধানের জন্য নাম অথবা জন্ম তারিখ লিখুন।"
+:
+"PDF তথ্য প্রস্তুত হচ্ছে...";
+
+
+document.getElementById(
+"name"
+).focus();
+
+}
+
+
+/* =====================================================
+   ENTER
+===================================================== */
+
+document
+.getElementById("name")
+.addEventListener(
+"keydown",
+function(event){
+
+if(
+event.key==="Enter"
+){
+
+event.preventDefault();
+
+searchVoter();
+
+}
+
+}
+);
+
+
+document
+.getElementById("dob")
+.addEventListener(
+"keydown",
+function(event){
+
+if(
+event.key==="Enter"
+){
+
+event.preventDefault();
+
+searchVoter();
+
+}
+
+}
 );
 
 
 /* =====================================================
-   CLOSE PDF
+   BLUR
 ===================================================== */
 
-function closePdfViewer(){
+document
+.getElementById("name")
+.addEventListener(
+"blur",
+function(){
 
-    pdfWindow.style.display =
-        "none";
-
-
-    pdfBody.innerHTML =
-        "";
-
-
-    currentPdfFilename =
-        "";
+this.value =
+this.value
+.trim()
+.replace(
+/\s+/g,
+" "
+);
 
 }
+);
 
 
-closePdf.addEventListener(
-    "click",
-    closePdfViewer
+document
+.getElementById("dob")
+.addEventListener(
+"blur",
+function(){
+
+this.value =
+this.value
+.trim()
+.replace(
+/\s+/g,
+" "
+);
+
+}
 );
 
 
 /* =====================================================
-   ESC CLOSE
+   BEFORE UNLOAD
 ===================================================== */
 
-document.addEventListener(
-    "keydown",
-    function(event){
+window.addEventListener(
+"beforeunload",
+function(){
 
-        if(
-            event.key ===
-            "Escape"
-        ){
+cleanupViewerCanvas();
 
-            if(
-                pdfWindow.style.display ===
-                "flex"
-            ){
 
-                closePdfViewer();
+if(OCR_WORKER){
 
-            }
+try{
 
-        }
+OCR_WORKER.terminate();
 
-    }
+}catch(e){}
+
+}
+
+}
+);
+
+
+/* =====================================================
+   RESIZE
+===================================================== */
+
+let resizeTimer=null;
+
+
+window.addEventListener(
+"resize",
+function(){
+
+clearTimeout(
+resizeTimer
+);
+
+
+resizeTimer =
+setTimeout(
+async function(){
+
+if(
+viewerPdfDocument &&
+!viewerRendering
+){
+
+await renderViewerPage(
+viewerCurrentPage
+);
+
+}
+
+},
+300
+);
+
+}
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+window.addEventListener(
+"load",
+function(){
+
+buildIndex();
+
+}
 );
 
 </script>
 
 </body>
-
 </html>
