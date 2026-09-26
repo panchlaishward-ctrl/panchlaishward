@@ -812,6 +812,8 @@ let FAILED_FILES = [];
 
 let SEARCH_RUNNING = false;
 
+let OCR_ERRORS = [];
+
 let OCR_WORKER = null;
 
 let OCR_READY = false;
@@ -1145,11 +1147,27 @@ return true;
 
 }
 
-return source
-.replace(/\s/g,"")
-.includes(
-target.replace(/\s/g,"")
-);
+const compactSource =
+source.replace(/\s/g,"");
+
+const compactTarget =
+target.replace(/\s/g,"");
+
+if(compactSource.includes(compactTarget)){
+return true;
+}
+
+/* PDF text extraction may reorder or split a multi-part name. */
+const nameParts = target
+.split(/\s+/)
+.filter(function(part){
+return part.length>1;
+});
+
+return nameParts.length>1 &&
+nameParts.every(function(part){
+return source.includes(part);
+});
 
 }
 
@@ -1942,6 +1960,10 @@ console.error(
 error
 );
 
+OCR_ERRORS.push(
+`${pdfData.filename}, পৃষ্ঠা ${pageNumber}: ${error.message || "OCR ব্যর্থ"}`
+);
+
 }
 
 
@@ -2031,6 +2053,10 @@ await runOCRForPdf(pdf);
 console.error(
 "OCR error:",
 error
+);
+
+OCR_ERRORS.push(
+`${pdf.filename}: ${error.message || "OCR ব্যর্থ"}`
 );
 
 continue;
@@ -2175,6 +2201,7 @@ return;
 
 
 SEARCH_RUNNING=true;
+OCR_ERRORS=[];
 
 document.getElementById(
 "searchBtn"
@@ -2306,7 +2333,10 @@ document.getElementById(
 ).innerHTML=
 `অনুসন্ধান সম্পন্ন।
 মোট <b>${found.length}</b>
-টি ফলাফল পাওয়া গেছে।`;
+টি ফলাফল পাওয়া গেছে.`+
+(OCR_ERRORS.length
+?`<br><span class="warning">${OCR_ERRORS.length}টি OCR-এ সমস্যা হয়েছে। প্রথম সমস্যা: ${escapeHtml(OCR_ERRORS[0])}</span>`
+:"");
 
 
 }catch(error){
